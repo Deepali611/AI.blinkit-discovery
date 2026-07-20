@@ -40,53 +40,56 @@ export default function AIInsightCard({
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.4 }}
-      className="bg-surface border border-line rounded-2xl p-6 shadow-card mb-4"
+      className="bg-surface border border-line rounded-2xl p-6 shadow-card mb-6"
     >
-      <div className="flex items-center gap-2 mb-3">
-        <span className="inline-flex items-center gap-1 text-[10px] font-extrabold uppercase tracking-wide bg-brand-yellowSoft text-[#8A6A0F] border border-[#EFDC9E] rounded px-2 py-0.5">
+      <div className="flex items-center gap-2 mb-4">
+        <span className="inline-flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-wider bg-brand-yellowSoft/60 text-[#8A6A0F] border border-[#EFDC9E]/40 rounded-full px-3 py-1">
           <Sparkles size={11} /> AI Growth Analyst
         </span>
         <span
-          className="text-[10.5px] font-extrabold rounded px-2 py-0.5"
+          className="text-[10px] font-semibold rounded-full px-3 py-1 uppercase tracking-wider"
           style={{ color: cs.text, background: cs.bg }}
         >
-          CONFIDENCE: {confidence.toUpperCase()}
+          Confidence: {confidence}
         </span>
       </div>
 
-      <div className="text-[16px] font-semibold leading-snug mb-3">{summary}</div>
+      <div className="text-[18px] font-bold text-ink leading-snug tracking-tight mb-4">{summary}</div>
 
-      <div className="flex gap-5 text-[12px] text-muted border-b border-line pb-3 mb-3">
+      <div className="flex gap-5 text-[12.5px] text-muted border-b border-line pb-4 mb-4">
         <span>
-          <b className="text-ink">{evidenceN}</b> supporting reviews
+          <b className="text-ink font-semibold">{evidenceN}</b> supporting reviews
         </span>
         <span>
-          Sources: <b className="text-ink">{sources}</b>
+          Sources: <b className="text-ink font-semibold">{sources}</b>
         </span>
       </div>
 
-      {chart && <div className="mb-3">{chart}</div>}
+      {chart && <div className="mb-4">{chart}</div>}
 
-      <div className="space-y-2 text-[13px]">
+      <div className="space-y-4 text-[13.5px] text-ink/80">
         <div>
-          <div className="text-[10.5px] font-extrabold text-muted uppercase tracking-wide mb-0.5">Reasoning</div>
+          <div className="text-[10px] font-semibold text-muted/80 uppercase tracking-wider mb-1">Reasoning</div>
           <div className="leading-relaxed">{reasoning}</div>
         </div>
         <div>
-          <div className="text-[10.5px] font-extrabold text-muted uppercase tracking-wide mb-0.5">Validation</div>
+          <div className="text-[10px] font-semibold text-muted/80 uppercase tracking-wider mb-1">Validation</div>
           <div className="leading-relaxed">{validation}</div>
         </div>
       </div>
 
-      <div className="mt-3 space-y-2">
-        <div className="bg-brand-yellowSoft border-l-2 border-brand-yellow rounded-r-lg px-3 py-2 text-[13px]">
-          <b>PM implication:</b> {pmImplication}
+      <div className="mt-6 pt-6 border-t border-line space-y-3.5 text-[13.5px]">
+        <div className="leading-relaxed">
+          <span className="font-semibold text-ink">PM Implication:</span>{" "}
+          <span className="text-ink/80">{pmImplication}</span>
         </div>
-        <div className="bg-brand-greenSoft border-l-2 border-brand-green rounded-r-lg px-3 py-2 text-[13px]">
-          <b>Business impact:</b> {businessImpact}
+        <div className="leading-relaxed">
+          <span className="font-semibold text-ink">Business Impact:</span>{" "}
+          <span className="text-ink/80">{businessImpact}</span>
         </div>
-        <div className="bg-canvas border-l-2 border-ink rounded-r-lg px-3 py-2 text-[13px]">
-          <b>Recommended action:</b> {recommendedAction}
+        <div className="leading-relaxed">
+          <span className="font-semibold text-ink">Recommended Action:</span>{" "}
+          <span className="text-ink/80">{recommendedAction}</span>
         </div>
       </div>
     </motion.div>

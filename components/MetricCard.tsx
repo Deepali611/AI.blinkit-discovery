@@ -18,11 +18,11 @@ export default function MetricCard({
       initial={{ opacity: 0, y: 6 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.35, delay }}
-      className="bg-surface border border-line rounded-xl p-4 shadow-card"
+      className="bg-surface border border-line rounded-2xl p-6 shadow-card"
     >
-      <div className="text-[11.5px] font-semibold text-muted uppercase tracking-wide">{label}</div>
-      <div className="text-[26px] font-extrabold text-ink mt-1 tracking-tight">{value}</div>
-      {note && <div className="text-[11.5px] text-muted mt-1">{note}</div>}
+      <div className="text-[10.5px] font-semibold text-muted uppercase tracking-wider">{label}</div>
+      <div className="text-[30px] font-bold text-ink mt-2 tracking-tight leading-none">{value}</div>
+      {note && <div className="text-[11.5px] text-muted/80 mt-2 leading-normal">{note}</div>}
     </motion.div>
   );
 }

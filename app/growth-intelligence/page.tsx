@@ -10,39 +10,62 @@ const CONF_STYLES: Record<string, { text: string; bg: string }> = {
 };
 
 export default function GrowthIntelligence() {
+  const sections = [
+    {
+      title: "I. Habits & Core Barriers",
+      indices: [0, 1, 3],
+    },
+    {
+      title: "II. Unmet Needs & Frustrations",
+      indices: [4, 5, 7],
+    },
+    {
+      title: "III. Discovery & Targeting",
+      indices: [2, 6],
+    },
+  ];
+
   return (
-    <div>
+    <div className="space-y-6">
       <PageHeader
         title="Growth Intelligence"
         subtitle="All 8 required discovery questions, answered as validated growth signals."
       />
-      <div className="space-y-3">
-        {growthQuestions.map((item, i) => {
-          const cs = CONF_STYLES[item.confidence];
-          return (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, y: 6 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3, delay: i * 0.04 }}
-              className="bg-surface border border-line rounded-2xl p-5 shadow-card"
-            >
-              <div className="flex items-center gap-2 mb-2">
-                <span className="text-[10px] font-extrabold uppercase tracking-wide bg-brand-yellowSoft text-[#8A6A0F] border border-[#EFDC9E] rounded px-2 py-0.5">
-                  Signal {i + 1}
-                </span>
-                <span
-                  className="text-[10.5px] font-extrabold rounded px-2 py-0.5"
-                  style={{ color: cs.text, background: cs.bg }}
-                >
-                  CONFIDENCE: {item.confidence.toUpperCase()}
-                </span>
-              </div>
-              <div className="text-[14.5px] font-semibold mb-1">{item.q}</div>
-              <div className="text-[13px] text-ink/85 leading-relaxed">{item.a}</div>
-            </motion.div>
-          );
-        })}
+      <div className="space-y-10">
+        {sections.map((sec) => (
+          <div key={sec.title}>
+            <h2 className="text-[11.5px] font-bold text-muted/80 uppercase tracking-wider mb-4">{sec.title}</h2>
+            <div className="space-y-5">
+              {sec.indices.map((idx) => {
+                const item = growthQuestions[idx];
+                const cs = CONF_STYLES[item.confidence];
+                return (
+                  <motion.div
+                    key={idx}
+                    initial={{ opacity: 0, y: 6 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.3 }}
+                    className="bg-surface border border-line rounded-2xl p-6 shadow-card"
+                  >
+                    <div className="flex items-center gap-2 mb-3">
+                      <span className="text-[10px] font-semibold uppercase tracking-wider bg-brand-yellowSoft/60 text-[#8A6A0F] border border-[#EFDC9E]/40 rounded-full px-3 py-1">
+                        Signal {idx + 1}
+                      </span>
+                      <span
+                        className="text-[10px] font-semibold rounded-full px-3 py-1 uppercase tracking-wider"
+                        style={{ color: cs.text, background: cs.bg }}
+                      >
+                        Confidence: {item.confidence}
+                      </span>
+                    </div>
+                    <div className="text-[16px] font-bold text-ink mb-2 tracking-tight">{item.q}</div>
+                    <div className="text-[13.5px] text-ink/80 leading-relaxed">{item.a}</div>
+                  </motion.div>
+                );
+              })}
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   );

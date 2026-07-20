@@ -4,7 +4,7 @@ import { useState, useMemo } from "react";
 import PageHeader from "@/components/PageHeader";
 import { reviews } from "@/lib/data";
 
-const CONF_COLOR: Record<string, string> = { high: "#028A34", med: "#B8860B", low: "#6B7566" };
+const CONF_COLOR: Record<string, string> = { high: "#028A34", med: "#6B7566", low: "#9A9488" };
 
 export default function EvidenceExplorer() {
   const [reasonType, setReasonType] = useState("All");
@@ -37,11 +37,11 @@ export default function EvidenceExplorer() {
 
       <div className="bg-surface border border-line rounded-2xl divide-y divide-line shadow-card">
         {filtered.slice(0, 30).map((r) => (
-          <div key={r.row_number} className="px-5 py-3 text-[13px]">
-            <span style={{ color: CONF_COLOR[r.confidence], fontWeight: 700 }}>{r.confidence.toUpperCase()}</span>
+          <div key={r.row_number} className="px-6 py-4.5 text-[13.5px]">
+            <span style={{ color: CONF_COLOR[r.confidence] }} className="font-semibold text-[12px] tracking-wider">{r.confidence.toUpperCase()}</span>
             {" · "}
-            <b>{r.reason_type}</b> · {r.category_mentioned} · {r.user_segment}
-            <div className="text-muted text-[12px] mt-0.5">
+            <span className="font-semibold text-ink">{r.reason_type}</span> · <span className="text-ink/80">{r.category_mentioned}</span> · <span className="text-ink/80">{r.user_segment}</span>
+            <div className="text-muted/80 text-[12px] mt-1">
               Row #{r.row_number} — barrier: {r.barrier_to_new_category}
             </div>
           </div>

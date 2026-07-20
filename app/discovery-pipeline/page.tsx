@@ -21,29 +21,31 @@ export default function DiscoveryPipeline() {
     <div>
       <PageHeader title="Discovery Pipeline" subtitle="How customer feedback becomes a validated growth signal." />
 
-      <div className="flex flex-wrap items-center gap-0 mb-6">
+      <div className="flex flex-wrap items-center gap-y-3 mb-8">
         {STEPS.map((step, i) => (
           <div key={step} className="flex items-center">
-            <div className="bg-surface border border-line rounded-xl px-4 py-2.5 text-[12px] font-semibold shadow-card">
+            <div className="bg-surface border border-line rounded-xl px-3.5 py-2 text-[12.5px] font-medium text-ink shadow-card">
               {step}
             </div>
-            {i < STEPS.length - 1 && <span className="text-muted px-2">→</span>}
+            {i < STEPS.length - 1 && <span className="text-muted px-2.5">→</span>}
           </div>
         ))}
       </div>
 
-      <div className="bg-surface border border-line rounded-2xl p-6 shadow-card mb-4">
-        <h3 className="font-semibold mb-1">Business goal</h3>
-        <p className="text-[13.5px] text-muted mb-4">
+      <div className="bg-surface border border-line rounded-2xl p-6 shadow-card">
+        <h3 className="text-[16px] font-bold text-ink mb-2 tracking-tight">Business goal</h3>
+        <p className="text-[13.5px] text-ink/80 leading-relaxed mb-6">
           Increase the percentage of Monthly Active Customers who purchase from at least one new category
           every month.
         </p>
 
-        <h3 className="font-semibold mb-2">Collect customer feedback</h3>
-        <BarList data={sourceData} colors={sourceColors} unit="records" />
+        <h3 className="text-[16px] font-bold text-ink mb-3 tracking-tight">Collect customer feedback</h3>
+        <div className="mb-6">
+          <BarList data={sourceData} colors={sourceColors} unit="records" />
+        </div>
 
-        <h3 className="font-semibold mt-4 mb-1">AI analysis</h3>
-        <p className="text-[13.5px] text-muted leading-relaxed">
+        <h3 className="text-[16px] font-bold text-ink mb-2 tracking-tight">AI analysis</h3>
+        <p className="text-[13.5px] text-ink/80 leading-relaxed">
           Off-topic content (labor/picker posts, industry debate) and bare statements with no reasoning are
           filtered before extraction. A single controlled Gemini prompt then tags each remaining review with a
           signal gate followed by structured extraction: repeat-buying signal, category, barrier, reason type,

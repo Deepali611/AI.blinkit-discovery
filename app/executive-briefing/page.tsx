@@ -11,13 +11,13 @@ export default function ExecutiveBriefing() {
         subtitle="Growth Intelligence on cross-category discovery — everything below ties back to one goal: growing the share of customers exploring beyond their usual categories."
       />
 
-      <div className="grid grid-cols-4 gap-3 mb-3">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-5">
         <MetricCard label="Discovery Barrier Index" value={`${metrics.discoveryBarrierIndex.toFixed(0)}%`} note="signal driven by trust or price risk" delay={0} />
         <MetricCard label="Trust Gap Score" value={`${metrics.trustGapScore.toFixed(0)}%`} note="signal citing trust/quality risk" delay={0.05} />
         <MetricCard label="Shopping Habit Score" value={`${metrics.habitScore.toFixed(0)}%`} note="signal attributable to habit" delay={0.1} />
         <MetricCard label="Customer Exploration Intent" value={`${metrics.explorationIntent.toFixed(0)}%`} note="customers naming a specific ask" delay={0.15} />
       </div>
-      <div className="grid grid-cols-4 gap-3 mb-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-10">
         <MetricCard label="Discovery Opportunity Readiness" value={`${metrics.discoveryReadiness.toFixed(0)}%`} note="heavy users clear of trust/price blockers" delay={0.2} />
         <MetricCard label="Insight Confidence" value={`${metrics.insightConfidence.toFixed(0)}%`} note="confidence-weighted across signals" delay={0.25} />
         <MetricCard label="Signal Coverage" value={`${metrics.reviewCoverage.toFixed(1)}%`} note={`${N} of ${TOTAL_REVIEWS_SCANNED.toLocaleString()} reviews scanned`} delay={0.3} />

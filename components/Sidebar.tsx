@@ -50,8 +50,8 @@ export default function Sidebar() {
               href={href}
               className={`flex items-center gap-3 px-3 py-2 rounded-xl text-[13.5px] font-medium transition-colors ${
                 active
-                  ? "bg-brand-greenSoft text-brand-greenDark"
-                  : "text-ink/70 hover:bg-canvas"
+                  ? "bg-ink/5 text-ink font-semibold"
+                  : "text-ink/70 hover:bg-canvas hover:text-ink"
               }`}
             >
               <Icon size={16} strokeWidth={2} />

@@ -18,22 +18,22 @@ export const TOTAL_REVIEWS_SCANNED = 1176;
 export const N = reviews.length;
 
 export const REASON_COLORS: Record<string, string> = {
-  trust: "#D93025",
-  price: "#3B5BDB",
-  convenience: "#00B140",
-  no_discovery: "#7C5CBF",
-  habit: "#9A9488",
-  other: "#C9C4B8",
+  trust: "#16201A",
+  price: "#4A5447",
+  convenience: "#6B7566",
+  no_discovery: "#9A9488",
+  habit: "#C9C4B8",
+  other: "#E4E8E1",
 };
 
 export const SEGMENT_COLORS: Record<string, string> = {
+  heavy_user: "#00B140", // Genuinely positive/validated segment
+  quality_focused: "#16201A",
+  price_sensitive: "#4A5447",
+  light_new_user: "#6B7566",
   one_time_complainer: "#9A9488",
-  quality_focused: "#D93025",
-  price_sensitive: "#3B5BDB",
-  unclear: "#C9C4B8",
-  heavy_user: "#00B140",
-  light_new_user: "#7C5CBF",
-  senior_citizen: "#B8860B",
+  senior_citizen: "#C9C4B8",
+  unclear: "#E4E8E1",
 };
 
 function countBy<T extends string>(arr: ReviewRow[], key: keyof ReviewRow): Record<string, number> {
