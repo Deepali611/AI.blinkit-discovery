@@ -2,43 +2,39 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import {
-  FileText,
-  Database,
-  Terminal,
-  ShieldCheck,
-  LayoutGrid,
-  TrendingUp,
-  Lightbulb,
-  PlayCircle,
-} from "lucide-react";
-import { N, TOTAL_REVIEWS_SCANNED } from "@/lib/data";
+import { Check } from "lucide-react";
 
 const WORKFLOW_STEPS = [
-  { href: "/problem", label: "0. The Problem", icon: FileText },
-  { href: "/evidence", label: "1. Gathering Evidence", icon: Database },
-  { href: "/extraction", label: "2. Filtering & Extraction", icon: Terminal },
-  { href: "/validation", label: "3. Validation & Risks", icon: ShieldCheck },
-  { href: "/themes", label: "4. Themes & Signals", icon: LayoutGrid },
-  { href: "/insights", label: "5. Discovery Synthesis", icon: TrendingUp },
-  { href: "/opportunities", label: "6. Opportunities", icon: Lightbulb },
-  { href: "/sandbox", label: "7. Sandbox Playground", icon: PlayCircle },
+  { href: "/problem", label: "The Problem", numStr: "01" },
+  { href: "/evidence", label: "Gathering Evidence", numStr: "02" },
+  { href: "/extraction", label: "Filtering & Extraction", numStr: "03" },
+  { href: "/validation", label: "Validation & Risks", numStr: "04" },
+  { href: "/themes", label: "Themes & Signals", numStr: "05" },
+  { href: "/insights", label: "Discovery Synthesis", numStr: "06" },
+  { href: "/opportunities", label: "Opportunities", numStr: "07" },
+  { href: "/sandbox", label: "Sandbox Playground", numStr: "08" },
 ];
 
 export default function Sidebar() {
   const pathname = usePathname();
+
+  let activeIdx = WORKFLOW_STEPS.findIndex(
+    (s) => pathname === s.href || (pathname === "/" && s.href === "/problem")
+  );
+  if (activeIdx === -1) activeIdx = 0;
+
   return (
     <aside className="w-64 shrink-0 border-r border-[#ECE8DE] bg-[#F2F1EC] h-screen sticky top-0 flex flex-col z-20 transition-all duration-200 ease-out">
       
       {/* Workspace Branding Header */}
       <div className="px-5 py-6 border-b border-[#ECE8DE] flex flex-col justify-center min-h-[90px] w-full shrink-0">
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 shrink-0 rounded-[14px] bg-[#171717] flex items-center justify-center text-[#F8CB46] text-[15px] font-black shadow-sm">
+          <div className="w-8 h-8 shrink-0 rounded-[14px] bg-[#F8CB46] flex items-center justify-center text-[#171717] text-[15px] font-black shadow-sm">
             B
           </div>
           <div>
             <h1 className="font-display font-bold text-[14px] text-[#171717] leading-tight tracking-tight">
-              Blinkit RAW
+              Blinkit Discovery Engine
             </h1>
             <div className="text-[9px] text-[#5F6368] font-semibold mt-0.5 tracking-wide uppercase">
               Review Analysis Workflow
@@ -47,43 +43,60 @@ export default function Sidebar() {
         </div>
       </div>
 
-      {/* Main Navigation (Chronological Guided Flow) */}
-      <div className="flex-1 px-2 py-6 overflow-y-auto space-y-6">
-        <div className="space-y-1">
-          <h3 className="px-4 text-[9px] font-bold uppercase tracking-[0.1em] text-[#8C8C8C] mb-3">
-            Workflow Stages
-          </h3>
-          {WORKFLOW_STEPS.map(({ href, label, icon: Icon }) => {
-            const active = pathname === href || (pathname === "/" && href === "/problem");
+      {/* Main Navigation (Chronological Stepper) */}
+      <div className="flex-1 px-4 py-8 overflow-y-auto relative">
+        <div className="relative pl-6 space-y-4">
+          
+          {/* Vertical Stepper Connecting Line */}
+          <div className="absolute left-[11px] top-4 bottom-4 w-[2px] bg-[#ECE8DE] z-0" />
+
+          {WORKFLOW_STEPS.map((step, idx) => {
+            const isActive = idx === activeIdx;
+            const isVisited = idx < activeIdx;
+            const isFuture = idx > activeIdx;
+
             return (
               <Link
-                key={href}
-                href={href}
-                className={`flex items-center gap-2.5 py-2 text-[12.5px] font-medium transition-all w-full border-l-[4px] pl-3 ${
-                  active
-                    ? "text-[#171717] font-bold border-[#F8CB46] bg-[#FFFFFF]/45"
-                    : "text-[#5F6368] border-transparent hover:text-[#171717] hover:bg-[#FFFFFF]/20"
-                }`}
+                key={step.href}
+                href={step.href}
+                className="flex items-center gap-3 relative py-2.5 z-10 w-full group focus:outline-none"
               >
-                <Icon size={14} strokeWidth={1.5} className={active ? "text-[#59624B]" : "text-[#5F6368]"} />
-                <span className="flex-1 text-left">{label}</span>
+                {/* Stepper Circle */}
+                <div
+                  className={`w-6 h-6 rounded-full shrink-0 flex items-center justify-center text-[10px] font-mono font-bold z-10 border transition-all duration-200 ${
+                    isActive
+                      ? "bg-[#F8CB46] border-[#F8CB46] text-[#171717] shadow-sm"
+                      : isVisited
+                      ? "bg-[#1F8A70] border-[#1F8A70] text-white"
+                      : "bg-[#F2F1EC] border-[#ECE8DE] text-[#8C8C8C]"
+                  }`}
+                >
+                  {isVisited ? (
+                    <Check size={11} strokeWidth={3} />
+                  ) : (
+                    <span>{step.numStr}</span>
+                  )}
+                </div>
+
+                {/* Step Label */}
+                <span
+                  className={`text-[12.5px] font-semibold transition-colors duration-200 ${
+                    isActive
+                      ? "text-[#171717] font-bold"
+                      : isVisited
+                      ? "text-[#5F6368] group-hover:text-[#171717]"
+                      : "text-[#8C8C8C] group-hover:text-[#5F6368]"
+                  }`}
+                >
+                  {step.label}
+                </span>
               </Link>
             );
           })}
+
         </div>
       </div>
 
-      {/* Footer Status */}
-      <div className="p-5 border-t border-[#ECE8DE] text-[11px] text-[#5F6368] shrink-0 space-y-1.5 bg-[#FFFFFF]/10">
-        <div className="flex justify-between items-center text-[10.5px]">
-          <span>Dataset Total</span>
-          <span className="font-bold text-[#171717] font-mono">{TOTAL_REVIEWS_SCANNED.toLocaleString()}</span>
-        </div>
-        <div className="flex items-center gap-1.5 text-[9.5px] font-bold text-[#59624B] pt-1.5">
-          <span className="w-1.5 h-1.5 rounded-full bg-[#59624B] inline-block"></span>
-          <span>Workflow Live & Valid</span>
-        </div>
-      </div>
     </aside>
   );
 }
