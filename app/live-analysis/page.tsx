@@ -43,29 +43,29 @@ export default function LiveAnalysis() {
     <div>
       <PageHeader title="Live Analysis" subtitle="Run the exact extraction pipeline used on all 1,176 reviews, live." />
 
-      <div className="bg-surface border border-line rounded-2xl p-6 shadow-card max-w-2xl">
-        <label className="text-[12px] font-semibold text-muted block mb-1">Gemini API key</label>
+      <div className="bg-surface border border-line rounded-lg p-[18px] shadow-standard max-w-2xl">
+        <label className="text-[12px] text-muted block mb-1 uppercase tracking-[0.04em]" style={{ fontWeight: 800 }}>Gemini API key</label>
         <input
           type="password"
           value={apiKey}
           onChange={(e) => setApiKey(e.target.value)}
           placeholder="Get one free at aistudio.google.com/apikey"
-          className="w-full border border-line rounded-xl px-3 py-2 text-[13px] mb-4 focus:outline-none focus:ring-2 focus:ring-brand-green/30"
+          className="w-full border border-line rounded-lg px-3 py-2 text-[13px] mb-4 focus:outline-none focus:ring-2 focus:ring-brand-green/30"
         />
 
-        <label className="text-[12px] font-semibold text-muted block mb-1">Review or comment</label>
+        <label className="text-[12px] text-muted block mb-1 uppercase tracking-[0.04em]" style={{ fontWeight: 800 }}>Review or comment</label>
         <textarea
           value={reviewText}
           onChange={(e) => setReviewText(e.target.value)}
           rows={4}
           placeholder="e.g. Ordered a PS5 from Blinkit and the controller was tampered with, never buying electronics from here again"
-          className="w-full border border-line rounded-xl px-3 py-2 text-[13px] mb-4 focus:outline-none focus:ring-2 focus:ring-brand-green/30"
+          className="w-full border border-line rounded-lg px-3 py-2 text-[13px] mb-4 focus:outline-none focus:ring-2 focus:ring-brand-green/30"
         />
 
         <button
           onClick={analyze}
           disabled={loading}
-          className="bg-brand-green hover:bg-brand-greenDark text-white text-[13.5px] font-semibold px-5 py-2.5 rounded-xl transition-colors disabled:opacity-60"
+          className="bg-brand-green hover:bg-brand-greenDark text-white text-[13.5px] font-semibold px-5 py-2.5 rounded-lg transition-colors disabled:opacity-60"
         >
           {loading ? "Analyzing..." : "Analyze review"}
         </button>
@@ -75,12 +75,12 @@ export default function LiveAnalysis() {
         {result && (
           <div className="mt-5 pt-4 border-t border-line">
             {result.has_signal === false ? (
-              <p className="text-[13px] text-muted">
+              <p className="text-[13.5px] text-muted leading-relaxed" style={{ lineHeight: 1.55 }}>
                 No real behavioral signal detected — filtered out by design.
               </p>
             ) : (
               <div
-                className="bg-canvas rounded-xl px-4 py-3 text-[13px]"
+                className="bg-canvas rounded-lg px-4 py-3 text-[13.5px]"
                 style={{ borderLeft: `3px solid ${REASON_COLORS[result.reason_type] || "#6B7566"}` }}
               >
                 <b>{result.reason_type}</b> · {result.category_mentioned} · {result.user_segment_signal} ·

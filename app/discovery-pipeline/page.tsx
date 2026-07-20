@@ -24,7 +24,7 @@ export default function DiscoveryPipeline() {
       <div className="flex flex-wrap items-center gap-y-3 mb-8">
         {STEPS.map((step, i) => (
           <div key={step} className="flex items-center">
-            <div className="bg-surface border border-line rounded-xl px-3.5 py-2 text-[12.5px] font-medium text-ink shadow-card">
+            <div className="bg-surface border border-line rounded-lg py-[7px] px-[12px] text-[12.5px] font-medium text-ink shadow-subtle">
               {step}
             </div>
             {i < STEPS.length - 1 && <span className="text-muted px-2.5">→</span>}
@@ -32,9 +32,9 @@ export default function DiscoveryPipeline() {
         ))}
       </div>
 
-      <div className="bg-surface border border-line rounded-2xl p-6 shadow-card">
+      <div className="bg-surface border border-line rounded-lg p-[18px] shadow-standard">
         <h3 className="text-[16px] font-bold text-ink mb-2 tracking-tight">Business goal</h3>
-        <p className="text-[13.5px] text-ink/80 leading-relaxed mb-6">
+        <p className="text-[13.5px] text-ink/80 leading-relaxed mb-6" style={{ lineHeight: 1.55 }}>
           Increase the percentage of Monthly Active Customers who purchase from at least one new category
           every month.
         </p>
@@ -45,7 +45,7 @@ export default function DiscoveryPipeline() {
         </div>
 
         <h3 className="text-[16px] font-bold text-ink mb-2 tracking-tight">AI analysis</h3>
-        <p className="text-[13.5px] text-ink/80 leading-relaxed">
+        <p className="text-[13.5px] text-ink/80 leading-relaxed" style={{ lineHeight: 1.55 }}>
           Off-topic content (labor/picker posts, industry debate) and bare statements with no reasoning are
           filtered before extraction. A single controlled Gemini prompt then tags each remaining review with a
           signal gate followed by structured extraction: repeat-buying signal, category, barrier, reason type,

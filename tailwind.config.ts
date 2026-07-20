@@ -28,11 +28,15 @@ const config: Config = {
         },
       },
       borderRadius: {
-        xl: "12px",
-        "2xl": "16px",
+        lg: "8px",
+        xl: "8px",
+        "2xl": "8px",
       },
       boxShadow: {
-        card: "0 1px 2px rgba(22,32,26,.04), 0 1px 8px rgba(22,32,26,.03)",
+        hero: "0 10px 28px rgba(22,32,26,.055)",
+        featured: "0 14px 34px rgba(22,32,26,.075)",
+        standard: "0 5px 16px rgba(22,32,26,.045)",
+        subtle: "0 1px 2px rgba(22,32,26,.035)",
       },
       fontFamily: {
         sans: ["Inter", "sans-serif"],

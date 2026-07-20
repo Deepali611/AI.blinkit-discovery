@@ -45,9 +45,9 @@ export default function AIValidation() {
 
 function Section({ title, children }: { title: string; children: ReactNode }) {
   return (
-    <div className="bg-surface border border-line rounded-2xl p-6 shadow-card">
+    <div className="bg-surface border border-line rounded-lg p-[18px] shadow-standard">
       <h3 className="text-[16px] font-bold text-ink mb-2 tracking-tight">{title}</h3>
-      <div className="text-[13.5px] text-ink/80 leading-relaxed">{children}</div>
+      <div className="text-[13.5px] text-ink/80 leading-relaxed" style={{ lineHeight: 1.55 }}>{children}</div>
     </div>
   );
 }

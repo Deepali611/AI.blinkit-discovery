@@ -4,10 +4,10 @@ import { motion } from "framer-motion";
 import { Sparkles } from "lucide-react";
 import { ReactNode } from "react";
 
-const CONF_STYLES: Record<string, { text: string; bg: string }> = {
-  High: { text: "#028A34", bg: "#E7F8ED" },
-  Medium: { text: "#8A6A0F", bg: "#FFF6DD" },
-  Low: { text: "#6B7566", bg: "#F1F1EF" },
+const CONF_STYLES: Record<string, { text: string; border: string }> = {
+  High: { text: "#00B140", border: "#00B140" },
+  Medium: { text: "#8A6A0F", border: "#EFDC9E" },
+  Low: { text: "#6B7566", border: "#E4E8E1" },
 };
 
 export default function AIInsightCard({
@@ -40,15 +40,19 @@ export default function AIInsightCard({
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.4 }}
-      className="bg-surface border border-line rounded-2xl p-6 shadow-card mb-6"
+      className="border-y border-r border-line border-l-4 border-l-brand-green rounded-lg shadow-featured mb-6 pt-[22px] px-[24px] pb-[18px]"
+      style={{ background: "linear-gradient(135deg, rgba(0, 177, 64, 0.12), rgba(255, 255, 255, 0.98) 58%, rgba(0, 177, 64, 0.05))" }}
     >
       <div className="flex items-center gap-2 mb-4">
-        <span className="inline-flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-wider bg-brand-yellowSoft/60 text-[#8A6A0F] border border-[#EFDC9E]/40 rounded-full px-3 py-1">
-          <Sparkles size={11} /> AI Growth Analyst
+        <span
+          className="inline-flex items-center gap-1.5 text-[13px] rounded-full py-[7px] px-[12px] border border-[#EFDC9E] text-[#8A6A0F] bg-transparent"
+          style={{ fontWeight: 750 }}
+        >
+          <Sparkles size={13} /> AI Growth Analyst
         </span>
         <span
-          className="text-[10px] font-semibold rounded-full px-3 py-1 uppercase tracking-wider"
-          style={{ color: cs.text, background: cs.bg }}
+          className="text-[13px] rounded-full py-[7px] px-[12px] uppercase tracking-wider bg-transparent border"
+          style={{ color: cs.text, borderColor: cs.border, fontWeight: 750 }}
         >
           Confidence: {confidence}
         </span>
@@ -67,18 +71,18 @@ export default function AIInsightCard({
 
       {chart && <div className="mb-4">{chart}</div>}
 
-      <div className="space-y-4 text-[13.5px] text-ink/80">
+      <div className="space-y-4 text-[13.5px] text-ink/80" style={{ lineHeight: 1.55 }}>
         <div>
-          <div className="text-[10px] font-semibold text-muted/80 uppercase tracking-wider mb-1">Reasoning</div>
+          <div className="text-[12px] text-muted/80 uppercase tracking-[0.04em] mb-1" style={{ fontWeight: 800 }}>Reasoning</div>
           <div className="leading-relaxed">{reasoning}</div>
         </div>
         <div>
-          <div className="text-[10px] font-semibold text-muted/80 uppercase tracking-wider mb-1">Validation</div>
+          <div className="text-[12px] text-muted/80 uppercase tracking-[0.04em] mb-1" style={{ fontWeight: 800 }}>Validation</div>
           <div className="leading-relaxed">{validation}</div>
         </div>
       </div>
 
-      <div className="mt-6 pt-6 border-t border-line space-y-3.5 text-[13.5px]">
+      <div className="mt-6 pt-6 border-t border-line space-y-3.5 text-[13.5px]" style={{ lineHeight: 1.55 }}>
         <div className="leading-relaxed">
           <span className="font-semibold text-ink">PM Implication:</span>{" "}
           <span className="text-ink/80">{pmImplication}</span>

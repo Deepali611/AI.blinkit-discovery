@@ -17,7 +17,7 @@ export default function BehavioralIntelligence() {
 
       <div className="space-y-10">
         <div>
-          <h2 className="text-[11.5px] font-bold text-muted/80 uppercase tracking-wider mb-3">I. Core Barrier Analysis</h2>
+          <h2 className="text-[12px] text-muted/80 uppercase tracking-[0.04em] mb-3" style={{ fontWeight: 800 }}>I. Core Barrier Analysis</h2>
           <AIInsightCard
             summary={`Trust/quality risk drives ${reasonCounts["trust"] || 0} of ${N} discovery signals — by far the strongest barrier to cross-category exploration.`}
             confidence="High"
@@ -33,7 +33,7 @@ export default function BehavioralIntelligence() {
         </div>
 
         <div>
-          <h2 className="text-[11.5px] font-bold text-muted/80 uppercase tracking-wider mb-3">II. Customer Segment Readiness</h2>
+          <h2 className="text-[12px] text-muted/80 uppercase tracking-[0.04em] mb-3" style={{ fontWeight: 800 }}>II. Customer Segment Readiness</h2>
           <AIInsightCard
             summary="Heavy, loyal customers show the clearest readiness to explore once trust is addressed — they are the highest-leverage segment for a first experiment."
             confidence="Medium"
@@ -49,7 +49,7 @@ export default function BehavioralIntelligence() {
         </div>
 
         <div>
-          <h2 className="text-[11.5px] font-bold text-muted/80 uppercase tracking-wider mb-3">III. Category-Specific Risk Density</h2>
+          <h2 className="text-[12px] text-muted/80 uppercase tracking-[0.04em] mb-3" style={{ fontWeight: 800 }}>III. Category-Specific Risk Density</h2>
           <AIInsightCard
             summary="Electronics and perishables (dairy, eggs, produce) concentrate the highest share of trust-risk mentions across categories."
             confidence="Medium"

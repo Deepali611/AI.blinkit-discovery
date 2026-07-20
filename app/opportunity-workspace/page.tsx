@@ -1,7 +1,9 @@
 import PageHeader from "@/components/PageHeader";
 import { opportunities } from "@/lib/data";
 
-const IMPACT_COLOR: Record<string, string> = { High: "#028A34", Medium: "#6B7566", Low: "#9A9488" };
+const IMPACT_COLOR: Record<string, string> = { High: "#00B140", Medium: "#6B7566", Low: "#9A9488" };
+const CONF_COLOR: Record<string, string> = { High: "#00B140", Medium: "#8A6A0F", Low: "#6B7566" };
+const EFFORT_COLOR: Record<string, string> = { Low: "#00B140", Medium: "#6B7566", High: "#9A9488" };
 
 export default function OpportunityWorkspace() {
   return (
@@ -12,14 +14,14 @@ export default function OpportunityWorkspace() {
       />
       <div className="space-y-6">
         {opportunities.map((o) => (
-          <div key={o.title} className="bg-surface border border-line rounded-2xl p-6 shadow-card">
+          <div key={o.title} className="bg-surface border border-line rounded-lg p-[18px] shadow-standard">
             <div className="text-[17px] font-bold text-ink mb-2 tracking-tight">{o.title}</div>
-            <div className="flex gap-2 mb-4">
+            <div className="flex flex-wrap gap-2 mb-4">
               <Badge label={`IMPACT: ${o.impact.toUpperCase()}`} color={IMPACT_COLOR[o.impact]} />
-              <Badge label={`CONFIDENCE: ${o.confidence.toUpperCase()}`} color="#16201A" muted />
-              <Badge label={`EFFORT: ${o.effort.toUpperCase()}`} color="#16201A" muted />
+              <Badge label={`CONFIDENCE: ${o.confidence.toUpperCase()}`} color={CONF_COLOR[o.confidence]} />
+              <Badge label={`EFFORT: ${o.effort.toUpperCase()}`} color={EFFORT_COLOR[o.effort]} />
             </div>
-            <div className="space-y-2 text-[13.5px] text-ink/80 leading-relaxed">
+            <div className="space-y-2 text-[13.5px] text-ink/80 leading-relaxed" style={{ lineHeight: 1.55 }}>
               <p>
                 <span className="font-semibold text-ink">Problem:</span> {o.problem}
               </p>
@@ -41,11 +43,11 @@ export default function OpportunityWorkspace() {
   );
 }
 
-function Badge({ label, color, muted }: { label: string; color: string; muted?: boolean }) {
+function Badge({ label, color }: { label: string; color: string }) {
   return (
     <span
-      className="text-[10px] font-semibold rounded-full px-3 py-1 uppercase tracking-wider"
-      style={{ color: muted ? color : color, background: muted ? "#F1F1EF" : `${color}15` }}
+      className="text-[13px] rounded-full py-[7px] px-[12px] uppercase tracking-wider bg-transparent border"
+      style={{ color, borderColor: color, fontWeight: 750 }}
     >
       {label}
     </span>

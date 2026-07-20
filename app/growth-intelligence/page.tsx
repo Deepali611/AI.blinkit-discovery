@@ -4,9 +4,9 @@ import { motion } from "framer-motion";
 import PageHeader from "@/components/PageHeader";
 import { growthQuestions } from "@/lib/data";
 
-const CONF_STYLES: Record<string, { text: string; bg: string }> = {
-  High: { text: "#028A34", bg: "#E7F8ED" },
-  Medium: { text: "#8A6A0F", bg: "#FFF6DD" },
+const CONF_STYLES: Record<string, { text: string; border: string }> = {
+  High: { text: "#00B140", border: "#00B140" },
+  Medium: { text: "#8A6A0F", border: "#EFDC9E" },
 };
 
 export default function GrowthIntelligence() {
@@ -34,7 +34,7 @@ export default function GrowthIntelligence() {
       <div className="space-y-10">
         {sections.map((sec) => (
           <div key={sec.title}>
-            <h2 className="text-[11.5px] font-bold text-muted/80 uppercase tracking-wider mb-4">{sec.title}</h2>
+            <h2 className="text-[12px] text-muted/80 uppercase tracking-[0.04em] mb-4" style={{ fontWeight: 800 }}>{sec.title}</h2>
             <div className="space-y-5">
               {sec.indices.map((idx) => {
                 const item = growthQuestions[idx];
@@ -45,21 +45,24 @@ export default function GrowthIntelligence() {
                     initial={{ opacity: 0, y: 6 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.3 }}
-                    className="bg-surface border border-line rounded-2xl p-6 shadow-card"
+                    className="bg-surface border border-line rounded-lg p-[18px] shadow-standard"
                   >
-                    <div className="flex items-center gap-2 mb-3">
-                      <span className="text-[10px] font-semibold uppercase tracking-wider bg-brand-yellowSoft/60 text-[#8A6A0F] border border-[#EFDC9E]/40 rounded-full px-3 py-1">
+                    <div className="flex items-center gap-2 mb-4">
+                      <span
+                        className="inline-flex items-center gap-1.5 text-[13px] rounded-full py-[7px] px-[12px] border border-[#EFDC9E] text-[#8A6A0F] bg-transparent"
+                        style={{ fontWeight: 750 }}
+                      >
                         Signal {idx + 1}
                       </span>
                       <span
-                        className="text-[10px] font-semibold rounded-full px-3 py-1 uppercase tracking-wider"
-                        style={{ color: cs.text, background: cs.bg }}
+                        className="text-[13px] rounded-full py-[7px] px-[12px] uppercase tracking-wider bg-transparent border"
+                        style={{ color: cs.text, borderColor: cs.border, fontWeight: 750 }}
                       >
                         Confidence: {item.confidence}
                       </span>
                     </div>
                     <div className="text-[16px] font-bold text-ink mb-2 tracking-tight">{item.q}</div>
-                    <div className="text-[13.5px] text-ink/80 leading-relaxed">{item.a}</div>
+                    <div className="text-[13.5px] text-ink/80 leading-relaxed" style={{ lineHeight: 1.55 }}>{item.a}</div>
                   </motion.div>
                 );
               })}
