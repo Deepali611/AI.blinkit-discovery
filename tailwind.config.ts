@@ -9,38 +9,34 @@ const config: Config = {
     extend: {
       colors: {
         surface: "#FFFFFF",
-        canvas: "#FAF8F5",
-        ink: "#1E221F",
-        muted: "#6B7566",
-        line: "#E4E8E1",
+        canvas: "#F7F6F2",
+        secondary: "#F2F1EC",
+        ink: "#171717",
+        muted: "#5F6368",
+        mutedSoft: "#8C8C8C",
+        line: "#ECE8DE",
         brand: {
-          green: "#00B140",
-          greenDark: "#028A34",
-          greenSoft: "#E7F8ED",
           yellow: "#F8CB46",
           yellowSoft: "#FFF6DD",
+          olive: "#59624B",
+          oliveSoft: "#F3F5F1",
         },
-        risk: {
-          red: "#8B263E",
-          redSoft: "#FDF2F4",
-          blue: "#3B5BDB",
-          purple: "#7C5CBF",
-        },
+        success: "#1F8A70",
+        warning: "#F59E0B",
+        risk: "#D64545",
+        riskSoft: "#FFF5F5",
       },
       borderRadius: {
-        lg: "12px",
-        xl: "14px",
-        "2xl": "16px",
+        lg: "18px", // Card radius
+        xl: "22px", // Panel radius
+        btn: "14px", // Button & Input radius
       },
       boxShadow: {
-        hero: "0 10px 28px rgba(22,32,26,.035)",
-        featured: "0 14px 34px rgba(22,32,26,.055)",
-        standard: "0 5px 16px rgba(22,32,26,.025)",
-        subtle: "0 1px 2px rgba(22,32,26,.015)",
+        standard: "0 6px 30px rgba(0,0,0,0.04)",
       },
       fontFamily: {
-        sans: ["Plus Jakarta Sans", "Inter", "sans-serif"],
-        serif: ["Lora", "Georgia", "serif"],
+        sans: ["Inter", "sans-serif"],
+        display: ["Manrope", "sans-serif"],
       },
     },
   },

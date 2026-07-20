@@ -34,55 +34,55 @@ export default function OpportunityWorkspace() {
         {STAGE_LANES.map((lane) => {
           const laneItems = opportunities.filter((o) => lane.keys.includes(o.title));
           return (
-            <div key={lane.title} className="bg-[#F5F2EC]/40 border border-[#E8E5DF] rounded-xl p-4 space-y-4">
+            <div key={lane.title} className="bg-[#F2F1EC] border border-[#ECE8DE] rounded-[22px] p-4.5 space-y-4 shadow-standard">
               {/* Lane Header */}
               <div>
-                <h3 className="font-serif font-bold text-[15px] text-[#1E221F]">
+                <h3 className="font-display font-bold text-[15px] text-[#171717] tracking-tight">
                   {lane.title}
                 </h3>
-                <p className="text-[11.5px] text-[#6B7566] mt-0.5 leading-relaxed">
+                <p className="font-sans text-[11px] text-[#5F6368] mt-0.5 leading-relaxed">
                   {lane.subtitle}
                 </p>
               </div>
 
               {/* Lane Cards */}
-              <div className="space-y-3">
+              <div className="space-y-3.5">
                 {laneItems.map((o) => (
-                  <div key={o.title} className="bg-surface border border-[#E8E5DF] rounded-lg p-4 shadow-sm space-y-3">
-                    <h4 className="font-serif font-bold text-[14.5px] text-[#1E221F] leading-tight">
+                  <div key={o.title} className="bg-surface border border-[#ECE8DE] rounded-[18px] p-4.5 shadow-standard space-y-3.5">
+                    <h4 className="font-display font-bold text-[14px] text-[#171717] leading-tight tracking-tight">
                       {o.title}
                     </h4>
 
                     {/* Metadata pill parameters */}
                     <div className="flex flex-wrap gap-1.5">
-                      <span className="text-[9.5px] font-bold text-[#028A34] bg-[#E7F8ED] border border-[#00B140]/15 px-2 py-0.5 rounded uppercase">
+                      <span className="text-[9px] font-bold text-[#59624B] bg-[#F3F5F1] border border-[#59624B]/15 px-2 py-0.5 rounded-full uppercase tracking-wider">
                         Impact: {o.impact}
                       </span>
-                      <span className="text-[9.5px] font-bold text-[#8A6A0F] bg-[#FFF6DD] border border-[#F8CB46]/15 px-2 py-0.5 rounded uppercase">
+                      <span className="text-[9px] font-bold text-[#171717] bg-[#FFF6DD] border border-[#F8CB46]/20 px-2 py-0.5 rounded-full uppercase tracking-wider">
                         Conf: {o.confidence}
                       </span>
-                      <span className="text-[9.5px] font-bold text-[#6B7566] bg-[#FAF8F5] border border-[#E8E5DF] px-2 py-0.5 rounded uppercase">
+                      <span className="text-[9px] font-bold text-[#5F6368] bg-[#F2F1EC] border border-[#ECE8DE] px-2 py-0.5 rounded-full uppercase tracking-wider">
                         Effort: {o.effort}
                       </span>
                     </div>
 
                     {/* Card Content details */}
-                    <div className="space-y-2 text-[11.5px] text-[#1E221F]/85 leading-relaxed">
+                    <div className="space-y-2.5 text-[11.5px] text-[#5F6368] leading-relaxed">
                       <p>
-                        <strong className="text-[#6B7566] font-bold block mb-0.5">Problem:</strong>
+                        <strong className="text-[#8C8C8C] font-bold block mb-0.5 text-[9px] uppercase tracking-wider">Problem:</strong>
                         {o.problem}
                       </p>
                       <p>
-                        <strong className="text-[#6B7566] font-bold block mb-0.5">Evidence Share:</strong>
-                        {o.evidence} <span className="text-[#6B7566]/70">({o.segment})</span>
+                        <strong className="text-[#8C8C8C] font-bold block mb-0.5 text-[9px] uppercase tracking-wider">Evidence Share:</strong>
+                        {o.evidence} <span className="text-[#8C8C8C]">({o.segment})</span>
                       </p>
                       <p>
-                        <strong className="text-[#6B7566] font-bold block mb-0.5">PM Implication:</strong>
+                        <strong className="text-[#8C8C8C] font-bold block mb-0.5 text-[9px] uppercase tracking-wider">PM Implication:</strong>
                         {o.recommendation}
                       </p>
                       <p>
-                        <strong className="text-[#028A34] font-bold block mb-0.5">KPI Goal:</strong>
-                        {o.kpiImpact}
+                        <strong className="text-[#59624B] font-bold block mb-0.5 text-[9px] uppercase tracking-wider">KPI Goal:</strong>
+                        <span className="text-[#171717] font-semibold">{o.kpiImpact}</span>
                       </p>
                     </div>
                   </div>

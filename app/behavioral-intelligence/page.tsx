@@ -15,7 +15,7 @@ const CATEGORY_CLUSTERS = [
     size: 105,
     top: "15%",
     left: "15%",
-    color: "border-[#7C5CBF] text-[#7C5CBF]", // Purple cluster theme
+    color: "border-[#59624B] text-[#59624B]", // Olive theme
     details: {
       habit: "Routine weekly items are bought repeatedly once trust is established. Habits are fragile and break instantly on incorrect substitutions.",
       evidence: "48% of grocery review signals cite repeat buying.",
@@ -34,7 +34,7 @@ const CATEGORY_CLUSTERS = [
     size: 110,
     top: "30%",
     left: "55%",
-    color: "border-[#7C5CBF] text-[#7C5CBF]",
+    color: "border-[#59624B] text-[#59624B]",
     details: {
       habit: "Zero repeat-buying habit. Customers only purchase high-value items in emergencies.",
       evidence: "55.6% of trust-risk reviews are concentrated in electronics.",
@@ -53,7 +53,7 @@ const CATEGORY_CLUSTERS = [
     size: 115,
     top: "55%",
     left: "25%",
-    color: "border-[#7C5CBF] text-[#7C5CBF]",
+    color: "border-[#59624B] text-[#59624B]",
     details: {
       habit: "High daily buying intent, but quality inconsistency prevents habitual repeat orders.",
       evidence: "32% of perishables reviews cite spoilage or expiry issues.",
@@ -72,7 +72,7 @@ const CATEGORY_CLUSTERS = [
     size: 100,
     top: "10%",
     left: "70%",
-    color: "border-[#7C5CBF] text-[#7C5CBF]",
+    color: "border-[#59624B] text-[#59624B]",
     details: {
       habit: "High brand loyalty but low discovery rate. Customers avoid testing new personal care brands.",
       evidence: "12% of personal care reviews cite product authenticity fears.",
@@ -91,7 +91,7 @@ const CATEGORY_CLUSTERS = [
     size: 95,
     top: "60%",
     left: "70%",
-    color: "border-[#7C5CBF] text-[#7C5CBF]",
+    color: "border-[#59624B] text-[#59624B]",
     details: {
       habit: "Urgent recurring purchases (diapers, formula) with high channel loyalty.",
       evidence: "8% signal share.",
@@ -118,25 +118,25 @@ export default function BehaviorIntelligence() {
 
       {/* Figma FigJam Cluster Explorer Section */}
       <div className="space-y-4">
-        <h3 className="font-sans text-[10px] font-bold text-[#6B7566]/80 uppercase tracking-[0.08em]">
+        <h3 className="font-sans text-[10px] font-bold text-[#8C8C8C] uppercase tracking-[0.08em]">
           Category Cluster Map
         </h3>
         
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
           {/* FigJam Canvas (7 cols) */}
-          <div className="lg:col-span-7 h-[420px] bg-surface border border-[#E8E5DF] rounded-xl shadow-sm relative overflow-hidden select-none"
+          <div className="lg:col-span-7 h-[420px] bg-surface border border-[#ECE8DE] rounded-[18px] shadow-standard relative overflow-hidden select-none"
                style={{
-                 backgroundImage: "radial-gradient(#E8E5DF 1.5px, transparent 1.5px)",
+                 backgroundImage: "radial-gradient(#ECE8DE 1.5px, transparent 1.5px)",
                  backgroundSize: "20px 20px"
                }}>
             
             {/* SVG Connecting Dotted Lines */}
             <svg className="absolute inset-0 w-full h-full pointer-events-none opacity-60">
-              <line x1="20%" y1="20%" x2="30%" y2="60%" stroke="#6B7566" strokeWidth="1" strokeDasharray="3 4" />
-              <line x1="20%" y1="20%" x2="58%" y2="35%" stroke="#6B7566" strokeWidth="1" strokeDasharray="3 4" />
-              <line x1="58%" y1="35%" x2="30%" y2="60%" stroke="#6B7566" strokeWidth="1" strokeDasharray="3 4" />
-              <line x1="58%" y1="35%" x2="72%" y2="15%" stroke="#6B7566" strokeWidth="1" strokeDasharray="3 4" />
-              <line x1="58%" y1="35%" x2="72%" y2="65%" stroke="#6B7566" strokeWidth="1" strokeDasharray="3 4" />
+              <line x1="20%" y1="20%" x2="30%" y2="60%" stroke="#8C8C8C" strokeWidth="1" strokeDasharray="3 4" />
+              <line x1="20%" y1="20%" x2="58%" y2="35%" stroke="#8C8C8C" strokeWidth="1" strokeDasharray="3 4" />
+              <line x1="58%" y1="35%" x2="30%" y2="60%" stroke="#8C8C8C" strokeWidth="1" strokeDasharray="3 4" />
+              <line x1="58%" y1="35%" x2="72%" y2="15%" stroke="#8C8C8C" strokeWidth="1" strokeDasharray="3 4" />
+              <line x1="58%" y1="35%" x2="72%" y2="65%" stroke="#8C8C8C" strokeWidth="1" strokeDasharray="3 4" />
             </svg>
 
             {/* Floating Clusters */}
@@ -153,61 +153,61 @@ export default function BehaviorIntelligence() {
                     width: c.size,
                     height: c.size,
                   }}
-                  className={`rounded-full border bg-surface shadow-sm flex flex-col items-center justify-center text-center p-2.5 transition-all duration-200 ${
-                    active ? "ring-2 ring-[#7C5CBF] border-[#7C5CBF] scale-105" : "border-[#E8E5DF] hover:border-[#7C5CBF]/50"
+                  className={`rounded-full border bg-surface shadow-standard flex flex-col items-center justify-center text-center p-2.5 transition-all duration-200 ${
+                    active ? "ring-2 ring-[#F8CB46] border-[#F8CB46] scale-105" : "border-[#ECE8DE] hover:border-[#59624B]/50"
                   }`}
                 >
-                  <span className="text-[10px] font-mono font-bold text-[#7C5CBF] bg-[#7C5CBF]/10 px-2 py-0.5 rounded-full mb-1">
+                  <span className="text-[10px] font-mono font-bold text-[#59624B] bg-[#59624B]/10 px-2 py-0.5 rounded-full mb-1">
                     {c.tag}
                   </span>
-                  <span className="text-[12.5px] font-sans font-bold text-[#1E221F] leading-tight">{c.name}</span>
+                  <span className="text-[12.5px] font-sans font-bold text-[#171717] leading-tight">{c.name}</span>
                 </button>
               );
             })}
           </div>
 
           {/* Interactive Details Panel (5 cols) */}
-          <div className="lg:col-span-5 bg-surface border border-[#E8E5DF] rounded-xl p-6 shadow-sm flex flex-col justify-between">
+          <div className="lg:col-span-5 bg-surface border border-[#ECE8DE] rounded-[18px] p-6 shadow-standard flex flex-col justify-between">
             <div className="space-y-4">
-              <div className="border-b border-[#E8E5DF] pb-3 flex justify-between items-center">
-                <span className="font-sans text-[10px] font-bold uppercase tracking-wider text-[#7C5CBF] bg-[#7C5CBF]/10 border border-[#7C5CBF]/20 px-2.5 py-0.5 rounded-full">
+              <div className="border-b border-[#ECE8DE] pb-3 flex justify-between items-center">
+                <span className="font-sans text-[10px] font-bold uppercase tracking-wider text-[#59624B] bg-[#F3F5F1] border border-[#59624B]/20 px-2.5 py-0.5 rounded-full">
                   Behavior Cluster
                 </span>
-                <span className="text-[12px] font-bold font-mono text-[#7C5CBF]">
+                <span className="text-[12px] font-bold font-mono text-[#59624B]">
                   {selected.tag}
                 </span>
               </div>
 
               {/* Cluster Title */}
-              <h2 className="font-serif font-bold text-[20px] text-[#1E221F]">
+              <h2 className="font-display font-bold text-[20px] text-[#171717]">
                 {selected.name} Analysis
               </h2>
 
               <div className="space-y-4 text-[13px] leading-relaxed">
                 <div>
-                  <h4 className="font-sans text-[10px] text-[#6B7566] uppercase tracking-[0.06em] font-bold mb-0.5">Shopping Habit</h4>
-                  <p className="text-[#1E221F]/85">{selected.details.habit}</p>
+                  <h4 className="font-sans text-[9px] font-bold text-[#8C8C8C] uppercase tracking-[0.08em] mb-0.5">Shopping Habit</h4>
+                  <p className="text-[#5F6368]">{selected.details.habit}</p>
                 </div>
                 <div>
-                  <h4 className="font-sans text-[10px] text-[#7C5CBF] uppercase tracking-[0.06em] font-bold mb-0.5">Evidence Strength</h4>
-                  <p className="text-[#1E221F]/85">{selected.details.evidence}</p>
+                  <h4 className="font-sans text-[9px] font-bold text-[#59624B] uppercase tracking-[0.08em] mb-0.5">Evidence Strength</h4>
+                  <p className="text-[#5F6368]">{selected.details.evidence}</p>
                 </div>
                 <div>
-                  <h4 className="font-sans text-[10px] text-[#8B263E] uppercase tracking-[0.06em] font-bold mb-0.5">Discovery Barriers</h4>
-                  <p className="text-[#8B263E] font-semibold">{selected.details.barriers}</p>
+                  <h4 className="font-sans text-[9px] font-bold text-[#D64545] uppercase tracking-[0.08em] mb-0.5">Discovery Barriers</h4>
+                  <p className="text-[#D64545] font-semibold">{selected.details.barriers}</p>
                 </div>
                 <div>
-                  <h4 className="font-sans text-[10px] text-[#FD7E14] uppercase tracking-[0.06em] font-bold mb-0.5">Opportunities</h4>
-                  <p className="text-[#FD7E14] font-semibold">{selected.details.opportunities}</p>
+                  <h4 className="font-sans text-[9px] font-bold text-[#59624B] uppercase tracking-[0.08em] mb-0.5 font-semibold">Opportunities</h4>
+                  <p className="text-[#59624B] font-semibold">{selected.details.opportunities}</p>
                 </div>
               </div>
             </div>
 
-            <div className="pt-4 border-t border-[#E8E5DF] mt-4">
-              <h4 className="font-sans text-[10px] text-[#6B7566] uppercase tracking-[0.06em] font-bold mb-2">Supporting Evidence (Quotes)</h4>
+            <div className="pt-4 border-t border-[#ECE8DE] mt-4">
+              <h4 className="font-sans text-[9px] font-bold text-[#8C8C8C] uppercase tracking-[0.08em] mb-2">Supporting Evidence (Quotes)</h4>
               <div className="space-y-2">
                 {selected.details.reviews.map((r, i) => (
-                  <div key={i} className="text-[12px] italic text-[#6B7566] bg-[#FAF8F5]/80 p-3 rounded-lg border border-[#E8E5DF]">
+                  <div key={i} className="text-[12px] italic text-[#5F6368] bg-[#F7F6F2] p-3 rounded-[14px] border border-[#ECE8DE]">
                     &quot;{r}&quot;
                   </div>
                 ))}
@@ -219,7 +219,7 @@ export default function BehaviorIntelligence() {
 
       {/* AI Research Findings */}
       <div className="space-y-4">
-        <h3 className="font-sans text-[10px] font-bold text-[#6B7566]/80 uppercase tracking-[0.08em]">
+        <h3 className="font-sans text-[10px] font-bold text-[#8C8C8C] uppercase tracking-[0.08em]">
           Validation Findings
         </h3>
         

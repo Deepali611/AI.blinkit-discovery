@@ -7,8 +7,8 @@ export default function ExecutiveBriefing() {
     <div className="space-y-8">
       {/* Premium Header */}
       <PageHeader
-        title="Blinkit Growth Intelligence"
-        subtitle="AI-Powered Discovery Engine for Cross-Category Customer Growth"
+        title="Blinkit Review Analysis Workflow"
+        subtitle="AI-powered discovery engine for cross-category customer growth"
       />
 
       {/* Narrative Section and AI Journal Grid */}
@@ -16,34 +16,34 @@ export default function ExecutiveBriefing() {
         
         {/* Left Side: Growth Brief Document (8 cols) */}
         <div className="lg:col-span-8 space-y-6">
-          <div className="bg-surface border border-[#E4E8E1]/60 rounded-xl p-6 shadow-sm">
-            <h3 className="text-[11px] font-bold text-muted/70 uppercase tracking-[0.06em] mb-4">
+          <div className="bg-surface border border-[#ECE8DE] rounded-[18px] p-6 shadow-standard">
+            <h3 className="font-sans text-[10px] font-bold text-[#8C8C8C] uppercase tracking-[0.08em] mb-4">
               AI Growth Briefing
             </h3>
-            <div className="space-y-4 text-[13.5px] leading-relaxed text-ink/80">
+            <div className="space-y-4 text-[13.5px] leading-relaxed text-[#5F6368]">
               <p>
-                Our AI engine has mined and normalized <strong className="text-ink font-bold">1,176 customer conversations</strong> across App Store, Play Store, Reddit, and social forums to detect why users stick to habituated categories instead of discovering new ones.
+                Our AI engine has mined and normalized <strong className="text-[#171717] font-bold">1,176 customer conversations</strong> across App Store, Play Store, Reddit, and social forums to detect why users stick to habituated categories instead of discovering new ones.
               </p>
-              <div className="border-l-2 border-[#00B140] pl-4 py-1 space-y-2 bg-[#E7F8ED]/10 rounded-r-md">
+              <div className="border-l-2 border-[#59624B] pl-4 py-1 space-y-2 bg-[#F3F5F1] rounded-r-lg">
                 <div>
-                  <span className="font-semibold text-[#028A34]">92 behavioral themes</span> cataloged (related to ordering habits, substitute frustration, catalog gaps).
+                  <span className="font-semibold text-[#171717]">92 behavioral themes</span> cataloged (related to ordering habits, substitute frustration, catalog gaps).
                 </div>
                 <div>
-                  <span className="font-semibold text-[#028A34]">41 discovery barriers</span> flagged (primarily concentrated in high-value electronics and daily perishables).
+                  <span className="font-semibold text-[#171717]">41 discovery barriers</span> flagged (primarily concentrated in high-value electronics and daily perishables).
                 </div>
                 <div>
-                  <span className="font-semibold text-[#028A34]">91.8% overall confidence</span> across the signal database, verified against quote-grounding assertions.
+                  <span className="font-semibold text-[#171717]">91.8% overall confidence</span> across the signal database, verified against quote-grounding assertions.
                 </div>
               </div>
               <p>
-                The primary blocker preventing category discovery is <strong className="text-ink font-semibold">perceived transaction risk (trust)</strong>, not pricing or established offline purchasing routines. PM interventions must prioritize risk-reduction interfaces over visual recommendations.
+                The primary blocker preventing category discovery is <strong className="text-[#171717] font-semibold">perceived transaction risk (trust)</strong>, not pricing or established offline purchasing routines. PM interventions must prioritize risk-reduction interfaces over visual recommendations.
               </p>
             </div>
           </div>
 
           {/* Primary Research Finding Card */}
           <div className="space-y-4">
-            <h3 className="text-[11px] font-bold text-muted/70 uppercase tracking-[0.06em]">
+            <h3 className="font-sans text-[10px] font-bold text-[#8C8C8C] uppercase tracking-[0.08em]">
               Primary Recommendation
             </h3>
             <AIInsightCard
@@ -57,6 +57,7 @@ export default function ExecutiveBriefing() {
               pmImplication="Focus product resources on trust signals (authenticity guarantees, live freshness dates) rather than generic recommender feeds."
               businessImpact="Directly increases the conversion of active MAU trying a second category within a 30-day window."
               recommendedAction="Launch the Category Trust Badge pilot on electronics and dairy categories to guarantee replacement on delivery."
+              type="validated"
             />
           </div>
         </div>
@@ -64,19 +65,19 @@ export default function ExecutiveBriefing() {
         {/* Right Side: AI Research Journal (4 cols) */}
         <div className="lg:col-span-4 space-y-6">
           <div className="space-y-4">
-            <h3 className="text-[11px] font-bold text-muted/70 uppercase tracking-[0.06em]">
+            <h3 className="font-sans text-[10px] font-bold text-[#8C8C8C] uppercase tracking-[0.08em]">
               Research Journal
             </h3>
             
             <div className="space-y-4">
-              <div className="bg-surface border border-[#E4E8E1]/60 rounded-xl p-5 shadow-sm">
+              <div className="bg-surface border border-[#ECE8DE] rounded-[18px] p-5 shadow-standard">
                 <div className="flex justify-between items-center mb-3">
-                  <span className="text-[10px] font-bold uppercase tracking-wider text-[#028A34]">Run #18 (Active)</span>
-                  <span className="text-[9px] bg-[#E7F8ED] text-[#028A34] font-extrabold px-2 py-0.5 rounded uppercase tracking-wider">
+                  <span className="font-sans text-[10px] font-bold uppercase tracking-wider text-[#59624B]">Run #18 (Active)</span>
+                  <span className="text-[9.5px] bg-[#F3F5F1] text-[#59624B] border border-[#59624B]/20 font-bold px-2 py-0.5 rounded uppercase tracking-wider">
                     VALIDATED
                   </span>
                 </div>
-                <div className="space-y-2 text-[12px] text-ink/75">
+                <div className="space-y-2 text-[12px] text-[#5F6368]">
                   <div><b>Sources:</b> Play Store, Reddit, YouTube</div>
                   <div><b>Reviews processed:</b> 184</div>
                   <div><b>AI Confidence:</b> 92%</div>
@@ -85,14 +86,14 @@ export default function ExecutiveBriefing() {
                 </div>
               </div>
 
-              <div className="bg-surface border border-[#E4E8E1]/60 rounded-xl p-5 shadow-sm opacity-80">
+              <div className="bg-surface border border-[#ECE8DE] rounded-[18px] p-5 shadow-standard opacity-80">
                 <div className="flex justify-between items-center mb-3">
-                  <span className="text-[10px] font-bold uppercase tracking-wider text-muted">Run #17</span>
-                  <span className="text-[9px] bg-[#E7F8ED] text-[#028A34] font-extrabold px-2 py-0.5 rounded uppercase tracking-wider">
+                  <span className="font-sans text-[10px] font-bold uppercase tracking-wider text-[#8C8C8C]">Run #17</span>
+                  <span className="text-[9.5px] bg-[#F3F5F1] text-[#59624B] border border-[#59624B]/20 font-bold px-2 py-0.5 rounded uppercase tracking-wider">
                     VALIDATED
                   </span>
                 </div>
-                <div className="space-y-2 text-[12px] text-ink/70">
+                <div className="space-y-2 text-[12px] text-[#5F6368]">
                   <div><b>Sources:</b> App Store, Google Play</div>
                   <div><b>Reviews processed:</b> 420</div>
                   <div><b>AI Confidence:</b> 94%</div>
@@ -101,14 +102,14 @@ export default function ExecutiveBriefing() {
                 </div>
               </div>
 
-              <div className="bg-surface border border-[#E4E8E1]/60 rounded-xl p-5 shadow-sm opacity-60">
+              <div className="bg-surface border border-[#ECE8DE] rounded-[18px] p-5 shadow-standard opacity-60">
                 <div className="flex justify-between items-center mb-3">
-                  <span className="text-[10px] font-bold uppercase tracking-wider text-muted">Run #16</span>
-                  <span className="text-[9px] bg-[#E7F8ED] text-[#028A34] font-extrabold px-2 py-0.5 rounded uppercase tracking-wider">
+                  <span className="font-sans text-[10px] font-bold uppercase tracking-wider text-[#8C8C8C]">Run #16</span>
+                  <span className="text-[9.5px] bg-[#F3F5F1] text-[#59624B] border border-[#59624B]/20 font-bold px-2 py-0.5 rounded uppercase tracking-wider">
                     VALIDATED
                   </span>
                 </div>
-                <div className="space-y-2 text-[12px] text-ink/65">
+                <div className="space-y-2 text-[12px] text-[#5F6368]">
                   <div><b>Sources:</b> Reddit, YouTube</div>
                   <div><b>Reviews processed:</b> 572</div>
                   <div><b>AI Confidence:</b> 90%</div>

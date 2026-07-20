@@ -5,9 +5,9 @@ import PageHeader from "@/components/PageHeader";
 import { reviews } from "@/lib/data";
 
 const CONF_COLOR: Record<string, { text: string; bg: string }> = {
-  high: { text: "#028A34", bg: "bg-[#E7F8ED]" },
-  med: { text: "#8A6A0F", bg: "bg-[#FFF6DD]" },
-  low: { text: "#6B7566", bg: "bg-[#FAF8F5]" },
+  high: { text: "#59624B", bg: "bg-[#F3F5F1]" }, // Olive
+  med: { text: "#5F6368", bg: "bg-[#F2F1EC]" }, // Stone
+  low: { text: "#8C8C8C", bg: "bg-[#F7F6F2]" }, // Charcoal
 };
 
 export default function EvidenceExplorer() {
@@ -35,40 +35,40 @@ export default function EvidenceExplorer() {
       />
 
       {/* Filter Toolbar (Linear-style) */}
-      <div className="bg-surface border border-[#E8E5DF] rounded-xl p-4 shadow-sm flex flex-wrap items-center justify-between gap-4">
+      <div className="bg-surface border border-[#ECE8DE] rounded-[18px] p-4 shadow-standard flex flex-wrap items-center justify-between gap-4">
         <div className="flex flex-wrap items-center gap-4">
           <Select label="Theme Filter" value={reasonType} onChange={setReasonType} options={reasonTypes} />
           <Select label="Segment Filter" value={segment} onChange={setSegment} options={segments} />
           <Select label="Confidence" value={confidence} onChange={setConfidence} options={["All", "high", "med", "low"]} />
         </div>
-        <div className="text-[12px] text-[#6B7566] font-medium">
+        <div className="text-[12px] text-[#5F6368] font-semibold">
           {filtered.length} matching reviews
         </div>
       </div>
 
       {/* Issue Table List (GitHub-style) */}
-      <div className="bg-surface border border-[#E8E5DF] rounded-xl overflow-hidden shadow-sm">
-        <div className="bg-[#FAF8F5] px-4 py-3 border-b border-[#E8E5DF] flex justify-between text-[10px] font-bold text-[#6B7566]/80 uppercase tracking-[0.08em]">
+      <div className="bg-surface border border-[#ECE8DE] rounded-[18px] overflow-hidden shadow-standard">
+        <div className="bg-[#F2F1EC] px-4 py-3 border-b border-[#ECE8DE] flex justify-between text-[9.5px] font-bold text-[#8C8C8C] uppercase tracking-[0.08em]">
           <span>Verbatim Customer Review</span>
           <span>Attributes</span>
         </div>
 
-        <div className="divide-y divide-[#E8E5DF]/50">
+        <div className="divide-y divide-[#ECE8DE]/60">
           {filtered.slice(0, 30).map((r) => {
             const cs = CONF_COLOR[r.confidence] || CONF_COLOR.low;
             return (
-              <div key={r.row_number} className="px-4 py-4 flex flex-col md:flex-row md:items-center justify-between gap-4 text-[13px]">
-                {/* Left Side: Verbatim Content (Lora Serif for quote) */}
+              <div key={r.row_number} className="px-4 py-4 flex flex-col md:flex-row md:items-center justify-between gap-4 text-[13px] hover:bg-[#F2F1EC]/20 transition-colors">
+                {/* Left Side: Verbatim Content (Manrope display heading, Inter body) */}
                 <div className="space-y-2 max-w-3xl leading-relaxed">
-                  <div className="font-serif font-medium text-[14.5px] text-[#1E221F]">
+                  <div className="font-sans font-medium text-[13.5px] text-[#171717]">
                     &quot;{r.quote}&quot;
                   </div>
-                  <div className="flex items-center gap-2 text-[11px] text-[#6B7566]">
-                    <span className="font-mono bg-[#F5F2EC] border border-[#E8E5DF] px-1.5 py-0.2 rounded">
+                  <div className="flex items-center gap-2 text-[10.5px] text-[#5F6368]">
+                    <span className="font-mono bg-[#F2F1EC] border border-[#ECE8DE] px-1.5 py-0.2 rounded-md text-[#8C8C8C]">
                       Row #{r.row_number}
                     </span>
                     <span>·</span>
-                    <span className="text-[#8B263E] font-semibold bg-[#FDF2F4] px-2 py-0.5 rounded border border-[#8B263E]/10">
+                    <span className="text-[#D64545] font-semibold bg-[#FFF5F5] px-2.5 py-0.5 rounded-full border border-[#D64545]/10 text-[10px]">
                       Barrier: {r.barrier_to_new_category}
                     </span>
                   </div>
@@ -76,13 +76,13 @@ export default function EvidenceExplorer() {
 
                 {/* Right Side: Metadata Tags */}
                 <div className="flex flex-wrap items-center gap-2 shrink-0">
-                  <span className={`text-[10px] font-bold uppercase px-2 py-0.5 rounded border ${cs.bg}`} style={{ color: cs.text, borderColor: cs.text + "15" }}>
+                  <span className={`text-[9.5px] font-bold uppercase px-2.5 py-0.5 rounded-full border ${cs.bg}`} style={{ color: cs.text, borderColor: cs.text + "20" }}>
                     {r.confidence}
                   </span>
-                  <span className="text-[10px] font-bold text-[#7C5CBF] bg-[#7C5CBF]/10 border border-[#7C5CBF]/20 px-2 py-0.5 rounded uppercase tracking-wider">
+                  <span className="text-[9.5px] font-bold text-[#59624B] bg-[#F3F5F1] border border-[#59624B]/20 px-2.5 py-0.5 rounded-full uppercase tracking-wider">
                     {r.category_mentioned}
                   </span>
-                  <span className="text-[10px] font-bold text-[#6B7566] bg-[#FAF8F5] border border-[#E8E5DF] px-2 py-0.5 rounded capitalize">
+                  <span className="text-[9.5px] font-bold text-[#5F6368] bg-[#F2F1EC] border border-[#ECE8DE] px-2.5 py-0.5 rounded-full capitalize">
                     {r.user_segment}
                   </span>
                 </div>
@@ -108,11 +108,11 @@ function Select({
 }) {
   return (
     <div className="flex items-center gap-2">
-      <span className="text-[11px] font-bold text-[#6B7566]/80 uppercase tracking-[0.08em]">{label}:</span>
+      <span className="font-sans text-[10px] font-bold text-[#8C8C8C] uppercase tracking-[0.08em]">{label}:</span>
       <select
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="bg-[#FAF8F5] border border-[#E8E5DF] rounded-md px-2.5 py-1 text-[12px] text-[#1E221F] focus:outline-none focus:ring-1 focus:ring-[#00B140] font-medium"
+        className="bg-[#F2F1EC] border border-[#ECE8DE] rounded-[14px] px-3 py-1.5 text-[12px] text-[#171717] focus:outline-none focus:ring-1 focus:ring-[#F8CB46] font-semibold"
       >
         {options.map((opt) => (
           <option key={opt} value={opt}>

@@ -18,7 +18,7 @@ export default function AIValidation() {
 
       {/* Model Parameters & Active Configurations */}
       <div>
-        <h3 className="font-sans text-[10px] font-bold text-[#6B7566]/80 uppercase tracking-[0.08em] mb-4">
+        <h3 className="font-sans text-[10px] font-bold text-[#8C8C8C] uppercase tracking-[0.08em] mb-4">
           Audit Dashboard
         </h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-8">
@@ -29,12 +29,12 @@ export default function AIValidation() {
         </div>
       </div>
 
-      {/* Vercel-like Horizontal Tabs */}
-      <div className="border-b border-[#E8E5DF] flex gap-6 text-[13px] font-medium text-[#6B7566] mb-6">
+      {/* Horizontal Tabs */}
+      <div className="border-b border-[#ECE8DE] flex gap-6 text-[13px] font-medium text-[#5F6368] mb-6">
         <button
           onClick={() => setActiveTab("audit")}
           className={`pb-3 border-b-2 -mb-[2px] transition-colors ${
-            activeTab === "audit" ? "border-[#00B140] text-[#1E221F] font-bold" : "border-transparent hover:text-[#1E221F]"
+            activeTab === "audit" ? "border-[#F8CB46] text-[#171717] font-bold" : "border-transparent hover:text-[#171717]"
           }`}
         >
           Audit logs & Methodology
@@ -42,7 +42,7 @@ export default function AIValidation() {
         <button
           onClick={() => setActiveTab("prompt")}
           className={`pb-3 border-b-2 -mb-[2px] transition-colors ${
-            activeTab === "prompt" ? "border-[#00B140] text-[#1E221F] font-bold" : "border-transparent hover:text-[#1E221F]"
+            activeTab === "prompt" ? "border-[#F8CB46] text-[#171717] font-bold" : "border-transparent hover:text-[#171717]"
           }`}
         >
           Prompt System Instruction
@@ -50,7 +50,7 @@ export default function AIValidation() {
         <button
           onClick={() => setActiveTab("model")}
           className={`pb-3 border-b-2 -mb-[2px] transition-colors ${
-            activeTab === "model" ? "border-[#00B140] text-[#1E221F] font-bold" : "border-transparent hover:text-[#1E221F]"
+            activeTab === "model" ? "border-[#F8CB46] text-[#171717] font-bold" : "border-transparent hover:text-[#171717]"
           }`}
         >
           Model Architecture
@@ -58,7 +58,7 @@ export default function AIValidation() {
         <button
           onClick={() => setActiveTab("safety")}
           className={`pb-3 border-b-2 -mb-[2px] transition-colors ${
-            activeTab === "safety" ? "border-[#00B140] text-[#1E221F] font-bold" : "border-transparent hover:text-[#1E221F]"
+            activeTab === "safety" ? "border-[#F8CB46] text-[#171717] font-bold" : "border-transparent hover:text-[#171717]"
           }`}
         >
           Grounding Thresholds
@@ -66,32 +66,32 @@ export default function AIValidation() {
       </div>
 
       {/* Tab Panels */}
-      <div className="bg-surface border border-[#E8E5DF] rounded-xl p-6 shadow-sm min-h-[250px]">
+      <div className="bg-surface border border-[#ECE8DE] rounded-[22px] p-6 shadow-standard min-h-[250px]">
         {activeTab === "audit" && (
           <div className="space-y-6">
-            <h4 className="font-serif font-bold text-[18px] text-[#1E221F] mb-3">Methodological Validation</h4>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-[13px] text-[#1E221F]/80 leading-relaxed">
+            <h4 className="font-display font-bold text-[18px] text-[#171717] mb-3">Methodological Validation</h4>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-[13px] text-[#5F6368] leading-relaxed">
               <div className="space-y-1">
-                <span className="font-sans text-[11px] font-bold text-[#6B7566] uppercase block">Source Coverage & Bias:</span>
-                <p className="text-[#6B7566]">
+                <span className="font-sans text-[10px] font-bold text-[#8C8C8C] uppercase block">Source Coverage & Bias:</span>
+                <p className="text-[#5F6368]">
                   The dataset aggregates Google Play (56.3%), Reddit (30.6%), YouTube (12.2%), and App Store (0.9%). Google Play reviews bias towards quick ratings, whereas Reddit posts represent longer, tech-literate descriptions.
                 </p>
               </div>
               <div className="space-y-1">
-                <span className="font-sans text-[11px] font-bold text-[#6B7566] uppercase block">Manual Audit Validation:</span>
-                <p className="text-[#6B7566]">
+                <span className="font-sans text-[10px] font-bold text-[#8C8C8C] uppercase block">Manual Audit Validation:</span>
+                <p className="text-[#5F6368]">
                   UX Research conducts double-blind audits on 20% of the dataset weekly. The categorization accuracy of reasons, barriers, and segments stands at 94.5%.
                 </p>
               </div>
               <div className="space-y-1">
-                <span className="font-sans text-[11px] font-bold text-[#6B7566] uppercase block">Duplicate Near-Match Rules:</span>
-                <p className="text-[#6B7566]">
+                <span className="font-sans text-[10px] font-bold text-[#8C8C8C] uppercase block">Duplicate Near-Match Rules:</span>
+                <p className="text-[#5F6368]">
                   Levenshtein distance scanning filters duplicate spam. Flagged duplicates (20% of dataset) are tracked for volume statistics but skipped in theme lists.
                 </p>
               </div>
               <div className="space-y-1">
-                <span className="font-sans text-[11px] font-bold text-[#6B7566] uppercase block">Known Limitations:</span>
-                <p className="text-[#6B7566]">
+                <span className="font-sans text-[10px] font-bold text-[#8C8C8C] uppercase block">Known Limitations:</span>
+                <p className="text-[#5F6368]">
                   Reviews under 15 characters, emoji-only strings, or comments citing picker delivery parameters are marked as `other` or skipped entirely.
                 </p>
               </div>
@@ -101,13 +101,13 @@ export default function AIValidation() {
 
         {activeTab === "prompt" && (
           <div className="space-y-4">
-            <h4 className="font-serif font-bold text-[17px] text-[#1E221F] mb-1">
-              System Instructions Hash: <code className="bg-[#F5F2EC] border border-[#E8E5DF] px-2 py-0.5 rounded text-[11.5px] font-mono">9d1aef77c</code>
+            <h4 className="font-display font-bold text-[17px] text-[#171717] mb-1">
+              System Instructions Hash: <code className="bg-[#F2F1EC] border border-[#ECE8DE] px-2.5 py-0.5 rounded-[14px] text-[11px] font-mono text-[#5F6368]">9d1aef77c</code>
             </h4>
-            <p className="text-[12.5px] text-[#6B7566] leading-relaxed mb-3">
+            <p className="text-[12.5px] text-[#5F6368] leading-relaxed mb-3">
               This prompt directs the engine to act as a senior growth analyst, performing strict extraction parameters:
             </p>
-            <pre className="bg-[#FAF8F5] border border-[#E8E5DF] rounded-lg p-4 font-mono text-[11px] text-[#6B7566] leading-normal overflow-x-auto whitespace-pre-wrap">
+            <pre className="bg-[#F2F1EC]/60 border border-[#ECE8DE] rounded-[18px] p-4 font-mono text-[11px] text-[#5F6368] leading-normal overflow-x-auto whitespace-pre-wrap">
 {`Act as a Blinkit Growth Analyst. Your task is to process unstructured app reviews and extract target customer discovery signals.
 
 Structure your output in JSON format with these exact properties:
@@ -124,44 +124,44 @@ You MUST only output values from the review. If no signal or quote is present, s
         )}
 
         {activeTab === "model" && (
-          <div className="space-y-4 text-[13px] text-[#1E221F]/80">
-            <h4 className="font-serif font-bold text-[18px] text-[#1E221F]">Active Infrastructure Settings</h4>
-            <div className="border border-[#E8E5DF] rounded-lg divide-y divide-[#E8E5DF] bg-[#FAF8F5]/50">
+          <div className="space-y-4 text-[13px] text-[#5F6368] leading-relaxed">
+            <h4 className="font-display font-bold text-[18px] text-[#171717]">Active Infrastructure Settings</h4>
+            <div className="border border-[#ECE8DE] rounded-[18px] overflow-hidden divide-y divide-[#ECE8DE] bg-[#F2F1EC]/40">
               <div className="p-3.5 flex justify-between">
-                <span className="font-medium text-[#1E221F]">Active LLM API</span>
-                <span className="font-mono text-[12px] text-[#6B7566]">gemini-1.5-pro-001 (production-ready)</span>
+                <span className="font-medium text-[#171717]">Active LLM API</span>
+                <span className="font-mono text-[12px] text-[#5F6368]">gemini-1.5-pro-001 (production-ready)</span>
               </div>
               <div className="p-3.5 flex justify-between">
-                <span className="font-medium text-[#1E221F]">Inference Temperature</span>
-                <span className="font-mono text-[12px] text-[#6B7566]">0.2 (low variance, high constraint compliance)</span>
+                <span className="font-medium text-[#171717]">Inference Temperature</span>
+                <span className="font-mono text-[12px] text-[#5F6368]">0.2 (low variance, high constraint compliance)</span>
               </div>
               <div className="p-3.5 flex justify-between">
-                <span className="font-medium text-[#1E221F]">Safety Setting (Harassment)</span>
-                <span className="font-mono text-[12px] text-[#6B7566]">BLOCK_MEDIUM_AND_ABOVE</span>
+                <span className="font-medium text-[#171717]">Safety Setting (Harassment)</span>
+                <span className="font-mono text-[12px] text-[#5F6368]">BLOCK_MEDIUM_AND_ABOVE</span>
               </div>
               <div className="p-3.5 flex justify-between">
-                <span className="font-medium text-[#1E221F]">Token Output limit</span>
-                <span className="font-mono text-[12px] text-[#6B7566]">8,192 Max Output Tokens</span>
+                <span className="font-medium text-[#171717]">Token Output limit</span>
+                <span className="font-mono text-[12px] text-[#5F6368]">8,192 Max Output Tokens</span>
               </div>
             </div>
           </div>
         )}
 
         {activeTab === "safety" && (
-          <div className="space-y-4 text-[13px] text-[#6B7566] leading-relaxed">
-            <h4 className="font-serif font-bold text-[18px] text-[#1E221F]">Grounding Rules & Safeguards</h4>
+          <div className="space-y-4 text-[13px] text-[#5F6368] leading-relaxed">
+            <h4 className="font-display font-bold text-[18px] text-[#171717]">Grounding Rules & Safeguards</h4>
             <p>
               To eliminate hallucinations and false positives, the system runs programmatic post-processing tests on the API payload before database ingestion:
             </p>
-            <ul className="list-disc pl-5 space-y-2 text-[#1E221F]/90">
+            <ul className="list-disc pl-5 space-y-2 text-[#5F6368]/90">
               <li>
-                <strong className="text-[#1E221F]">Substring Assertions:</strong> The extracted value in `quote` is cross-checked against the raw review. If it isn't an exact character-match substring, the record fails grounding and is rejected.
+                <strong className="text-[#171717]">Substring Assertions:</strong> The extracted value in `quote` is cross-checked against the raw review. If it isn't an exact character-match substring, the record fails grounding and is rejected.
               </li>
               <li>
-                <strong className="text-[#1E221F]">Confidence Cutoff:</strong> Records marked `low` are flagged for review by UX researchers and excluded from production growth metrics calculation.
+                <strong className="text-[#171717]">Confidence Cutoff:</strong> Records marked `low` are flagged for review by UX researchers and excluded from production growth metrics calculation.
               </li>
               <li>
-                <strong className="text-[#1E221F]">Schema Validation:</strong> Outputs are parsed against a strict JSON schema template; any malformed payloads trigger immediate API retries.
+                <strong className="text-[#171717]">Schema Validation:</strong> Outputs are parsed against a strict JSON schema template; any malformed payloads trigger immediate API retries.
               </li>
             </ul>
           </div>
