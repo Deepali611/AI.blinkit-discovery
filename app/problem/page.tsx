@@ -17,7 +17,7 @@ export default function ProblemStage() {
         
         <div className="font-sans text-[15px] leading-relaxed text-[#5F6368] space-y-5">
           <p>
-            Blinkit's high-frequency customer base relies on us daily for core groceries and fresh produce, yet resists exploring high-margin adjacent categories like electronics, cosmetics, or baby care. 
+            Blinkit's high-frequency customer base relies on us daily for core groceries and fresh produce, yet resists exploring high-margin adjacent categories like electronics, daily dairy/eggs, or snacks. 
           </p>
           <p>
             This severe category isolation stunts customer lifetime value (LTV) and caps active cross-category growth. To bridge this discovery gap, we must systematically gather customer feedback, extract precise buying blockers, and engineer evidence-backed product interventions.

@@ -8,12 +8,12 @@ export default function InsightsStage() {
     <div className="space-y-8 max-w-4xl">
       <PageHeader
         title="Blinkit Review Analysis Workflow"
-        subtitle="Stage 5 — Resolved Fellowship Insights"
+        subtitle="Stage 5 — Synthesis of Customer Discovery"
       />
 
       <div className="space-y-6">
         <p className="font-sans text-[14.5px] leading-relaxed text-[#5F6368] max-w-2xl">
-          By compiling the validated customer feedback loops, we have resolved the 8 primary cross-category customer discovery questions set by the fellowship team:
+          By compiling the validated customer feedback loops, we have resolved the 8 primary cross-category customer discovery questions:
         </p>
 
         {/* 8 Questions Resolved Flow */}

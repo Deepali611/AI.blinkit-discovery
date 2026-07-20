@@ -15,11 +15,11 @@ const THEMES = [
     accent: "border-l-4 border-l-[#D64545] bg-[#FFF5F5] text-[#D64545]"
   },
   {
-    id: "substitutes",
+    id: "price",
     num: "02",
-    title: "Forced store substitutions break high-frequency shopping loyalty.",
-    evidence: "48% of grocery reviews cite catalog replacement issues, where different brands are substituted without consent, causing immediate exits to local mother dairy/grocer alternatives.",
-    matters: "Customer routine checklists are highly fragile. PM parameters must prioritize 'Do Not Substitute' cart locks over generic deals/discount banners.",
+    title: "Cross-app price sensitivity triggers immediate platform switching, bypassing loyal habits.",
+    evidence: "21.2% of raw reviews document price-driven app switching (comparing delivery charges, tax fees, or grocery item prices against competitors).",
+    matters: "Customer exploration is active, but high price friction drives instant churn to alternative quick-commerce apps. Front-end pricing transparency is required to prevent checkout abandonment.",
     accent: "border-l-4 border-l-[#F8CB46] bg-[#FFF6DD] text-[#171717]"
   }
 ];
@@ -95,7 +95,7 @@ export default function ThemesStage() {
           href="/insights"
           className="bg-[#F8CB46] hover:bg-[#F8CB46]/90 text-[#171717] text-[13px] font-extrabold px-5 py-3 rounded-[14px] transition-colors ease-out flex items-center gap-1.5 shadow-standard"
         >
-          Next Step: Fellowship Insights <ArrowRight size={14} strokeWidth={1.5} />
+          Next Step: Discovery Synthesis <ArrowRight size={14} strokeWidth={1.5} />
         </Link>
       </div>
     </div>

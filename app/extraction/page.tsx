@@ -38,13 +38,16 @@ export default function ExtractionStage() {
           <div className="md:col-span-5 bg-surface border border-[#ECE8DE] rounded-[18px] p-5 shadow-standard space-y-3 min-h-[220px]">
             <span className="font-sans text-[9px] font-bold text-[#59624B] uppercase tracking-wider block">After: Structured Inscription</span>
             
-            <pre className="bg-[#F2F1EC] border border-[#ECE8DE] rounded-[14px] p-4 text-[11px] font-mono text-[#5F6368] leading-normal overflow-x-auto">
+            <pre className="bg-[#F2F1EC] border border-[#ECE8DE] rounded-[14px] p-4 text-[10px] font-mono text-[#5F6368] leading-normal overflow-x-auto">
 {`{
   "has_signal": true,
+  "repeat_buying_signal": "yes",
+  "category_mentioned": "produce (perishables)",
+  "barrier_to_new_category": "spoiled items and short expiry product quality risk",
   "reason_type": "trust",
-  "category": "perishables",
-  "segment": "quality_focused",
-  "quote": "expired tomorrow",
+  "info_needed_to_trust_new_category": "expiry date transparency guarantee",
+  "user_segment_signal": "quality_focused",
+  "quote": "bloated and expired tomorrow",
   "confidence": "high"
 }`}
             </pre>

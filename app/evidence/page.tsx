@@ -17,12 +17,17 @@ const SOURCE_CARDS = [
     name: "YouTube Comment Sections",
     metrics: "12.2% of aggregated feed",
     purpose: "Captures unedited reviews highlighting product packaging and item quality.",
+  },
+  {
+    name: "Apple App Store Reviews",
+    metrics: "0.9% of aggregated feed",
+    purpose: "Provides qualitative iOS feedback. Treats small sample size (n=10) as directional only.",
   }
 ];
 
 export default function EvidenceStage() {
   return (
-    <div className="space-y-8 max-w-4xl">
+    <div className="space-y-8 max-w-5xl">
       <PageHeader
         title="Blinkit Review Analysis Workflow"
         subtitle="Stage 1 — Gathering Evidence"
@@ -34,19 +39,21 @@ export default function EvidenceStage() {
         </p>
 
         {/* Source Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {SOURCE_CARDS.map((src) => (
-            <div key={src.name} className="bg-surface border border-[#ECE8DE] rounded-[18px] p-5 shadow-standard space-y-3">
-              <div className="w-8 h-8 rounded-[14px] bg-[#F2F1EC] flex items-center justify-center text-[#59624B]">
-                <Database size={15} strokeWidth={1.5} />
+            <div key={src.name} className="bg-surface border border-[#ECE8DE] rounded-[18px] p-5 shadow-standard space-y-3 flex flex-col justify-between min-h-[200px]">
+              <div className="space-y-3">
+                <div className="w-8 h-8 rounded-[14px] bg-[#F2F1EC] flex items-center justify-center text-[#59624B]">
+                  <Database size={15} strokeWidth={1.5} />
+                </div>
+                <h4 className="font-display font-bold text-[14px] text-[#171717] leading-tight">
+                  {src.name}
+                </h4>
+                <p className="text-[11.5px] text-[#8C8C8C] font-mono">{src.metrics}</p>
+                <p className="text-[12px] text-[#5F6368] leading-relaxed">
+                  {src.purpose}
+                </p>
               </div>
-              <h4 className="font-display font-bold text-[14.5px] text-[#171717] leading-tight">
-                {src.name}
-              </h4>
-              <p className="text-[12px] text-[#8C8C8C] font-mono">{src.metrics}</p>
-              <p className="text-[12.5px] text-[#5F6368] leading-relaxed">
-                {src.purpose}
-              </p>
             </div>
           ))}
         </div>

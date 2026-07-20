@@ -62,7 +62,7 @@ export default function OpportunitiesStage() {
           href="/insights"
           className="bg-surface border border-[#ECE8DE] text-[#5F6368] hover:text-[#171717] text-[13px] font-extrabold px-5 py-3 rounded-[14px] transition-colors ease-out flex items-center gap-1.5 shadow-standard"
         >
-          <ArrowLeft size={14} strokeWidth={1.5} /> Stage 5: Fellowship Insights
+          <ArrowLeft size={14} strokeWidth={1.5} /> Stage 5: Discovery Synthesis
         </Link>
         <Link
           href="/sandbox"

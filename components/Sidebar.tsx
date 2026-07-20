@@ -20,7 +20,7 @@ const WORKFLOW_STEPS = [
   { href: "/extraction", label: "2. Filtering & Extraction", icon: Terminal },
   { href: "/validation", label: "3. Validation & Risks", icon: ShieldCheck },
   { href: "/themes", label: "4. Themes & Signals", icon: LayoutGrid },
-  { href: "/insights", label: "5. Fellowship Insights", icon: TrendingUp },
+  { href: "/insights", label: "5. Discovery Synthesis", icon: TrendingUp },
   { href: "/opportunities", label: "6. Opportunities", icon: Lightbulb },
   { href: "/sandbox", label: "7. Sandbox Playground", icon: PlayCircle },
 ];
@@ -74,11 +74,7 @@ export default function Sidebar() {
       </div>
 
       {/* Footer Status */}
-      <div className="p-5 border-t border-[#ECE8DE] text-[11px] text-[#5F6368] shrink-0 space-y-1 bg-[#FFFFFF]/10">
-        <div className="flex justify-between items-center text-[10.5px]">
-          <span>Confidence Limit</span>
-          <span className="font-bold text-[#171717] font-mono">0.75 score</span>
-        </div>
+      <div className="p-5 border-t border-[#ECE8DE] text-[11px] text-[#5F6368] shrink-0 space-y-1.5 bg-[#FFFFFF]/10">
         <div className="flex justify-between items-center text-[10.5px]">
           <span>Dataset Total</span>
           <span className="font-bold text-[#171717] font-mono">{TOTAL_REVIEWS_SCANNED.toLocaleString()}</span>
