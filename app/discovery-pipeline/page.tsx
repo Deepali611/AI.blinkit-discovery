@@ -1,6 +1,5 @@
 import PageHeader from "@/components/PageHeader";
 import { CheckCircle2, Play, GitBranch, Terminal } from "lucide-react";
-import { sourceBreakdown } from "@/lib/data";
 
 const STAGES = [
   {
@@ -60,7 +59,7 @@ export default function DiscoveryPipeline() {
         {STAGES.map((s, idx) => {
           const Icon = s.icon;
           return (
-            <div key={s.id} className="bg-surface border border-[#E4E8E1]/60 rounded-xl p-5 shadow-sm flex flex-col justify-between">
+            <div key={s.id} className="bg-surface border border-[#E8E5DF] rounded-xl p-5 shadow-sm flex flex-col justify-between">
               <div>
                 {/* Header info */}
                 <div className="flex items-center justify-between mb-4">
@@ -72,7 +71,7 @@ export default function DiscoveryPipeline() {
                   </span>
                 </div>
 
-                <h3 className="text-[14.5px] font-bold text-ink mb-1.5 tracking-tight">
+                <h3 className="font-serif font-bold text-[15.5px] text-[#1E221F] mb-2 leading-tight">
                   Stage 0{idx + 1}: {s.name}
                 </h3>
                 <p className="text-[12.5px] text-[#6B7566] leading-relaxed mb-4">
@@ -81,11 +80,11 @@ export default function DiscoveryPipeline() {
               </div>
 
               {/* Detail parameters list */}
-              <div className="border-t border-[#E4E8E1]/60 pt-3 mt-4 space-y-2">
+              <div className="border-t border-[#E8E5DF] pt-3 mt-4 space-y-2">
                 {s.details.map((d, i) => (
                   <div key={i} className="flex justify-between text-[11.5px] leading-tight">
                     <span className="text-[#6B7566]">{d.label}</span>
-                    <span className="font-semibold text-ink text-right">{d.val}</span>
+                    <span className="font-semibold text-[#1E221F] text-right">{d.val}</span>
                   </div>
                 ))}
               </div>
@@ -95,11 +94,11 @@ export default function DiscoveryPipeline() {
       </div>
 
       {/* Target Objective banner */}
-      <div className="bg-surface border border-[#E4E8E1]/60 rounded-xl p-6 shadow-sm">
-        <h3 className="text-[11px] font-bold text-[#6B7566]/70 uppercase tracking-[0.06em] mb-2">
+      <div className="bg-surface border border-[#E8E5DF] rounded-xl p-6 shadow-sm">
+        <h3 className="font-sans text-[10px] font-bold text-[#6B7566]/80 uppercase tracking-[0.08em] mb-2">
           Pipeline Objective
         </h3>
-        <p className="text-[14px] text-ink leading-relaxed" style={{ lineHeight: 1.55 }}>
+        <p className="text-[13.5px] text-[#1E221F]/95 leading-relaxed" style={{ lineHeight: 1.55 }}>
           Our active objective is to drive cross-category growth. Specifically, we trace and solve blocks in category exploration to help increase the percentage of **Monthly Active Users (MAU) purchasing a new category monthly**.
         </p>
       </div>

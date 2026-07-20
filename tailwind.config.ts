@@ -9,8 +9,8 @@ const config: Config = {
     extend: {
       colors: {
         surface: "#FFFFFF",
-        canvas: "#F9F9FA",
-        ink: "#16201A",
+        canvas: "#FAF8F5",
+        ink: "#1E221F",
         muted: "#6B7566",
         line: "#E4E8E1",
         brand: {
@@ -21,8 +21,8 @@ const config: Config = {
           yellowSoft: "#FFF6DD",
         },
         risk: {
-          red: "#D93025",
-          redSoft: "#FCEAE9",
+          red: "#8B263E",
+          redSoft: "#FDF2F4",
           blue: "#3B5BDB",
           purple: "#7C5CBF",
         },
@@ -33,13 +33,14 @@ const config: Config = {
         "2xl": "16px",
       },
       boxShadow: {
-        hero: "0 10px 28px rgba(22,32,26,.055)",
-        featured: "0 14px 34px rgba(22,32,26,.075)",
-        standard: "0 5px 16px rgba(22,32,26,.045)",
-        subtle: "0 1px 2px rgba(22,32,26,.035)",
+        hero: "0 10px 28px rgba(22,32,26,.035)",
+        featured: "0 14px 34px rgba(22,32,26,.055)",
+        standard: "0 5px 16px rgba(22,32,26,.025)",
+        subtle: "0 1px 2px rgba(22,32,26,.015)",
       },
       fontFamily: {
-        sans: ["Inter", "sans-serif"],
+        sans: ["Plus Jakarta Sans", "Inter", "sans-serif"],
+        serif: ["Lora", "Georgia", "serif"],
       },
     },
   },

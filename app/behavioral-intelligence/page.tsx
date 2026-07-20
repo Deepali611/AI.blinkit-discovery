@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { motion } from "framer-motion";
 import PageHeader from "@/components/PageHeader";
 import AIInsightCard from "@/components/AIInsightCard";
 import { N } from "@/lib/data";
@@ -16,7 +15,7 @@ const CATEGORY_CLUSTERS = [
     size: 105,
     top: "15%",
     left: "15%",
-    color: "border-[#7950F2] text-[#7950F2]", // Purple cluster border
+    color: "border-[#7C5CBF] text-[#7C5CBF]", // Purple cluster theme
     details: {
       habit: "Routine weekly items are bought repeatedly once trust is established. Habits are fragile and break instantly on incorrect substitutions.",
       evidence: "48% of grocery review signals cite repeat buying.",
@@ -35,7 +34,7 @@ const CATEGORY_CLUSTERS = [
     size: 110,
     top: "30%",
     left: "55%",
-    color: "border-[#7950F2] text-[#7950F2]",
+    color: "border-[#7C5CBF] text-[#7C5CBF]",
     details: {
       habit: "Zero repeat-buying habit. Customers only purchase high-value items in emergencies.",
       evidence: "55.6% of trust-risk reviews are concentrated in electronics.",
@@ -54,7 +53,7 @@ const CATEGORY_CLUSTERS = [
     size: 115,
     top: "55%",
     left: "25%",
-    color: "border-[#7950F2] text-[#7950F2]",
+    color: "border-[#7C5CBF] text-[#7C5CBF]",
     details: {
       habit: "High daily buying intent, but quality inconsistency prevents habitual repeat orders.",
       evidence: "32% of perishables reviews cite spoilage or expiry issues.",
@@ -73,7 +72,7 @@ const CATEGORY_CLUSTERS = [
     size: 100,
     top: "10%",
     left: "70%",
-    color: "border-[#7950F2] text-[#7950F2]",
+    color: "border-[#7C5CBF] text-[#7C5CBF]",
     details: {
       habit: "High brand loyalty but low discovery rate. Customers avoid testing new personal care brands.",
       evidence: "12% of personal care reviews cite product authenticity fears.",
@@ -92,7 +91,7 @@ const CATEGORY_CLUSTERS = [
     size: 95,
     top: "60%",
     left: "70%",
-    color: "border-[#7950F2] text-[#7950F2]",
+    color: "border-[#7C5CBF] text-[#7C5CBF]",
     details: {
       habit: "Urgent recurring purchases (diapers, formula) with high channel loyalty.",
       evidence: "8% signal share.",
@@ -113,22 +112,22 @@ export default function BehaviorIntelligence() {
   return (
     <div className="space-y-8">
       <PageHeader
-        title="Behavior Intelligence"
+        title="Behavioral Intelligence"
         subtitle="Visualizing customer exploration pathways and discovery blocks. Click clusters to explore raw evidence."
       />
 
       {/* Figma FigJam Cluster Explorer Section */}
       <div className="space-y-4">
-        <h3 className="text-[11px] font-bold text-muted/70 uppercase tracking-[0.06em]">
+        <h3 className="font-sans text-[10px] font-bold text-[#6B7566]/80 uppercase tracking-[0.08em]">
           Category Cluster Map
         </h3>
         
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
           {/* FigJam Canvas (7 cols) */}
-          <div className="lg:col-span-7 h-[420px] bg-surface border border-[#E4E8E1]/60 rounded-xl shadow-sm relative overflow-hidden select-none"
+          <div className="lg:col-span-7 h-[420px] bg-surface border border-[#E8E5DF] rounded-xl shadow-sm relative overflow-hidden select-none"
                style={{
-                 backgroundImage: "radial-gradient(#E4E8E1 1px, transparent 1px)",
-                 backgroundSize: "16px 16px"
+                 backgroundImage: "radial-gradient(#E8E5DF 1.5px, transparent 1.5px)",
+                 backgroundSize: "20px 20px"
                }}>
             
             {/* SVG Connecting Dotted Lines */}
@@ -154,56 +153,61 @@ export default function BehaviorIntelligence() {
                     width: c.size,
                     height: c.size,
                   }}
-                  className={`rounded-full border bg-surface shadow-sm flex flex-col items-center justify-center text-center p-2.5 transition-all duration-200 border-gray-100 ${
-                    active ? "ring-2 ring-[#7950F2] border-[#7950F2] scale-105" : "hover:border-[#7950F2]/50"
+                  className={`rounded-full border bg-surface shadow-sm flex flex-col items-center justify-center text-center p-2.5 transition-all duration-200 ${
+                    active ? "ring-2 ring-[#7C5CBF] border-[#7C5CBF] scale-105" : "border-[#E8E5DF] hover:border-[#7C5CBF]/50"
                   }`}
                 >
-                  <span className="text-[11px] font-mono font-bold text-[#7950F2] bg-[#7950F2]/10 px-1.5 py-0.5 rounded mb-1">
+                  <span className="text-[10px] font-mono font-bold text-[#7C5CBF] bg-[#7C5CBF]/10 px-2 py-0.5 rounded-full mb-1">
                     {c.tag}
                   </span>
-                  <span className="text-[12px] font-bold text-ink leading-tight">{c.name}</span>
+                  <span className="text-[12.5px] font-sans font-bold text-[#1E221F] leading-tight">{c.name}</span>
                 </button>
               );
             })}
           </div>
 
           {/* Interactive Details Panel (5 cols) */}
-          <div className="lg:col-span-5 bg-surface border border-[#E4E8E1]/60 rounded-xl p-5 shadow-sm flex flex-col justify-between">
+          <div className="lg:col-span-5 bg-surface border border-[#E8E5DF] rounded-xl p-6 shadow-sm flex flex-col justify-between">
             <div className="space-y-4">
-              <div className="border-b border-[#E4E8E1]/60 pb-3 flex justify-between items-center">
-                <span className="text-[10px] font-extrabold uppercase tracking-wide text-[#7950F2] bg-[#7950F2]/10 border border-[#7950F2]/20 px-2.5 py-0.5 rounded-full">
+              <div className="border-b border-[#E8E5DF] pb-3 flex justify-between items-center">
+                <span className="font-sans text-[10px] font-bold uppercase tracking-wider text-[#7C5CBF] bg-[#7C5CBF]/10 border border-[#7C5CBF]/20 px-2.5 py-0.5 rounded-full">
                   Behavior Cluster
                 </span>
-                <span className="text-[12px] font-bold font-mono text-[#7950F2]">
+                <span className="text-[12px] font-bold font-mono text-[#7C5CBF]">
                   {selected.tag}
                 </span>
               </div>
 
+              {/* Cluster Title */}
+              <h2 className="font-serif font-bold text-[20px] text-[#1E221F]">
+                {selected.name} Analysis
+              </h2>
+
               <div className="space-y-4 text-[13px] leading-relaxed">
                 <div>
-                  <h4 className="text-[10px] text-muted/70 uppercase tracking-[0.06em] font-bold mb-0.5">Shopping Habit</h4>
-                  <p className="text-ink/80">{selected.details.habit}</p>
+                  <h4 className="font-sans text-[10px] text-[#6B7566] uppercase tracking-[0.06em] font-bold mb-0.5">Shopping Habit</h4>
+                  <p className="text-[#1E221F]/85">{selected.details.habit}</p>
                 </div>
                 <div>
-                  <h4 className="text-[10px] text-[#7950F2] uppercase tracking-[0.06em] font-bold mb-0.5">Evidence Strength</h4>
-                  <p className="text-ink/80">{selected.details.evidence}</p>
+                  <h4 className="font-sans text-[10px] text-[#7C5CBF] uppercase tracking-[0.06em] font-bold mb-0.5">Evidence Strength</h4>
+                  <p className="text-[#1E221F]/85">{selected.details.evidence}</p>
                 </div>
                 <div>
-                  <h4 className="text-[10px] text-[#FA5252] uppercase tracking-[0.06em] font-bold mb-0.5">Discovery Barriers</h4>
-                  <p className="text-[#FA5252] font-medium">{selected.details.barriers}</p>
+                  <h4 className="font-sans text-[10px] text-[#8B263E] uppercase tracking-[0.06em] font-bold mb-0.5">Discovery Barriers</h4>
+                  <p className="text-[#8B263E] font-semibold">{selected.details.barriers}</p>
                 </div>
                 <div>
-                  <h4 className="text-[10px] text-[#FD7E14] uppercase tracking-[0.06em] font-bold mb-0.5">Opportunities</h4>
-                  <p className="text-[#FD7E14] font-medium">{selected.details.opportunities}</p>
+                  <h4 className="font-sans text-[10px] text-[#FD7E14] uppercase tracking-[0.06em] font-bold mb-0.5">Opportunities</h4>
+                  <p className="text-[#FD7E14] font-semibold">{selected.details.opportunities}</p>
                 </div>
               </div>
             </div>
 
-            <div className="pt-4 border-t border-[#E4E8E1]/60">
-              <h4 className="text-[10px] text-[#868E96] uppercase tracking-[0.06em] font-bold mb-2">Supporting Evidence (Quotes)</h4>
+            <div className="pt-4 border-t border-[#E8E5DF] mt-4">
+              <h4 className="font-sans text-[10px] text-[#6B7566] uppercase tracking-[0.06em] font-bold mb-2">Supporting Evidence (Quotes)</h4>
               <div className="space-y-2">
                 {selected.details.reviews.map((r, i) => (
-                  <div key={i} className="text-[12px] italic text-[#868E96] bg-[#F9F9FA] p-3 rounded-lg border border-[#E4E8E1]/40">
+                  <div key={i} className="text-[12px] italic text-[#6B7566] bg-[#FAF8F5]/80 p-3 rounded-lg border border-[#E8E5DF]">
                     &quot;{r}&quot;
                   </div>
                 ))}
@@ -215,7 +219,7 @@ export default function BehaviorIntelligence() {
 
       {/* AI Research Findings */}
       <div className="space-y-4">
-        <h3 className="text-[11px] font-bold text-muted/70 uppercase tracking-[0.06em]">
+        <h3 className="font-sans text-[10px] font-bold text-[#6B7566]/80 uppercase tracking-[0.08em]">
           Validation Findings
         </h3>
         
@@ -231,6 +235,7 @@ export default function BehaviorIntelligence() {
             pmImplication="quality_focused and price_sensitive customers are distinct populations needing different fixes, not one generic offer."
             businessImpact="Targeting heavy_user first maximizes early conversion probability on the core growth metric."
             recommendedAction="Pilot the Category Trust Badge experiment with heavy_user customers before wider release."
+            type="opportunity"
           />
 
           <AIInsightCard
@@ -244,6 +249,7 @@ export default function BehaviorIntelligence() {
             pmImplication="A platform-wide trust fix is unnecessary; targeted category-level intervention is more efficient."
             businessImpact="Pilot categories represent the fastest path to a measurable lift in cross-category purchase rate."
             recommendedAction="Launch the trust-badge pilot on electronics and dairy/eggs before extending platform-wide."
+            type="risk"
           />
         </div>
       </div>
