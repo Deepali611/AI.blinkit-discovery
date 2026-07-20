@@ -7,7 +7,7 @@ export default function AIValidation() {
   return (
     <div className="space-y-6">
       <PageHeader
-        title="AI Reliability Audit"
+        title="AI Validation"
         subtitle="Prompt configurations, model parameters, safety controls, and grounding validations for the Blinkit signal extraction engine."
       />
 

@@ -108,7 +108,7 @@ export default function BehavioralIntelligence() {
   return (
     <div className="space-y-8">
       <PageHeader
-        title="Behavioral Explorer"
+        title="Behavior Intelligence"
         subtitle="Visualizing customer exploration pathways and discovery blocks. Click clusters to explore raw evidence."
       />
 

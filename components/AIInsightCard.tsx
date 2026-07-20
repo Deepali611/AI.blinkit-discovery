@@ -54,36 +54,35 @@ export default function AIInsightCard({
         </span>
       </div>
 
-      <div className="text-[18px] font-bold text-ink leading-snug tracking-tight mb-4">{summary}</div>
+      <div className="mb-4">
+        <span className="text-[11px] text-muted/80 uppercase tracking-[0.04em] font-extrabold block mb-1">Observation</span>
+        <div className="text-[18px] font-bold text-ink leading-snug tracking-tight">{summary}</div>
+      </div>
 
       {chart && <div className="mb-4">{chart}</div>}
 
       <div className="mt-5 pt-5 border-t border-line/40 space-y-3.5 text-[13.5px] text-ink/90" style={{ lineHeight: 1.55 }}>
         <div>
-          <span className="font-semibold text-ink">Evidence Strength:</span>{" "}
+          <span className="font-semibold text-ink">Supporting Evidence:</span>{" "}
+          <span className="text-ink/85">{evidenceN} reviews extracted across {sources}. {reasoning} ({validation})</span>
+        </div>
+        <div>
+          <span className="font-semibold text-ink">Confidence:</span>{" "}
           <span className="font-mono text-[12px] text-ink/80 tracking-normal mr-1.5">{cs.bar}</span>
-          <span className="font-semibold text-[13px] mr-1.5" style={{ color: cs.text }}>{confidence.toUpperCase()}</span>
+          <span className="font-semibold text-[13px] mr-1.5" style={{ color: cs.text }}>{confidence}</span>
           <span className="text-muted/80 text-[12.5px]">({cs.note})</span>
-        </div>
-        <div>
-          <span className="font-semibold text-ink">Supporting Reviews:</span>{" "}
-          <span className="text-ink/85">{evidenceN} reviews extracted across {sources}</span>
-        </div>
-        <div>
-          <span className="font-semibold text-ink">AI Reasoning:</span>{" "}
-          <span className="text-ink/85">{reasoning}</span>
         </div>
         <div>
           <span className="font-semibold text-ink">Business Impact:</span>{" "}
           <span className="text-ink/85">{businessImpact}</span>
         </div>
         <div>
-          <span className="font-semibold text-ink">Recommendation:</span>{" "}
-          <span className="text-ink/85">{recommendedAction}</span>
+          <span className="font-semibold text-ink">PM Implication:</span>{" "}
+          <span className="text-ink/85">{pmImplication}</span>
         </div>
         <div>
-          <span className="font-semibold text-ink">Validation:</span>{" "}
-          <span className="text-ink/85">{validation}</span>
+          <span className="font-semibold text-ink">Suggested Experiment:</span>{" "}
+          <span className="text-ink/85">{recommendedAction}</span>
         </div>
       </div>
     </motion.div>

@@ -6,8 +6,8 @@ export default function ExecutiveBriefing() {
   return (
     <div>
       <PageHeader
-        title="Research Overview"
-        subtitle="VP Growth & PM decision intelligence platform. Daily evidence-backed growth metrics derived from raw customer conversations."
+        title="Blinkit Growth Intelligence"
+        subtitle="AI-Powered Discovery Engine for Cross-Category Customer Growth"
       />
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
