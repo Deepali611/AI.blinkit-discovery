@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import PageHeader from "@/components/PageHeader";
-import MetricCard from "@/components/MetricCard";
 
 type TabKey = "audit" | "prompt" | "model" | "safety";
 
@@ -17,15 +16,27 @@ export default function AIValidation() {
       />
 
       {/* Model Parameters & Active Configurations */}
-      <div>
-        <h3 className="font-sans text-[10px] font-bold text-[#8C8C8C] uppercase tracking-[0.08em] mb-4">
-          Audit Dashboard
+      <div className="bg-surface border border-[#ECE8DE] rounded-[18px] p-6 shadow-standard mb-8">
+        <h3 className="font-display font-bold text-[15px] text-[#171717] mb-4">
+          Pipeline Audit Configuration Profile
         </h3>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-8">
-          <MetricCard label="Prompt Version" value="v2.4.1-prod" note="System instruction hash: 9d1aef" />
-          <MetricCard label="Active Model" value="Gemini 1.5 Pro" note="API Endpoint: Google AI Studio" delay={0.05} />
-          <MetricCard label="Confidence Limit" value="0.75 threshold" note="Lower scores flagged as directional" delay={0.1} />
-          <MetricCard label="Duplicate Filter" value="Fuzzy N-Gram" note="String match score: > 0.85" delay={0.15} />
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 text-[12.5px] leading-relaxed">
+          <div className="space-y-1">
+            <span className="font-sans text-[9px] font-bold text-[#8C8C8C] uppercase block tracking-wider">Prompt version:</span>
+            <p className="font-semibold text-[#171717]">v2.4.1-prod <span className="text-[#8C8C8C] font-normal">(hash: 9d1aef)</span></p>
+          </div>
+          <div className="space-y-1">
+            <span className="font-sans text-[9px] font-bold text-[#8C8C8C] uppercase block tracking-wider">Active Pipeline LLM:</span>
+            <p className="font-semibold text-[#171717]">Gemini 1.5 Pro <span className="text-[#8C8C8C] font-normal">(AI Studio API)</span></p>
+          </div>
+          <div className="space-y-1">
+            <span className="font-sans text-[9px] font-bold text-[#8C8C8C] uppercase block tracking-wider">Confidence Limit:</span>
+            <p className="font-semibold text-[#171717]">0.75 threshold <span className="text-[#8C8C8C] font-normal">(low scores flagged)</span></p>
+          </div>
+          <div className="space-y-1">
+            <span className="font-sans text-[9px] font-bold text-[#8C8C8C] uppercase block tracking-wider">Deduplication Rule:</span>
+            <p className="font-semibold text-[#171717]">Fuzzy N-Gram <span className="text-[#8C8C8C] font-normal">(match score &gt; 0.85)</span></p>
+          </div>
         </div>
       </div>
 

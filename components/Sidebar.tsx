@@ -4,28 +4,25 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
   LayoutGrid,
-  Workflow,
-  Brain,
-  TrendingUp,
+  Play,
   SearchCheck,
-  Rocket,
-  ShieldCheck,
   Sparkles,
+  Brain,
+  ShieldCheck,
+  TrendingUp,
+  Rocket,
 } from "lucide-react";
 import { N, TOTAL_REVIEWS_SCANNED } from "@/lib/data";
 
-const WORKFLOW_NAV = [
-  { href: "/executive-briefing", label: "Executive Briefing", icon: LayoutGrid },
-  { href: "/discovery-pipeline", label: "Discovery Pipeline", icon: Workflow },
-  { href: "/behavioral-intelligence", label: "Behavioral Intelligence", icon: Brain },
-  { href: "/growth-intelligence", label: "Growth Intelligence", icon: TrendingUp },
-];
-
-const AUDIT_NAV = [
-  { href: "/evidence-explorer", label: "Evidence Explorer", icon: SearchCheck },
-  { href: "/opportunity-workspace", label: "Opportunity Workspace", icon: Rocket },
-  { href: "/ai-validation", label: "AI Validation", icon: ShieldCheck },
-  { href: "/live-analysis", label: "Live Analysis", icon: Sparkles },
+const WORKFLOW_STEPS = [
+  { href: "/executive-briefing", label: "Overview Desk", icon: LayoutGrid, step: null },
+  { href: "/discovery-pipeline", label: "Collect & Clean", icon: Play, step: "01" },
+  { href: "/evidence-explorer", label: "Evidence Explorer", icon: SearchCheck, step: "02" },
+  { href: "/live-analysis", label: "Run Live Analysis", icon: Sparkles, step: "03" },
+  { href: "/behavioral-intelligence", label: "Behavioral Clusters", icon: Brain, step: "04" },
+  { href: "/ai-validation", label: "Validation Logic", icon: ShieldCheck, step: "05" },
+  { href: "/growth-intelligence", label: "Generated Insights", icon: TrendingUp, step: "06" },
+  { href: "/opportunity-workspace", label: "Growth Opportunities", icon: Rocket, step: "07" },
 ];
 
 export default function Sidebar() {
@@ -50,15 +47,13 @@ export default function Sidebar() {
         </div>
       </div>
 
-      {/* Main Navigation (Grouped by Scope) */}
+      {/* Main Navigation (Chronological Steps) */}
       <div className="flex-1 px-2 py-6 overflow-y-auto space-y-6">
-        
-        {/* Section 1: Workflow */}
         <div className="space-y-1">
-          <h3 className="px-4 text-[9px] font-bold uppercase tracking-[0.1em] text-[#8C8C8C] mb-2">
-            Growth Workflow
+          <h3 className="px-4 text-[9px] font-bold uppercase tracking-[0.1em] text-[#8C8C8C] mb-3">
+            Workflow Pipeline
           </h3>
-          {WORKFLOW_NAV.map(({ href, label, icon: Icon }) => {
+          {WORKFLOW_STEPS.map(({ href, label, icon: Icon, step }) => {
             const active = pathname === href;
             return (
               <Link
@@ -71,36 +66,18 @@ export default function Sidebar() {
                 }`}
               >
                 <Icon size={14} strokeWidth={1.5} className={active ? "text-[#59624B]" : "text-[#5F6368]"} />
-                <span>{label}</span>
+                <span className="flex-1 text-left">{label}</span>
+                {step && (
+                  <span className={`font-mono text-[9px] px-1.5 py-0.2 rounded border font-semibold tracking-normal shrink-0 ${
+                    active ? "bg-[#59624B]/10 text-[#59624B] border-[#59624B]/20" : "bg-transparent text-[#8C8C8C] border-[#ECE8DE]"
+                  }`}>
+                    {step}
+                  </span>
+                )}
               </Link>
             );
           })}
         </div>
-
-        {/* Section 2: Evidence & Audits */}
-        <div className="space-y-1">
-          <h3 className="px-4 text-[9px] font-bold uppercase tracking-[0.1em] text-[#8C8C8C] mb-2">
-            Evidence & Audits
-          </h3>
-          {AUDIT_NAV.map(({ href, label, icon: Icon }) => {
-            const active = pathname === href;
-            return (
-              <Link
-                key={href}
-                href={href}
-                className={`flex items-center gap-2.5 py-2 text-[12.5px] font-medium transition-all w-full border-l-[4px] pl-3 ${
-                  active
-                    ? "text-[#171717] font-bold border-[#F8CB46] bg-[#FFFFFF]/40"
-                    : "text-[#5F6368] border-transparent hover:text-[#171717] hover:bg-[#FFFFFF]/20"
-                }`}
-              >
-                <Icon size={14} strokeWidth={1.5} className={active ? "text-[#59624B]" : "text-[#5F6368]"} />
-                <span>{label}</span>
-              </Link>
-            );
-          })}
-        </div>
-
       </div>
 
       {/* Footer Metrics */}

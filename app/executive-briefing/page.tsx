@@ -2,6 +2,16 @@ import PageHeader from "@/components/PageHeader";
 import AIInsightCard from "@/components/AIInsightCard";
 import { N } from "@/lib/data";
 
+const STAGES_FLOW = [
+  { step: "01", name: "Collect & Clean", desc: "Ingest multi-channel reviews & filter delivery noise" },
+  { step: "02", name: "Explore Evidence", desc: "Examine parsed customer feedback attributes" },
+  { step: "03", name: "Mine Live Review", desc: "Test extraction logic on raw comments" },
+  { step: "04", name: "Cluster Behavior", desc: "Map patterns into thematic clusters" },
+  { step: "05", name: "Audit Logic", desc: "Enforce validation & temperature rules" },
+  { step: "06", name: "Generate Insights", desc: "Resolve core cross-category prompts" },
+  { step: "07", name: "Discover Actions", desc: "Prioritize experiments & track KPIs" }
+];
+
 export default function ExecutiveBriefing() {
   return (
     <div className="space-y-8">
@@ -10,6 +20,35 @@ export default function ExecutiveBriefing() {
         title="Blinkit Review Analysis Workflow"
         subtitle="AI-powered discovery engine for cross-category customer growth"
       />
+
+      {/* Visual Workflow Pipeline Banner */}
+      <div className="bg-surface border border-[#ECE8DE] rounded-[18px] p-6 shadow-standard">
+        <h3 className="font-sans text-[10px] font-bold text-[#8C8C8C] uppercase tracking-[0.08em] mb-4">
+          Active Workflow Pipeline Stages
+        </h3>
+        
+        {/* Horizontal steps flow */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-7 gap-4 relative">
+          {STAGES_FLOW.map((s, idx) => (
+            <div key={s.step} className="relative space-y-2">
+              <div className="flex items-center gap-2">
+                <span className="font-mono text-[10px] font-bold text-[#59624B] bg-[#F3F5F1] px-2 py-0.5 rounded border border-[#59624B]/15">
+                  {s.step}
+                </span>
+                <span className="font-display text-[12.5px] font-bold text-[#171717]">
+                  {s.name}
+                </span>
+              </div>
+              <p className="text-[11px] text-[#5F6368] leading-normal pr-2">
+                {s.desc}
+              </p>
+              {idx < STAGES_FLOW.length - 1 && (
+                <div className="hidden lg:block absolute top-[5px] right-0 w-[1px] h-8 bg-[#ECE8DE]" />
+              )}
+            </div>
+          ))}
+        </div>
+      </div>
 
       {/* Narrative Section and AI Journal Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
@@ -66,7 +105,7 @@ export default function ExecutiveBriefing() {
         <div className="lg:col-span-4 space-y-6">
           <div className="space-y-4">
             <h3 className="font-sans text-[10px] font-bold text-[#8C8C8C] uppercase tracking-[0.08em]">
-              Research Journal
+              Pipeline Run Journal
             </h3>
             
             <div className="space-y-4">
