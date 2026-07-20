@@ -1,13 +1,13 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Sparkles } from "lucide-react";
+import { Sparkles, CheckCircle2 } from "lucide-react";
 import { ReactNode } from "react";
 
-const CONF_STYLES: Record<string, { text: string; border: string; bar: string; note: string }> = {
-  High: { text: "#00B140", border: "#00B140", bar: "█████████░", note: "Cross-source verified" },
-  Medium: { text: "#8A6A0F", border: "#EFDC9E", bar: "██████░░░░", note: "Strong signal" },
-  Low: { text: "#6B7566", border: "#E4E8E1", bar: "███░░░░░░░", note: "Directional only" },
+const CONF_STYLES: Record<string, { text: string; bar: string; bg: string }> = {
+  High: { text: "#028A34", bar: "█████████░", bg: "bg-[#E7F8ED]" },
+  Medium: { text: "#8A6A0F", bar: "██████░░░░", bg: "bg-[#FFF6DD]" },
+  Low: { text: "#6B7566", bar: "███░░░░░░░", bg: "bg-[#F9F9FA]" },
 };
 
 export default function AIInsightCard({
@@ -41,49 +41,71 @@ export default function AIInsightCard({
       initial={{ opacity: 0, y: 8 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
-      transition={{ duration: 0.4 }}
-      className="border-y border-r border-line/40 border-l-4 border-l-brand-green rounded-[20px] shadow-featured mb-6 pt-[22px] px-[24px] pb-[18px]"
-      style={{ background: "linear-gradient(135deg, rgba(0, 177, 64, 0.12), rgba(255, 255, 255, 0.98) 58%, rgba(0, 177, 64, 0.05))" }}
+      transition={{ duration: 0.35 }}
+      className="bg-surface border-y border-r border-[#E4E8E1]/60 border-l-4 border-l-[#00B140] rounded-2xl shadow-sm mb-6 p-6 flex flex-col"
     >
-      <div className="flex items-center gap-2 mb-4">
-        <span
-          className="inline-flex items-center gap-1.5 text-[13px] rounded-full py-[7px] px-[12px] border border-[#EFDC9E] text-[#8A6A0F] bg-transparent"
-          style={{ fontWeight: 750 }}
-        >
-          <Sparkles size={13} /> AI Research Finding #{findingNumber}
+      {/* Header Info */}
+      <div className="flex items-center justify-between mb-4">
+        <span className="inline-flex items-center gap-1.5 text-[11px] font-bold text-[#028A34] bg-[#E7F8ED] px-2.5 py-1 rounded-full uppercase tracking-wider">
+          <Sparkles size={11} /> AI Analysis Finding #{findingNumber}
+        </span>
+        <span className="inline-flex items-center gap-1 text-[11px] font-bold text-[#028A34]">
+          <CheckCircle2 size={12} /> Validated Signal
         </span>
       </div>
 
-      <div className="mb-4">
-        <span className="text-[11px] text-muted/80 uppercase tracking-[0.04em] font-extrabold block mb-1">Observation</span>
-        <div className="text-[18px] font-bold text-ink leading-snug tracking-tight">{summary}</div>
+      {/* Observation Section */}
+      <div className="mb-5">
+        <h4 className="text-[10px] font-bold text-muted/70 uppercase tracking-[0.06em] mb-1.5">Observation</h4>
+        <div className="text-[17px] font-bold text-ink leading-snug tracking-tight">
+          {summary}
+        </div>
       </div>
 
-      {chart && <div className="mb-4">{chart}</div>}
+      {chart && <div className="mb-5">{chart}</div>}
 
-      <div className="mt-5 pt-5 border-t border-line/40 space-y-3.5 text-[13.5px] text-ink/90" style={{ lineHeight: 1.55 }}>
+      {/* Structured Growth Analyst Details */}
+      <div className="mt-4 pt-4 border-t border-[#E4E8E1]/60 space-y-4 text-[13px] text-ink/90 leading-relaxed">
+        
+        {/* Supporting Evidence */}
         <div>
-          <span className="font-semibold text-ink">Supporting Evidence:</span>{" "}
-          <span className="text-ink/85">{evidenceN} reviews extracted across {sources}. {reasoning} ({validation})</span>
+          <span className="text-[11px] font-bold text-[#6B7566]/70 uppercase tracking-[0.06em] block mb-1">Supporting Evidence</span>
+          <p className="text-ink/85">
+            {evidenceN} customer reviews analyzed across <span className="font-semibold text-ink">{sources}</span>. {reasoning} <span className="text-muted">({validation})</span>
+          </p>
         </div>
+
+        {/* Confidence Block */}
         <div>
-          <span className="font-semibold text-ink">Confidence:</span>{" "}
-          <span className="font-mono text-[12px] text-ink/80 tracking-normal mr-1.5">{cs.bar}</span>
-          <span className="font-semibold text-[13px] mr-1.5" style={{ color: cs.text }}>{confidence}</span>
-          <span className="text-muted/80 text-[12.5px]">({cs.note})</span>
+          <span className="text-[11px] font-bold text-[#6B7566]/70 uppercase tracking-[0.06em] block mb-1">Confidence</span>
+          <div className="flex items-center gap-2">
+            <span className="font-mono text-[11.5px] text-ink/70 tracking-normal">{cs.bar}</span>
+            <span className={`text-[11px] font-extrabold uppercase px-2 py-0.5 rounded ${cs.bg}`} style={{ color: cs.text }}>
+              {confidence}
+            </span>
+          </div>
         </div>
+
+        {/* Business Impact */}
         <div>
-          <span className="font-semibold text-ink">Business Impact:</span>{" "}
-          <span className="text-ink/85">{businessImpact}</span>
+          <span className="text-[11px] font-bold text-[#6B7566]/70 uppercase tracking-[0.06em] block mb-1">Business Impact</span>
+          <p className="text-ink/85">{businessImpact}</p>
         </div>
+
+        {/* PM Implication */}
         <div>
-          <span className="font-semibold text-ink">PM Implication:</span>{" "}
-          <span className="text-ink/85">{pmImplication}</span>
+          <span className="text-[11px] font-bold text-[#6B7566]/70 uppercase tracking-[0.06em] block mb-1">PM Implication</span>
+          <p className="text-ink/85">{pmImplication}</p>
         </div>
+
+        {/* Suggested Experiment */}
         <div>
-          <span className="font-semibold text-ink">Suggested Experiment:</span>{" "}
-          <span className="text-ink/85">{recommendedAction}</span>
+          <span className="text-[11px] font-bold text-[#6B7566]/70 uppercase tracking-[0.06em] block mb-1 text-[#028A34]">Suggested Experiment</span>
+          <p className="text-ink/90 font-medium bg-[#E7F8ED]/30 border border-[#00B140]/10 p-3 rounded-lg mt-1">
+            {recommendedAction}
+          </p>
         </div>
+
       </div>
     </motion.div>
   );

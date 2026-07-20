@@ -9,7 +9,7 @@ const config: Config = {
     extend: {
       colors: {
         surface: "#FFFFFF",
-        canvas: "#FAF9F6",
+        canvas: "#F9F9FA",
         ink: "#16201A",
         muted: "#6B7566",
         line: "#E4E8E1",
@@ -28,9 +28,9 @@ const config: Config = {
         },
       },
       borderRadius: {
-        lg: "20px",
-        xl: "20px",
-        "2xl": "20px",
+        lg: "12px",
+        xl: "14px",
+        "2xl": "16px",
       },
       boxShadow: {
         hero: "0 10px 28px rgba(22,32,26,.055)",

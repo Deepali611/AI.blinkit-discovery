@@ -12,15 +12,16 @@ const CATEGORY_CLUSTERS = [
   {
     id: "groceries" as CategoryKey,
     name: "Groceries",
-    size: 110,
+    tag: "GR",
+    size: 105,
     top: "15%",
     left: "15%",
-    color: "border-[#F8CB46] hover:bg-[#FFF6DD]/30",
+    color: "border-[#7950F2] text-[#7950F2]", // Purple cluster border
     details: {
-      habit: "Routine items are bought repeatedly once trust is built. Habits are fragile and break instantly on substitutions.",
-      evidence: "48% of grocery signals are repeat purchases.",
-      barriers: "Forced substitutions without customer consent and sudden stockouts.",
-      opportunities: "Lock recurring item lists; add explicit 'do not substitute' toggle at cart level.",
+      habit: "Routine weekly items are bought repeatedly once trust is established. Habits are fragile and break instantly on incorrect substitutions.",
+      evidence: "48% of grocery review signals cite repeat buying.",
+      barriers: "Price volatility and forced replacements/substitutions without customer consent.",
+      opportunities: "Locked item checklists and direct 'Do Not Substitute' cart parameters.",
       reviews: [
         "Atta and cooking oil are monthly staples, but Blinkit forces a different brand replacement without asking.",
         "Prices change from morning to night. It blocks forming a regular grocery checklist."
@@ -30,15 +31,16 @@ const CATEGORY_CLUSTERS = [
   {
     id: "electronics" as CategoryKey,
     name: "Electronics",
-    size: 120,
+    tag: "EL",
+    size: 110,
     top: "30%",
     left: "55%",
-    color: "border-risk-red/40 hover:bg-[#FCEAE9]/30",
+    color: "border-[#7950F2] text-[#7950F2]",
     details: {
-      habit: "Zero repeat-buying habit. Customers only buy high-value items in emergencies.",
-      evidence: "55.6% of overall trust risk signals are concentrated in electronics.",
-      barriers: "Fear of receiving counterfeit goods; complex return policies for open-box delivery.",
-      opportunities: "Sealed open-box delivery with live courier verification and clear brand-auth badges.",
+      habit: "Zero repeat-buying habit. Customers only purchase high-value items in emergencies.",
+      evidence: "55.6% of trust-risk reviews are concentrated in electronics.",
+      barriers: "Fear of receiving fake/counterfeit goods and complex return policies for open-box delivery.",
+      opportunities: "Sealed tamper-evident boxes with live courier video verification.",
       reviews: [
         "Received a tampered box for AirPods. Return was refused. I will never buy gadgets here.",
         "Too risky. For charger cables and adaptors, I prefer physical stores where I can check quality."
@@ -48,15 +50,16 @@ const CATEGORY_CLUSTERS = [
   {
     id: "perishables" as CategoryKey,
     name: "Perishables",
-    size: 130,
+    tag: "PE",
+    size: 115,
     top: "55%",
     left: "25%",
-    color: "border-brand-green/40 hover:bg-[#E7F8ED]/30",
+    color: "border-[#7950F2] text-[#7950F2]",
     details: {
-      habit: "High daily buying intent, but quality inconsistency prevents regular shopping habits.",
-      evidence: "32% of perishable reviews complain of spoilage.",
-      barriers: "Rotten fruits, stale dairy, and very short expiry dates.",
-      opportunities: "Live expiry-date indicators on product pages; temperature-controlled delivery bags.",
+      habit: "High daily buying intent, but quality inconsistency prevents habitual repeat orders.",
+      evidence: "32% of perishables reviews cite spoilage or expiry issues.",
+      barriers: "Rotten fruits, stale dairy, and short expiry dates on fresh products.",
+      opportunities: "Live expiry countdowns on listing pages and cold-chain bags.",
       reviews: [
         "Ordered yogurt and it expired the next day. Perishables need better expiry checks.",
         "Tomatoes were completely crushed. I'd rather buy from local shop where I inspect produce myself."
@@ -66,15 +69,16 @@ const CATEGORY_CLUSTERS = [
   {
     id: "personal_care" as CategoryKey,
     name: "Personal Care",
-    size: 105,
+    tag: "PC",
+    size: 100,
     top: "10%",
     left: "70%",
-    color: "border-risk-purple/40 hover:bg-transparent",
+    color: "border-[#7950F2] text-[#7950F2]",
     details: {
       habit: "High brand loyalty but low discovery rate. Customers avoid testing new personal care brands.",
-      evidence: "12% of signals cite quality concerns.",
-      barriers: "Lack of brand authenticity seals; fear of chemical reactions from fake batches.",
-      opportunities: "Surface official brand-authorized distributor certificates on listings.",
+      evidence: "12% of personal care reviews cite product authenticity fears.",
+      barriers: "Lack of brand authorization seals and fear of counterfeit formulations.",
+      opportunities: "Official brand-certified distributor badges on category lists.",
       reviews: [
         "Face wash smelled different and caused skin irritation. Blinkit must vet beauty sellers.",
         "Sticking to trusted retail apps for makeup. Urgency is not worth skin damage."
@@ -84,15 +88,16 @@ const CATEGORY_CLUSTERS = [
   {
     id: "baby_care" as CategoryKey,
     name: "Baby Care",
-    size: 100,
+    tag: "BC",
+    size: 95,
     top: "60%",
     left: "70%",
-    color: "border-risk-blue/40 hover:bg-transparent",
+    color: "border-[#7950F2] text-[#7950F2]",
     details: {
-      habit: "diapers and formula show repeat logic but depend entirely on catalog accuracy.",
+      habit: "Urgent recurring purchases (diapers, formula) with high channel loyalty.",
       evidence: "8% signal share.",
-      barriers: "Formula size variations and diapers out-of-stock messages leading to immediate app exits.",
-      opportunities: "Subscription-based auto-replenishment with guaranteed inventory allocation.",
+      barriers: "Sizing variation and diaper/formula stockouts causing immediate app exits.",
+      opportunities: "Automatic replenishment subscription loops with reserved stock guarantees.",
       reviews: [
         "Urgent formula variant was out of stock. Switched to Zepto instantly.",
         "Diapers sizing is always wrong or unavailable. Cannot rely on it for baby care."
@@ -101,7 +106,7 @@ const CATEGORY_CLUSTERS = [
   }
 ];
 
-export default function BehavioralIntelligence() {
+export default function BehaviorIntelligence() {
   const [selectedId, setSelectedId] = useState<CategoryKey>("groceries");
   const selected = CATEGORY_CLUSTERS.find((c) => c.id === selectedId) || CATEGORY_CLUSTERS[0];
 
@@ -113,24 +118,26 @@ export default function BehavioralIntelligence() {
       />
 
       {/* Figma FigJam Cluster Explorer Section */}
-      <div>
-        <h2 className="text-[12px] text-muted/80 uppercase tracking-[0.04em] mb-4" style={{ fontWeight: 800 }}>Category Cluster Map</h2>
+      <div className="space-y-4">
+        <h3 className="text-[11px] font-bold text-muted/70 uppercase tracking-[0.06em]">
+          Category Cluster Map
+        </h3>
         
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
           {/* FigJam Canvas (7 cols) */}
-          <div className="lg:col-span-7 h-[420px] bg-surface border border-line/40 rounded-[20px] shadow-standard relative overflow-hidden select-none"
+          <div className="lg:col-span-7 h-[420px] bg-surface border border-[#E4E8E1]/60 rounded-xl shadow-sm relative overflow-hidden select-none"
                style={{
-                 backgroundImage: "radial-gradient(#E4E8E1 1.5px, transparent 1.5px)",
-                 backgroundSize: "20px 20px"
+                 backgroundImage: "radial-gradient(#E4E8E1 1px, transparent 1px)",
+                 backgroundSize: "16px 16px"
                }}>
             
             {/* SVG Connecting Dotted Lines */}
-            <svg className="absolute inset-0 w-full h-full pointer-events-none">
-              <line x1="20%" y1="20%" x2="30%" y2="60%" stroke="#E4E8E1" strokeWidth="2" strokeDasharray="4 6" />
-              <line x1="20%" y1="20%" x2="58%" y2="35%" stroke="#E4E8E1" strokeWidth="2" strokeDasharray="4 6" />
-              <line x1="58%" y1="35%" x2="30%" y2="60%" stroke="#E4E8E1" strokeWidth="2" strokeDasharray="4 6" />
-              <line x1="58%" y1="35%" x2="72%" y2="15%" stroke="#E4E8E1" strokeWidth="2" strokeDasharray="4 6" />
-              <line x1="58%" y1="35%" x2="72%" y2="65%" stroke="#E4E8E1" strokeWidth="2" strokeDasharray="4 6" />
+            <svg className="absolute inset-0 w-full h-full pointer-events-none opacity-60">
+              <line x1="20%" y1="20%" x2="30%" y2="60%" stroke="#6B7566" strokeWidth="1" strokeDasharray="3 4" />
+              <line x1="20%" y1="20%" x2="58%" y2="35%" stroke="#6B7566" strokeWidth="1" strokeDasharray="3 4" />
+              <line x1="58%" y1="35%" x2="30%" y2="60%" stroke="#6B7566" strokeWidth="1" strokeDasharray="3 4" />
+              <line x1="58%" y1="35%" x2="72%" y2="15%" stroke="#6B7566" strokeWidth="1" strokeDasharray="3 4" />
+              <line x1="58%" y1="35%" x2="72%" y2="65%" stroke="#6B7566" strokeWidth="1" strokeDasharray="3 4" />
             </svg>
 
             {/* Floating Clusters */}
@@ -147,52 +154,56 @@ export default function BehavioralIntelligence() {
                     width: c.size,
                     height: c.size,
                   }}
-                  className={`rounded-full border bg-surface/90 shadow-subtle flex flex-col items-center justify-center text-center p-3 transition-all duration-300 ${c.color} ${
-                    active ? "ring-2 ring-brand-yellow border-brand-yellow scale-105 bg-brand-yellowSoft/10" : ""
+                  className={`rounded-full border bg-surface shadow-sm flex flex-col items-center justify-center text-center p-2.5 transition-all duration-200 border-gray-100 ${
+                    active ? "ring-2 ring-[#7950F2] border-[#7950F2] scale-105" : "hover:border-[#7950F2]/50"
                   }`}
                 >
-                  <span className="text-[14px] font-bold text-ink tracking-tight">{c.name}</span>
-                  <span className="text-[10px] text-muted mt-1 uppercase font-semibold tracking-wider">Explore</span>
+                  <span className="text-[11px] font-mono font-bold text-[#7950F2] bg-[#7950F2]/10 px-1.5 py-0.5 rounded mb-1">
+                    {c.tag}
+                  </span>
+                  <span className="text-[12px] font-bold text-ink leading-tight">{c.name}</span>
                 </button>
               );
             })}
           </div>
 
           {/* Interactive Details Panel (5 cols) */}
-          <div className="lg:col-span-5 bg-surface border border-line/40 rounded-[20px] p-[18px] shadow-standard flex flex-col justify-between">
+          <div className="lg:col-span-5 bg-surface border border-[#E4E8E1]/60 rounded-xl p-5 shadow-sm flex flex-col justify-between">
             <div className="space-y-4">
-              <div className="border-b border-line/40 pb-3">
-                <span className="text-[10px] font-extrabold uppercase tracking-wide text-brand-yellow bg-brand-yellowSoft/20 border border-[#EFDC9E]/40 px-2 py-0.5 rounded-full">
-                  CLUSTER DATA
+              <div className="border-b border-[#E4E8E1]/60 pb-3 flex justify-between items-center">
+                <span className="text-[10px] font-extrabold uppercase tracking-wide text-[#7950F2] bg-[#7950F2]/10 border border-[#7950F2]/20 px-2.5 py-0.5 rounded-full">
+                  Behavior Cluster
                 </span>
-                <h3 className="text-[18px] font-bold text-ink mt-2 tracking-tight">{selected.name} Analysis</h3>
+                <span className="text-[12px] font-bold font-mono text-[#7950F2]">
+                  {selected.tag}
+                </span>
               </div>
 
-              <div className="space-y-3.5 text-[13.5px] leading-relaxed">
+              <div className="space-y-4 text-[13px] leading-relaxed">
                 <div>
-                  <h4 className="text-[11px] text-muted/80 uppercase tracking-wider font-semibold">Shopping Habit</h4>
+                  <h4 className="text-[10px] text-muted/70 uppercase tracking-[0.06em] font-bold mb-0.5">Shopping Habit</h4>
                   <p className="text-ink/80">{selected.details.habit}</p>
                 </div>
                 <div>
-                  <h4 className="text-[11px] text-muted/80 uppercase tracking-wider font-semibold">Evidence Strength</h4>
+                  <h4 className="text-[10px] text-[#7950F2] uppercase tracking-[0.06em] font-bold mb-0.5">Evidence Strength</h4>
                   <p className="text-ink/80">{selected.details.evidence}</p>
                 </div>
                 <div>
-                  <h4 className="text-[11px] text-muted/80 uppercase tracking-wider font-semibold">Discovery Barriers</h4>
-                  <p className="text-ink/80">{selected.details.barriers}</p>
+                  <h4 className="text-[10px] text-[#FA5252] uppercase tracking-[0.06em] font-bold mb-0.5">Discovery Barriers</h4>
+                  <p className="text-[#FA5252] font-medium">{selected.details.barriers}</p>
                 </div>
                 <div>
-                  <h4 className="text-[11px] text-muted/80 uppercase tracking-wider font-semibold">Opportunities</h4>
-                  <p className="text-ink/80">{selected.details.opportunities}</p>
+                  <h4 className="text-[10px] text-[#FD7E14] uppercase tracking-[0.06em] font-bold mb-0.5">Opportunities</h4>
+                  <p className="text-[#FD7E14] font-medium">{selected.details.opportunities}</p>
                 </div>
               </div>
             </div>
 
-            <div className="pt-4 border-t border-line/40">
-              <h4 className="text-[11px] text-muted/80 uppercase tracking-wider font-semibold mb-2">Supporting Reviews</h4>
+            <div className="pt-4 border-t border-[#E4E8E1]/60">
+              <h4 className="text-[10px] text-[#868E96] uppercase tracking-[0.06em] font-bold mb-2">Supporting Evidence (Quotes)</h4>
               <div className="space-y-2">
                 {selected.details.reviews.map((r, i) => (
-                  <div key={i} className="text-[12.5px] italic text-ink/75 bg-canvas p-2.5 rounded-lg border border-line/20">
+                  <div key={i} className="text-[12px] italic text-[#868E96] bg-[#F9F9FA] p-3 rounded-lg border border-[#E4E8E1]/40">
                     &quot;{r}&quot;
                   </div>
                 ))}
@@ -203,8 +214,10 @@ export default function BehavioralIntelligence() {
       </div>
 
       {/* AI Research Findings */}
-      <div>
-        <h2 className="text-[12px] text-muted/80 uppercase tracking-[0.04em] mb-4" style={{ fontWeight: 800 }}>Validation Findings</h2>
+      <div className="space-y-4">
+        <h3 className="text-[11px] font-bold text-muted/70 uppercase tracking-[0.06em]">
+          Validation Findings
+        </h3>
         
         <div className="space-y-6">
           <AIInsightCard

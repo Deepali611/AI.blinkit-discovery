@@ -4,7 +4,11 @@ import { useState, useMemo } from "react";
 import PageHeader from "@/components/PageHeader";
 import { reviews } from "@/lib/data";
 
-const CONF_COLOR: Record<string, string> = { high: "#028A34", med: "#6B7566", low: "#9A9488" };
+const CONF_COLOR: Record<string, { text: string; bg: string }> = {
+  high: { text: "#028A34", bg: "bg-[#E7F8ED]" },
+  med: { text: "#8A6A0F", bg: "bg-[#FFF6DD]" },
+  low: { text: "#6B7566", bg: "bg-[#F9F9FA]" },
+};
 
 export default function EvidenceExplorer() {
   const [reasonType, setReasonType] = useState("All");
@@ -24,28 +28,68 @@ export default function EvidenceExplorer() {
   }, [reasonType, segment, confidence]);
 
   return (
-    <div>
-      <PageHeader title="Evidence Explorer" subtitle="Drill from signal to theme to source review — full traceability." />
+    <div className="space-y-6">
+      <PageHeader
+        title="Evidence Explorer"
+        subtitle="Operational review database. Full trace validation from raw customer reviews to AI behavioral tags."
+      />
 
-      <div className="grid grid-cols-3 gap-5 mb-6">
-        <Select label="Reason type" value={reasonType} onChange={setReasonType} options={reasonTypes} />
-        <Select label="Segment" value={segment} onChange={setSegment} options={segments} />
-        <Select label="Confidence" value={confidence} onChange={setConfidence} options={["All", "high", "med", "low"]} />
+      {/* Filter Toolbar (Linear-style) */}
+      <div className="bg-surface border border-[#E4E8E1]/60 rounded-xl p-4 shadow-sm flex flex-wrap items-center justify-between gap-4">
+        <div className="flex flex-wrap items-center gap-4">
+          <Select label="Theme Filter" value={reasonType} onChange={setReasonType} options={reasonTypes} />
+          <Select label="Segment Filter" value={segment} onChange={setSegment} options={segments} />
+          <Select label="Confidence" value={confidence} onChange={setConfidence} options={["All", "high", "med", "low"]} />
+        </div>
+        <div className="text-[12px] text-muted/80 font-medium">
+          {filtered.length} matching reviews
+        </div>
       </div>
 
-      <p className="text-[13.5px] text-muted mb-4">{filtered.length} supporting reviews match this path</p>
+      {/* Issue Table List (GitHub-style) */}
+      <div className="bg-surface border border-[#E4E8E1]/60 rounded-xl overflow-hidden shadow-sm">
+        <div className="bg-[#F9F9FA] px-4 py-3 border-b border-[#E4E8E1]/60 flex justify-between text-[11px] font-bold text-muted/70 uppercase tracking-[0.06em]">
+          <span>Verbatim Customer Review</span>
+          <span>Attributes</span>
+        </div>
 
-      <div className="bg-surface border border-line rounded-lg divide-y divide-line shadow-standard">
-        {filtered.slice(0, 30).map((r) => (
-          <div key={r.row_number} className="px-[18px] py-[12px] text-[13.5px]" style={{ lineHeight: 1.55 }}>
-            <span style={{ color: CONF_COLOR[r.confidence], fontWeight: 750 }} className="text-[12px] tracking-[0.04em]">{r.confidence.toUpperCase()}</span>
-            {" · "}
-            <span className="font-semibold text-ink">{r.reason_type}</span> · <span className="text-ink/80">{r.category_mentioned}</span> · <span className="text-ink/80">{r.user_segment}</span>
-            <div className="text-muted/80 text-[12px] mt-1">
-              Row #{r.row_number} — barrier: {r.barrier_to_new_category}
-            </div>
-          </div>
-        ))}
+        <div className="divide-y divide-[#E4E8E1]/40">
+          {filtered.slice(0, 30).map((r) => {
+            const cs = CONF_COLOR[r.confidence];
+            return (
+              <div key={r.row_number} className="px-4 py-3.5 flex flex-col md:flex-row md:items-center justify-between gap-4 text-[13px]">
+                {/* Left Side: Verbatim Content */}
+                <div className="space-y-1.5 max-w-3xl leading-relaxed">
+                  <div className="text-ink font-medium">
+                    &quot;{r.quote}&quot;
+                  </div>
+                  <div className="flex items-center gap-2 text-[11px] text-[#868E96]">
+                    <span className="font-mono bg-canvas border border-[#E4E8E1]/40 px-1 py-0.2 rounded">
+                      Row #{r.row_number}
+                    </span>
+                    <span>·</span>
+                    <span className="text-[#FA5252] font-semibold">
+                      Barrier: {r.barrier_to_new_category}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Right Side: Metadata Tags */}
+                <div className="flex flex-wrap items-center gap-2 shrink-0">
+                  <span className={`text-[10px] font-bold uppercase px-2 py-0.5 rounded ${cs.bg}`} style={{ color: cs.text }}>
+                    {r.confidence}
+                  </span>
+                  <span className="text-[10px] font-bold text-[#7950F2] bg-[#7950F2]/8 px-2 py-0.5 rounded uppercase tracking-wider">
+                    {r.category_mentioned}
+                  </span>
+                  <span className="text-[10px] font-bold text-[#6B7566] bg-canvas border border-[#E4E8E1]/60 px-2 py-0.5 rounded capitalize">
+                    {r.user_segment}
+                  </span>
+                </div>
+              </div>
+            );
+          })}
+        </div>
       </div>
     </div>
   );
@@ -63,16 +107,16 @@ function Select({
   options: string[];
 }) {
   return (
-    <div>
-      <label className="text-[12px] text-muted mb-1 block uppercase tracking-[0.04em]" style={{ fontWeight: 800 }}>{label}</label>
+    <div className="flex items-center gap-2">
+      <span className="text-[11.5px] font-bold text-[#6B7566]/70 uppercase tracking-[0.06em]">{label}:</span>
       <select
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="w-full border border-line rounded-lg px-3 py-2 text-[13px] bg-surface focus:outline-none focus:ring-2 focus:ring-brand-green/30"
+        className="bg-canvas border border-[#E4E8E1]/60 rounded-md px-2.5 py-1 text-[12.5px] text-ink focus:outline-none focus:ring-1 focus:ring-[#00B140]"
       >
-        {options.map((o) => (
-          <option key={o} value={o}>
-            {o}
+        {options.map((opt) => (
+          <option key={opt} value={opt}>
+            {opt}
           </option>
         ))}
       </select>

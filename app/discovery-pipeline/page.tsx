@@ -1,55 +1,106 @@
 import PageHeader from "@/components/PageHeader";
-import BarList from "@/components/BarList";
+import { CheckCircle2, Play, GitBranch, Terminal } from "lucide-react";
 import { sourceBreakdown } from "@/lib/data";
 
-const STEPS = [
-  "Business goal",
-  "Collect feedback",
-  "AI analysis",
-  "Behavior understanding",
-  "Evidence",
-  "Validation",
-  "Insights",
-  "Growth opportunities",
+const STAGES = [
+  {
+    id: "ingestion",
+    name: "Feedback Ingestion",
+    icon: Play,
+    status: "active",
+    color: "text-[#228BE6] bg-[#228BE6]/10",
+    description: "Aggregation of customer reviews across 6 distinct digital channels, synchronized daily to form the raw text intelligence database.",
+    details: [
+      { label: "Google Play Store", val: "662 reviews (56.3%)" },
+      { label: "App Store", val: "10 reviews (0.9%)" },
+      { label: "Reddit Threads", val: "360 reviews (30.6%)" },
+      { label: "YouTube Comments", val: "144 reviews (12.2%)" }
+    ]
+  },
+  {
+    id: "filtering",
+    name: "Semantic Filtration",
+    icon: GitBranch,
+    status: "active",
+    color: "text-[#228BE6] bg-[#228BE6]/10",
+    description: "Automated preprocessing stage eliminating off-topic, spam, and non-actionable reviews (e.g. delivery complaints, rating-only reviews).",
+    details: [
+      { label: "Minimum Length", val: "Discard strings < 15 characters" },
+      { label: "Exclusion Regex", val: "Filter picker/courier/delivery tags" },
+      { label: "Language Check", val: "Unicode English detection filter" },
+      { label: "Spam Reduction", val: "N-gram duplication detection score > 0.85" }
+    ]
+  },
+  {
+    id: "tagging",
+    name: "AI Signal Inscription",
+    icon: Terminal,
+    status: "active",
+    color: "text-[#228BE6] bg-[#228BE6]/10",
+    description: "Gemini 1.5 Pro prompt chains parse and tag the remaining customer records to identify target metrics.",
+    details: [
+      { label: "LLM Context Engine", val: "Gemini-1.5-Pro-production" },
+      { label: "Temperature Param", val: "0.2 (low-entropy deterministic tags)" },
+      { label: "Output Schema", val: "Structured JSON: [category, barrier, quote, confidence]" },
+      { label: "Grounding Enforcement", val: "Sub-string matching checks" }
+    ]
+  }
 ];
 
 export default function DiscoveryPipeline() {
-  const sourceData = Object.fromEntries(sourceBreakdown.map((s) => [s.source, s.count]));
-  const sourceColors = Object.fromEntries(sourceBreakdown.map((s) => [s.source, "#3B5BDB"]));
-
   return (
-    <div>
-      <PageHeader title="Discovery Pipeline" subtitle="How customer feedback becomes a validated growth signal." />
+    <div className="space-y-8">
+      <PageHeader
+        title="Discovery Pipeline"
+        subtitle="Operational stages showing how raw customer comments are ingested, filtered, and converted to validated product insights."
+      />
 
-      <div className="flex flex-wrap items-center gap-y-3 mb-8">
-        {STEPS.map((step, i) => (
-          <div key={step} className="flex items-center">
-            <div className="bg-surface border border-line rounded-lg py-[7px] px-[12px] text-[12.5px] font-medium text-ink shadow-subtle">
-              {step}
+      {/* Conversion Pipeline Flow Grid */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {STAGES.map((s, idx) => {
+          const Icon = s.icon;
+          return (
+            <div key={s.id} className="bg-surface border border-[#E4E8E1]/60 rounded-xl p-5 shadow-sm flex flex-col justify-between">
+              <div>
+                {/* Header info */}
+                <div className="flex items-center justify-between mb-4">
+                  <div className={`w-8 h-8 rounded-lg ${s.color} flex items-center justify-center`}>
+                    <Icon size={16} />
+                  </div>
+                  <span className="inline-flex items-center gap-1 text-[11px] font-bold text-[#028A34]">
+                    <CheckCircle2 size={12} /> Active
+                  </span>
+                </div>
+
+                <h3 className="text-[14.5px] font-bold text-ink mb-1.5 tracking-tight">
+                  Stage 0{idx + 1}: {s.name}
+                </h3>
+                <p className="text-[12.5px] text-[#6B7566] leading-relaxed mb-4">
+                  {s.description}
+                </p>
+              </div>
+
+              {/* Detail parameters list */}
+              <div className="border-t border-[#E4E8E1]/60 pt-3 mt-4 space-y-2">
+                {s.details.map((d, i) => (
+                  <div key={i} className="flex justify-between text-[11.5px] leading-tight">
+                    <span className="text-[#6B7566]">{d.label}</span>
+                    <span className="font-semibold text-ink text-right">{d.val}</span>
+                  </div>
+                ))}
+              </div>
             </div>
-            {i < STEPS.length - 1 && <span className="text-muted px-2.5">→</span>}
-          </div>
-        ))}
+          );
+        })}
       </div>
 
-      <div className="bg-surface border border-line rounded-lg p-[18px] shadow-standard">
-        <h3 className="text-[16px] font-bold text-ink mb-2 tracking-tight">Business goal</h3>
-        <p className="text-[13.5px] text-ink/80 leading-relaxed mb-6" style={{ lineHeight: 1.55 }}>
-          Increase the percentage of Monthly Active Customers who purchase from at least one new category
-          every month.
-        </p>
-
-        <h3 className="text-[16px] font-bold text-ink mb-3 tracking-tight">Collect customer feedback</h3>
-        <div className="mb-6">
-          <BarList data={sourceData} colors={sourceColors} unit="records" />
-        </div>
-
-        <h3 className="text-[16px] font-bold text-ink mb-2 tracking-tight">AI analysis</h3>
-        <p className="text-[13.5px] text-ink/80 leading-relaxed" style={{ lineHeight: 1.55 }}>
-          Off-topic content (labor/picker posts, industry debate) and bare statements with no reasoning are
-          filtered before extraction. A single controlled Gemini prompt then tags each remaining review with a
-          signal gate followed by structured extraction: repeat-buying signal, category, barrier, reason type,
-          actionable trust-building ask, customer segment, a grounding quote, and confidence.
+      {/* Target Objective banner */}
+      <div className="bg-surface border border-[#E4E8E1]/60 rounded-xl p-6 shadow-sm">
+        <h3 className="text-[11px] font-bold text-[#6B7566]/70 uppercase tracking-[0.06em] mb-2">
+          Pipeline Objective
+        </h3>
+        <p className="text-[14px] text-ink leading-relaxed" style={{ lineHeight: 1.55 }}>
+          Our active objective is to drive cross-category growth. Specifically, we trace and solve blocks in category exploration to help increase the percentage of **Monthly Active Users (MAU) purchasing a new category monthly**.
         </p>
       </div>
     </div>
