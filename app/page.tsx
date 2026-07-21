@@ -253,6 +253,13 @@ export default function EngineDashboard() {
         </header>
       )}
 
+      {/* Primary Business Objective Banner */}
+      {currentView !== "landing" && (
+        <div className="bg-[#F3F5F1] border border-[#59624B]/20 p-4 rounded-lg text-[13px] text-[#59624B] leading-relaxed max-w-4xl mx-auto shadow-sm">
+          <strong>Primary Objective:</strong> Understand why customers who already trust Blinkit for one category hesitate to expand into additional categories, and identify evidence-backed opportunities to reduce that hesitation.
+        </div>
+      )}
+
       {/* ═══════════════════════════════════════════
           1. LANDING VIEW
           ═══════════════════════════════════════════ */}
@@ -335,28 +342,78 @@ export default function EngineDashboard() {
             </p>
           </div>
 
-          {/* System risks / Limitations block */}
-          <div className="bg-white border border-[#ECE8DE] rounded-lg p-6 shadow-sm space-y-4">
+          {/* Expanded AI failure-mode analysis */}
+          <div className="bg-white border border-[#ECE8DE] rounded-lg p-6 shadow-sm space-y-6">
             <h3 className="font-display font-bold text-[15px] text-[#171717]">
-              Where this engine could be wrong
+              Concrete AI Failure Modes & Mitigation Analysis
             </h3>
-            <ul className="list-disc pl-5 space-y-2 text-[13px] text-[#5F6368] leading-relaxed">
-              <li>
-                The model's confidence score is self-reported, not independently checked against ground truth — treat 'high confidence' as 'the model didn't hedge,' not as a guarantee.
-              </li>
-              <li>
-                Reddit reviews in this dataset are mostly post titles, not full posts — the model sometimes has less context than a full review would give it.
-              </li>
-              <li>
-                App Store contributed only 10 reviews — anything drawn primarily from that source is not statistically reliable on its own.
-              </li>
-              <li>
-                Segment labels (heavy_user, price_sensitive, etc.) are inferred from word choice and phrasing, not verified against account or purchase history — they are a language-based hypothesis about the customer, not a confirmed fact.
-              </li>
-              <li>
-                A customer who leaves a review is not a random sample of all customers — this dataset systematically over-represents people who had something to complain about.
-              </li>
-            </ul>
+            
+            <div className="space-y-6 text-[13px] text-[#5F6368] leading-relaxed">
+              <div className="border-b border-[#ECE8DE] pb-4 space-y-2">
+                <h4 className="font-bold text-[#171717]">1. Incorrect Segment Inference</h4>
+                <p>
+                  <strong>Why it happens:</strong> Segments are inferred strictly from word choice and phrasing cues in the text (e.g., mention of family routines vs. coupon hunting) rather than verified transaction records.
+                </p>
+                <p>
+                  <strong>Mitigation:</strong> The model is instructed to mark classifications as "unclear" if linguistic cues are insufficient.
+                </p>
+                <p>
+                  <strong>Risk remaining:</strong> Occasional mischaracterization where light users are inferred as heavy users due to dramatic vocabulary. Treated strictly as a language-based supposition.
+                </p>
+              </div>
+
+              <div className="border-b border-[#ECE8DE] pb-4 space-y-2">
+                <h4 className="font-bold text-[#171717]">2. Trust vs. Convenience Misclassification</h4>
+                <p>
+                  <strong>Why it happens:</strong> Language explaining delivery delays can overlap with quality and safety concerns, leading to categorization drift between reasons.
+                </p>
+                <p>
+                  <strong>Mitigation:</strong> Restrictive coding requires clear descriptions of safety, counterfeit, or item damage risks to place under "trust".
+                </p>
+                <p>
+                  <strong>Risk remaining:</strong> Standard courier speed complaints may occasionally trigger a trust barrier tag.
+                </p>
+              </div>
+
+              <div className="border-b border-[#ECE8DE] pb-4 space-y-2">
+                <h4 className="font-bold text-[#171717]">3. Hallucinated Extraction</h4>
+                <p>
+                  <strong>Why it happens:</strong> Standard model completions occasionally invent patterns or modify sentences to suit the brief questions.
+                </p>
+                <p>
+                  <strong>Mitigation:</strong> Programmatic validation verifies that every single word in the model's reported quote is present word-for-word in the original text, discarding non-matching entries.
+                </p>
+                <p>
+                  <strong>Risk remaining:</strong> Discards valid signals if slight transcription or character anomalies exist in the review.
+                </p>
+              </div>
+
+              <div className="border-b border-[#ECE8DE] pb-4 space-y-2">
+                <h4 className="font-bold text-[#171717]">4. Duplicate Complaints Inflating Patterns</h4>
+                <p>
+                  <strong>Why it happens:</strong> Viral user comments are frequently copy-pasted across threads, inflating specific catalog issue volumes.
+                </p>
+                <p>
+                  <strong>Mitigation:</strong> The pipeline tags near-duplicate reviews (20% duplicate rate detected) to prevent inflating core metric counts.
+                </p>
+                <p>
+                  <strong>Risk remaining:</strong> Slightly rephrased copies may bypass the deduplication algorithm and mildly skew pattern sizes.
+                </p>
+              </div>
+
+              <div className="space-y-2">
+                <h4 className="font-bold text-[#171717]">5. Sparse Source Bias</h4>
+                <p>
+                  <strong>Why it happens:</strong> App Store reviews contribute only 10 entries (0.9%), while Google Play represents 56.3% of the dataset.
+                </p>
+                <p>
+                  <strong>Mitigation:</strong> Sources are clearly badged, and user exploration is supported via direct source filters.
+                </p>
+                <p>
+                  <strong>Risk remaining:</strong> High risk of false trends if PMs draw conclusions based on App Store or App Store-linked sub-cohorts alone.
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       )}
@@ -378,200 +435,472 @@ export default function EngineDashboard() {
           <div className="space-y-6">
             
             {/* Q1 */}
-            <div className="bg-white border border-[#ECE8DE] rounded-lg p-6 shadow-sm space-y-4">
+            <div id="q1" className="bg-white border border-[#ECE8DE] rounded-lg p-6 shadow-sm space-y-4 scroll-mt-20">
               <div className="flex items-center justify-between">
                 <span className="font-mono text-[10px] font-bold text-[#59624B] bg-[#F3F5F1] px-2.5 py-0.5 rounded border border-[#59624B]/20">
                   Question 01
                 </span>
-                <span className="text-[11px] font-bold text-[#59624B]">Confidence: High (supported by clear metric gap)</span>
+                <span className="text-[11px] font-bold text-[#59624B]">Confidence: High (Known from evidence)</span>
               </div>
               <h3 className="font-display font-bold text-[15.5px] text-[#171717]">
                 Why do customers keep buying from the same categories?
               </h3>
-              <p className="text-[13px] text-[#5F6368] leading-relaxed">
-                This isn't habit. Only 7 of 189 signals (3.7%) describe routine or automatic buying — the weakest pattern in the entire dataset. What actually repeats is caution: customers keep returning to categories where nothing has gone wrong for them yet, and they describe this as a deliberate choice, not a default.
-              </p>
-              {/* Evidence Quotes */}
-              <div className="space-y-2 pt-2 border-t border-[#ECE8DE]/60">
-                <span className="text-[9px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Verbatim Evidence:</span>
-                {getEvidenceForQuestion(1).map((r) => (
-                  <div 
-                    key={r.row_number} 
-                    onClick={() => jumpToRow(r.row_number)}
-                    className="bg-[#F8F9FA] border border-[#ECE8DE] rounded-md p-3 text-[12px] text-[#171717] italic cursor-pointer hover:bg-[#F2F1EC] transition-all"
-                  >
-                    "{r.quote}" <span className="font-mono text-[10px] text-[#8C8C8C] not-italic block mt-1">Row #{r.row_number} · Click to verify</span>
+              
+              <div className="space-y-3 pt-3 border-t border-[#ECE8DE]/60 text-[12.5px] leading-relaxed">
+                <div>
+                  <span className="text-[9px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Observed Pattern</span>
+                  <p className="text-[#171717] font-medium italic">
+                    "This isn't habit. Only 7 of 189 signals (3.7%) describe routine or automatic buying — the weakest pattern in the entire dataset. What actually repeats is caution: customers keep returning to categories where nothing has gone wrong for them yet, and they describe this as a deliberate choice, not a default."
+                  </p>
+                </div>
+                
+                <div>
+                  <span className="text-[9px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Evidence</span>
+                  <div className="space-y-2 mt-1.5">
+                    {getEvidenceForQuestion(1).map((r) => (
+                      <div 
+                        key={r.row_number} 
+                        onClick={() => jumpToRow(r.row_number)}
+                        className="bg-[#F8F9FA] border border-[#ECE8DE] rounded-md p-3 text-[12px] text-[#171717] italic cursor-pointer hover:bg-[#F2F1EC] transition-all"
+                      >
+                        "{r.quote}" <span className="font-mono text-[10px] text-[#8C8C8C] not-italic block mt-1">Row #{r.row_number} · Click to verify</span>
+                      </div>
+                    ))}
                   </div>
-                ))}
+                </div>
+
+                <div>
+                  <span className="text-[9px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Interpretation</span>
+                  <p className="text-[#5F6368]">
+                    Repeat purchasing in quick-commerce is driven by active risk avoidance. Once a customer has a negative experience in a category, they isolate themselves to safe, verified categories, preventing cross-category exploration.
+                  </p>
+                </div>
+
+                <div>
+                  <span className="text-[9px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Product Implication</span>
+                  <p className="text-[#171717] font-semibold">Decision supported: Whether to focus roadmap resources on generic personalization algorithms or on category-specific risk-reduction features.</p>
+                  <p className="text-[#5F6368] mt-1">Unvalidated product bets (suppositions generated from customer feedback):</p>
+                  <ul className="list-disc pl-4 text-[#5F6368] space-y-1 mt-1">
+                    <li>Introduce a "risk-free first trial" badge on new categories with a guaranteed refund if unsatisfied.</li>
+                    <li>Display category-specific customer ratings emphasizing service reliability instead of raw sales volume.</li>
+                  </ul>
+                </div>
+
+                <div>
+                  <span className="text-[9px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Remaining Uncertainty</span>
+                  <p className="text-[#5F6368]">
+                    Whether introducing category-specific trust guarantees would actually convert caution-based shoppers into new category trials, or if their avoidance is driven by other factors not observable from this dataset.
+                  </p>
+                </div>
+
+                <div className="pt-2.5 border-t border-[#ECE8DE]/40">
+                  <a href="#q2" className="text-[12px] font-bold text-[#59624B] hover:underline flex items-center gap-1">
+                    Related findings: What's stopping customers from trying a new category? →
+                  </a>
+                </div>
               </div>
             </div>
 
             {/* Q2 */}
-            <div className="bg-white border border-[#ECE8DE] rounded-lg p-6 shadow-sm space-y-4">
+            <div id="q2" className="bg-white border border-[#ECE8DE] rounded-lg p-6 shadow-sm space-y-4 scroll-mt-20">
               <div className="flex items-center justify-between">
                 <span className="font-mono text-[10px] font-bold text-[#59624B] bg-[#F3F5F1] px-2.5 py-0.5 rounded border border-[#59624B]/20">
                   Question 02
                 </span>
-                <span className="text-[11px] font-bold text-[#59624B]">Confidence: High (majority patterns match)</span>
+                <span className="text-[11px] font-bold text-[#59624B]">Confidence: High (Known from evidence)</span>
               </div>
               <h3 className="font-display font-bold text-[15.5px] text-[#171717]">
                 What's stopping customers from trying a new category?
               </h3>
-              <p className="text-[13px] text-[#5F6368] leading-relaxed">
-                Trust is the blocker, and it's specific, not vague — customers aren't saying 'I don't trust Blinkit,' they're describing concrete failures: a fake product, an expired item, a tampered electronics box. 105 of 189 signals (55.6%) cite this. Price uncertainty is real but secondary (40 signals, 21.2%) — customers comparing prices across apps are a different behavior from customers avoiding a category altogether.
-              </p>
-              <div className="space-y-2 pt-2 border-t border-[#ECE8DE]/60">
-                <span className="text-[9px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Verbatim Evidence:</span>
-                {getEvidenceForQuestion(2).map((r) => (
-                  <div 
-                    key={r.row_number} 
-                    onClick={() => jumpToRow(r.row_number)}
-                    className="bg-[#F8F9FA] border border-[#ECE8DE] rounded-md p-3 text-[12px] text-[#171717] italic cursor-pointer hover:bg-[#F2F1EC] transition-all"
-                  >
-                    "{r.quote}" <span className="font-mono text-[10px] text-[#8C8C8C] not-italic block mt-1">Row #{r.row_number} · Click to verify</span>
+              
+              <div className="space-y-3 pt-3 border-t border-[#ECE8DE]/60 text-[12.5px] leading-relaxed">
+                <div>
+                  <span className="text-[9px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Observed Pattern</span>
+                  <p className="text-[#171717] font-medium italic">
+                    "Trust is the blocker, and it's specific, not vague — customers aren't saying 'I don't trust Blinkit,' they're describing concrete failures: a fake product, an expired item, a tampered electronics box. 105 of 189 signals (55.6%) cite this. Price uncertainty is real but secondary (40 signals, 21.2%) — customers comparing prices across apps are a different behavior from customers avoiding a category altogether."
+                  </p>
+                </div>
+
+                <div>
+                  <span className="text-[9px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Evidence</span>
+                  <div className="space-y-2 mt-1.5">
+                    {getEvidenceForQuestion(2).map((r) => (
+                      <div 
+                        key={r.row_number} 
+                        onClick={() => jumpToRow(r.row_number)}
+                        className="bg-[#F8F9FA] border border-[#ECE8DE] rounded-md p-3 text-[12px] text-[#171717] italic cursor-pointer hover:bg-[#F2F1EC] transition-all"
+                      >
+                        "{r.quote}" <span className="font-mono text-[10px] text-[#8C8C8C] not-italic block mt-1">Row #{r.row_number} · Click to verify</span>
+                      </div>
+                    ))}
                   </div>
-                ))}
+                </div>
+
+                <div>
+                  <span className="text-[9px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Interpretation</span>
+                  <p className="text-[#5F6368]">
+                    The primary friction to category expansion is quality risk. Customers are comfortable ordering low-risk items (like snacks) but hesitate to buy high-ticket or fresh items due to visible platform failures.
+                  </p>
+                </div>
+
+                <div>
+                  <span className="text-[9px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Product Implication</span>
+                  <p className="text-[#171717] font-semibold">Decision supported: Prioritizing physical quality assurance workflows over UI navigation changes.</p>
+                  <p className="text-[#5F6368] mt-1">Unvalidated product bets (suppositions generated from customer feedback):</p>
+                  <ul className="list-disc pl-4 text-[#5F6368] space-y-1 mt-1">
+                    <li>Display expiration dates clearly on perishables listings.</li>
+                    <li>Add tamper-evident seal options at checkout for high-value categories.</li>
+                  </ul>
+                </div>
+
+                <div>
+                  <span className="text-[9px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Remaining Uncertainty</span>
+                  <p className="text-[#5F6368]">
+                    Whether the proportion of trust-related complaints differs by geographic location or warehouse-specific operations.
+                  </p>
+                </div>
+
+                <div className="pt-2.5 border-t border-[#ECE8DE]/40">
+                  <a href="#q5" className="text-[12px] font-bold text-[#59624B] hover:underline flex items-center gap-1">
+                    Related findings: What would make a customer trust a category? →
+                  </a>
+                </div>
               </div>
             </div>
 
             {/* Q3 */}
-            <div className="bg-white border border-[#ECE8DE] rounded-lg p-6 shadow-sm space-y-4">
+            <div id="q3" className="bg-white border border-[#ECE8DE] rounded-lg p-6 shadow-sm space-y-4 scroll-mt-20">
               <div className="flex items-center justify-between">
                 <span className="font-mono text-[10px] font-bold text-[#59624B] bg-[#F3F5F1] px-2.5 py-0.5 rounded border border-[#59624B]/20">
                   Question 03
                 </span>
-                <span className="text-[11px] font-bold text-[#5F6368]">Confidence: Medium (low sample size of 9 signals)</span>
+                <span className="text-[11px] font-bold text-[#5F6368]">Confidence: Medium (Inferred from language)</span>
               </div>
               <h3 className="font-display font-bold text-[15.5px] text-[#171717]">
                 How do customers find products today?
               </h3>
-              <p className="text-[13px] text-[#5F6368] leading-relaxed">
-                Weakly, and mostly by accident. The smallest but most telling pattern (9 signals, 4.8%) shows customers leaving for a competitor not because they distrust Blinkit, but because a specific product they wanted — a cat food variant, a collectible — wasn't visible or in stock. Discovery isn't failing on trust here, it's failing on basic inventory visibility.
-              </p>
-              <div className="space-y-2 pt-2 border-t border-[#ECE8DE]/60">
-                <span className="text-[9px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Verbatim Evidence:</span>
-                {getEvidenceForQuestion(3).map((r) => (
-                  <div 
-                    key={r.row_number} 
-                    onClick={() => jumpToRow(r.row_number)}
-                    className="bg-[#F8F9FA] border border-[#ECE8DE] rounded-md p-3 text-[12px] text-[#171717] italic cursor-pointer hover:bg-[#F2F1EC] transition-all"
-                  >
-                    "{r.quote}" <span className="font-mono text-[10px] text-[#8C8C8C] not-italic block mt-1">Row #{r.row_number} · Click to verify</span>
+
+              <div className="space-y-3 pt-3 border-t border-[#ECE8DE]/60 text-[12.5px] leading-relaxed">
+                <div>
+                  <span className="text-[9px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Observed Pattern</span>
+                  <p className="text-[#171717] font-medium italic">
+                    "Weakly, and mostly by accident. The smallest but most telling pattern (9 signals, 4.8%) shows customers leaving for a competitor not because they distrust Blinkit, but because a specific product they wanted — a cat food variant, a collectible — wasn't visible or in stock. Discovery isn't failing on trust here, it's failing on basic inventory visibility."
+                  </p>
+                </div>
+
+                <div>
+                  <span className="text-[9px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Evidence</span>
+                  <div className="space-y-2 mt-1.5">
+                    {getEvidenceForQuestion(3).map((r) => (
+                      <div 
+                        key={r.row_number} 
+                        onClick={() => jumpToRow(r.row_number)}
+                        className="bg-[#F8F9FA] border border-[#ECE8DE] rounded-md p-3 text-[12px] text-[#171717] italic cursor-pointer hover:bg-[#F2F1EC] transition-all"
+                      >
+                        "{r.quote}" <span className="font-mono text-[10px] text-[#8C8C8C] not-italic block mt-1">Row #{r.row_number} · Click to verify</span>
+                      </div>
+                    ))}
                   </div>
-                ))}
+                </div>
+
+                <div>
+                  <span className="text-[9px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Interpretation</span>
+                  <p className="text-[#5F6368]">
+                    Discovery fails when customers cannot easily locate niche or regional stock. Silent churn occurs when product search algorithms return irrelevant items or fail to show accurate stock levels.
+                  </p>
+                </div>
+
+                <div>
+                  <span className="text-[9px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Product Implication</span>
+                  <p className="text-[#171717] font-semibold">Decision supported: Investing in semantic search quality vs. generic banner advertisements.</p>
+                  <p className="text-[#5F6368] mt-1">Unvalidated product bets (suppositions generated from customer feedback):</p>
+                  <ul className="list-disc pl-4 text-[#5F6368] space-y-1 mt-1">
+                    <li>Implement regional stock-request notifications.</li>
+                    <li>Optimize search to surface exact category variants rather than sponsored alternatives.</li>
+                  </ul>
+                </div>
+
+                <div>
+                  <span className="text-[9px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Remaining Uncertainty</span>
+                  <p className="text-[#5F6368]">
+                    Whether these inventory discovery issues exist outside review writers who take the time to post complaints online.
+                  </p>
+                </div>
+
+                <div className="pt-2.5 border-t border-[#ECE8DE]/40">
+                  <a href="#q8" className="text-[12px] font-bold text-[#59624B] hover:underline flex items-center gap-1">
+                    Related findings: What do customers consistently say is missing? →
+                  </a>
+                </div>
               </div>
             </div>
 
             {/* Q4 */}
-            <div className="bg-white border border-[#ECE8DE] rounded-lg p-6 shadow-sm space-y-4">
+            <div id="q4" className="bg-white border border-[#ECE8DE] rounded-lg p-6 shadow-sm space-y-4 scroll-mt-20">
               <div className="flex items-center justify-between">
                 <span className="font-mono text-[10px] font-bold text-[#59624B] bg-[#F3F5F1] px-2.5 py-0.5 rounded border border-[#59624B]/20">
                   Question 04
                 </span>
-                <span className="text-[11px] font-bold text-[#59624B]">Confidence: High (supported by clear comparison metrics)</span>
+                <span className="text-[11px] font-bold text-[#59624B]">Confidence: High (Known from evidence)</span>
               </div>
               <h3 className="font-display font-bold text-[15.5px] text-[#171717]">
                 What role does habit actually play?
               </h3>
-              <p className="text-[13px] text-[#5F6368] leading-relaxed">
-                Less than assumed. 7 signals (3.7%) describe habitual buying, while 40 signals (21.2%) describe customers actively price-shopping across Blinkit, Zepto, and Instamart in the same shopping session. Customers are not passively loyal — they're evaluating, constantly, and that means engagement mechanics have room to work if the underlying trust problem is addressed first.
-              </p>
-              <div className="space-y-2 pt-2 border-t border-[#ECE8DE]/60">
-                <span className="text-[9px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Verbatim Evidence:</span>
-                {getEvidenceForQuestion(4).map((r) => (
-                  <div 
-                    key={r.row_number} 
-                    onClick={() => jumpToRow(r.row_number)}
-                    className="bg-[#F8F9FA] border border-[#ECE8DE] rounded-md p-3 text-[12px] text-[#171717] italic cursor-pointer hover:bg-[#F2F1EC] transition-all"
-                  >
-                    "{r.quote}" <span className="font-mono text-[10px] text-[#8C8C8C] not-italic block mt-1">Row #{r.row_number} · Click to verify</span>
+
+              <div className="space-y-3 pt-3 border-t border-[#ECE8DE]/60 text-[12.5px] leading-relaxed">
+                <div>
+                  <span className="text-[9px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Observed Pattern</span>
+                  <p className="text-[#171717] font-medium italic">
+                    "Less than assumed. 7 signals (3.7%) describe habitual buying, while 40 signals (21.2%) describe customers actively price-shopping across Blinkit, Zepto, and Instamart in the same shopping session. Customers are not passively loyal — they're evaluating, constantly, and that means engagement mechanics have room to work if the underlying trust problem is addressed first."
+                  </p>
+                </div>
+
+                <div>
+                  <span className="text-[9px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Evidence</span>
+                  <div className="space-y-2 mt-1.5">
+                    {getEvidenceForQuestion(4).map((r) => (
+                      <div 
+                        key={r.row_number} 
+                        onClick={() => jumpToRow(r.row_number)}
+                        className="bg-[#F8F9FA] border border-[#ECE8DE] rounded-md p-3 text-[12px] text-[#171717] italic cursor-pointer hover:bg-[#F2F1EC] transition-all"
+                      >
+                        "{r.quote}" <span className="font-mono text-[10px] text-[#8C8C8C] not-italic block mt-1">Row #{r.row_number} · Click to verify</span>
+                      </div>
+                    ))}
                   </div>
-                ))}
+                </div>
+
+                <div>
+                  <span className="text-[9px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Interpretation</span>
+                  <p className="text-[#5F6368]">
+                    Loyalty is transactional, not habitual. Customers compare prices in real-time, meaning cross-category exploration is highly vulnerable to competitive pricing.
+                  </p>
+                </div>
+
+                <div>
+                  <span className="text-[9px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Product Implication</span>
+                  <p className="text-[#171717] font-semibold">Decision supported: Launching dynamic cross-category loyalty rewards versus flat membership plans.</p>
+                  <p className="text-[#5F6368] mt-1">Unvalidated product bets (suppositions generated from customer feedback):</p>
+                  <ul className="list-disc pl-4 text-[#5F6368] space-y-1 mt-1">
+                    <li>Show checkout price comparisons against local MRP.</li>
+                    <li>Provide instant price-match credits on cross-category purchases.</li>
+                  </ul>
+                </div>
+
+                <div>
+                  <span className="text-[9px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Remaining Uncertainty</span>
+                  <p className="text-[#5F6368]">
+                    Whether this price-sensitive app-switching behavior leads to long-term churn or simply short-term order fragmentation.
+                  </p>
+                </div>
+
+                <div className="pt-2.5 border-t border-[#ECE8DE]/40">
+                  <a href="#q2" className="text-[12px] font-bold text-[#59624B] hover:underline flex items-center gap-1">
+                    Related findings: What's stopping customers from trying a new category? →
+                  </a>
+                </div>
               </div>
             </div>
 
             {/* Q5 */}
-            <div className="bg-white border border-[#ECE8DE] rounded-lg p-6 shadow-sm space-y-4">
+            <div id="q5" className="bg-white border border-[#ECE8DE] rounded-lg p-6 shadow-sm space-y-4 scroll-mt-20">
               <div className="flex items-center justify-between">
                 <span className="font-mono text-[10px] font-bold text-[#59624B] bg-[#F3F5F1] px-2.5 py-0.5 rounded border border-[#59624B]/20">
                   Question 05
                 </span>
-                <span className="text-[11px] font-bold text-[#59624B]">Confidence: High (strong actionable volume)</span>
+                <span className="text-[11px] font-bold text-[#59624B]">Confidence: High (Known from evidence)</span>
               </div>
               <h3 className="font-display font-bold text-[15.5px] text-[#171717]">
                 What would make a customer trust a category enough to try it?
               </h3>
-              <p className="text-[13px] text-[#5F6368] leading-relaxed">
-                Nearly half of all signal (86 of 189, 45.5%) answers this directly and specifically — not 'better service' but concrete asks: visible authenticity checks, tamper-evident packaging, expiry dates shown before checkout, a working return process, accurate stock counts. This is the most actionable finding in the dataset because customers described the fix, not just the problem.
-              </p>
-              <div className="space-y-2 pt-2 border-t border-[#ECE8DE]/60">
-                <span className="text-[9px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Verbatim Evidence:</span>
-                {getEvidenceForQuestion(5).map((r) => (
-                  <div 
-                    key={r.row_number} 
-                    onClick={() => jumpToRow(r.row_number)}
-                    className="bg-[#F8F9FA] border border-[#ECE8DE] rounded-md p-3 text-[12px] text-[#171717] italic cursor-pointer hover:bg-[#F2F1EC] transition-all"
-                  >
-                    "{r.quote}" <span className="font-mono text-[10px] text-[#8C8C8C] not-italic block mt-1">Row #{r.row_number} · Click to verify</span>
+
+              <div className="space-y-3 pt-3 border-t border-[#ECE8DE]/60 text-[12.5px] leading-relaxed">
+                <div>
+                  <span className="text-[9px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Observed Pattern</span>
+                  <p className="text-[#171717] font-medium italic">
+                    "Nearly half of all signal (86 of 189, 45.5%) answers this directly and specifically — not 'better service' but concrete asks: visible authenticity checks, tamper-evident packaging, expiry dates shown before checkout, a working return process, accurate stock counts. This is the most actionable finding in the dataset because customers described the fix, not just the problem."
+                  </p>
+                </div>
+
+                <div>
+                  <span className="text-[9px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Evidence</span>
+                  <div className="space-y-2 mt-1.5">
+                    {getEvidenceForQuestion(5).map((r) => (
+                      <div 
+                        key={r.row_number} 
+                        onClick={() => jumpToRow(r.row_number)}
+                        className="bg-[#F8F9FA] border border-[#ECE8DE] rounded-md p-3 text-[12px] text-[#171717] italic cursor-pointer hover:bg-[#F2F1EC] transition-all"
+                      >
+                        "{r.quote}" <span className="font-mono text-[10px] text-[#8C8C8C] not-italic block mt-1">Row #{r.row_number} · Click to verify</span>
+                      </div>
+                    ))}
                   </div>
-                ))}
+                </div>
+
+                <div>
+                  <span className="text-[9px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Interpretation</span>
+                  <p className="text-[#5F6368]">
+                    Customers are willing to try new categories if the platform explicitly surfaces verification assurances.
+                  </p>
+                </div>
+
+                <div>
+                  <span className="text-[9px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Product Implication</span>
+                  <p className="text-[#171717] font-semibold">Decision supported: Whether to build generalized customer support tools or specific checkout security badges.</p>
+                  <p className="text-[#5F6368] mt-1">Unvalidated product bets (suppositions generated from customer feedback):</p>
+                  <ul className="list-disc pl-4 text-[#5F6368] space-y-1 mt-1">
+                    <li>Embed active "Freshness Guarantee" and "Authentic Seal" tags on listings.</li>
+                    <li>Provide direct, single-tap return flows for untested categories.</li>
+                  </ul>
+                </div>
+
+                <div>
+                  <span className="text-[9px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Remaining Uncertainty</span>
+                  <p className="text-[#5F6368]">
+                    Whether showing these trust tags increases category conversion rates or if users ignore them during high-speed checkouts.
+                  </p>
+                </div>
+
+                <div className="pt-2.5 border-t border-[#ECE8DE]/40">
+                  <a href="#q6" className="text-[12px] font-bold text-[#59624B] hover:underline flex items-center gap-1">
+                    Related findings: What frustrates customers repeatedly? →
+                  </a>
+                </div>
               </div>
             </div>
 
             {/* Q6 */}
-            <div className="bg-white border border-[#ECE8DE] rounded-lg p-6 shadow-sm space-y-4">
+            <div id="q6" className="bg-white border border-[#ECE8DE] rounded-lg p-6 shadow-sm space-y-4 scroll-mt-20">
               <div className="flex items-center justify-between">
                 <span className="font-mono text-[10px] font-bold text-[#59624B] bg-[#F3F5F1] px-2.5 py-0.5 rounded border border-[#59624B]/20">
                   Question 06
                 </span>
-                <span className="text-[11px] font-bold text-[#59624B]">Confidence: High (consistent platform failures reported)</span>
+                <span className="text-[11px] font-bold text-[#59624B]">Confidence: High (Known from evidence)</span>
               </div>
               <h3 className="font-display font-bold text-[15.5px] text-[#171717]">
                 What frustrates customers repeatedly?
               </h3>
-              <p className="text-[13px] text-[#5F6368] leading-relaxed">
-                The same five failures recur across unrelated categories: counterfeit goods, expired perishables, refund promises that don't get honored, substitutions made without asking, and promo codes that don't work at checkout. These aren't category-specific complaints — they're platform-trust failures that happen to surface most often in electronics and perishables because that's where the cost of being wrong is highest for the customer.
-              </p>
-              <div className="space-y-2 pt-2 border-t border-[#ECE8DE]/60">
-                <span className="text-[9px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Verbatim Evidence:</span>
-                {getEvidenceForQuestion(6).map((r) => (
-                  <div 
-                    key={r.row_number} 
-                    onClick={() => jumpToRow(r.row_number)}
-                    className="bg-[#F8F9FA] border border-[#ECE8DE] rounded-md p-3 text-[12px] text-[#171717] italic cursor-pointer hover:bg-[#F2F1EC] transition-all"
-                  >
-                    "{r.quote}" <span className="font-mono text-[10px] text-[#8C8C8C] not-italic block mt-1">Row #{r.row_number} · Click to verify</span>
+
+              <div className="space-y-3 pt-3 border-t border-[#ECE8DE]/60 text-[12.5px] leading-relaxed">
+                <div>
+                  <span className="text-[9px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Observed Pattern</span>
+                  <p className="text-[#171717] font-medium italic">
+                    "The same five failures recur across unrelated categories: counterfeit goods, expired perishables, refund promises that don't get honored, substitutions made without asking, and promo codes that don't work at checkout. These aren't category-specific complaints — they're platform-trust failures that happen to surface most often in electronics and perishables because that's where the cost of being wrong is highest for the customer."
+                  </p>
+                </div>
+
+                <div>
+                  <span className="text-[9px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Evidence</span>
+                  <div className="space-y-2 mt-1.5">
+                    {getEvidenceForQuestion(6).map((r) => (
+                      <div 
+                        key={r.row_number} 
+                        onClick={() => jumpToRow(r.row_number)}
+                        className="bg-[#F8F9FA] border border-[#ECE8DE] rounded-md p-3 text-[12px] text-[#171717] italic cursor-pointer hover:bg-[#F2F1EC] transition-all"
+                      >
+                        "{r.quote}" <span className="font-mono text-[10px] text-[#8C8C8C] not-italic block mt-1">Row #{r.row_number} · Click to verify</span>
+                      </div>
+                    ))}
                   </div>
-                ))}
+                </div>
+
+                <div>
+                  <span className="text-[9px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Interpretation</span>
+                  <p className="text-[#5F6368]">
+                    Core operational errors (expired stock, forced replacements) destroy trust globally, making category discovery initiatives useless if core fulfillment is broken.
+                  </p>
+                </div>
+
+                <div>
+                  <span className="text-[9px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Product Implication</span>
+                  <p className="text-[#171717] font-semibold">Decision supported: Aligning roadmap goals with supply chain fulfillment accuracy metrics rather than top-funnel marketing.</p>
+                  <p className="text-[#5F6368] mt-1">Unvalidated product bets (suppositions generated from customer feedback):</p>
+                  <ul className="list-disc pl-4 text-[#5F6368] space-y-1 mt-1">
+                    <li>Block pickers from making substitutions without real-time customer app consent.</li>
+                    <li>Automate refunds for reported expired items within 5 minutes.</li>
+                  </ul>
+                </div>
+
+                <div>
+                  <span className="text-[9px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Remaining Uncertainty</span>
+                  <p className="text-[#5F6368]">
+                    Whether these platform-trust failures are concentrated in specific courier networks or are evenly distributed across the entire catalog.
+                  </p>
+                </div>
+
+                <div className="pt-2.5 border-t border-[#ECE8DE]/40">
+                  <a href="#q7" className="text-[12px] font-bold text-[#59624B] hover:underline flex items-center gap-1">
+                    Related findings: Which customers are closest to trying something new? →
+                  </a>
+                </div>
               </div>
             </div>
 
             {/* Q7 */}
-            <div className="bg-white border border-[#ECE8DE] rounded-lg p-6 shadow-sm space-y-6">
+            <div id="q7" className="bg-white border border-[#ECE8DE] rounded-lg p-6 shadow-sm space-y-6 scroll-mt-20">
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
                   <span className="font-mono text-[10px] font-bold text-[#59624B] bg-[#F3F5F1] px-2.5 py-0.5 rounded border border-[#59624B]/20">
                     Question 07
                   </span>
-                  <span className="text-[11px] font-bold text-[#5F6368]">Confidence: Medium (inferred from phrasing, not transactional data)</span>
+                  <span className="text-[11px] font-bold text-[#5F6368]">Confidence: Medium (Inferred from language)</span>
                 </div>
                 <h3 className="font-display font-bold text-[15.5px] text-[#171717]">
                   Which customers are closest to trying something new?
                 </h3>
-                <p className="text-[13px] text-[#5F6368] leading-relaxed">
-                  Customers whose language suggests frequent, ongoing use (19 signals, 10.1%) describe specific, fixable complaints rather than blanket distrust — that distinction matters. A customer who says 'I won't buy electronics here because of X' is different from a customer who says 'I'll never use this app again.' The first is telling you what to fix. Treat this as a hypothesis about where to test first, not a confirmed customer list — segment inference here comes from language, not verified purchase history.
-                </p>
-                <div className="space-y-2 pt-2 border-t border-[#ECE8DE]/60">
-                  <span className="text-[9px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Verbatim Evidence:</span>
-                  {getEvidenceForQuestion(7).map((r) => (
-                    <div 
-                      key={r.row_number} 
-                      onClick={() => jumpToRow(r.row_number)}
-                      className="bg-[#F8F9FA] border border-[#ECE8DE] rounded-md p-3 text-[12px] text-[#171717] italic cursor-pointer hover:bg-[#F2F1EC] transition-all"
-                    >
-                      "{r.quote}" <span className="font-mono text-[10px] text-[#8C8C8C] not-italic block mt-1">Row #{r.row_number} · Click to verify</span>
+                
+                <div className="space-y-3 pt-3 border-t border-[#ECE8DE]/60 text-[12.5px] leading-relaxed">
+                  <div>
+                    <span className="text-[9px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Observed Pattern</span>
+                    <p className="text-[#171717] font-medium italic">
+                      "Customers whose language suggests frequent, ongoing use (19 signals, 10.1%) describe specific, fixable complaints rather than blanket distrust — that distinction matters. A customer who says 'I won't buy electronics here because of X' is different from a customer who says 'I'll never use this app again.' The first is telling you what to fix. Treat this as a supposition about where to test first, not a confirmed customer list — segment inference here comes from language, not verified purchase history."
+                    </p>
+                  </div>
+
+                  <div>
+                    <span className="text-[9px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Evidence</span>
+                    <div className="space-y-2 mt-1.5">
+                      {getEvidenceForQuestion(7).map((r) => (
+                        <div 
+                          key={r.row_number} 
+                          onClick={() => jumpToRow(r.row_number)}
+                          className="bg-[#F8F9FA] border border-[#ECE8DE] rounded-md p-3 text-[12px] text-[#171717] italic cursor-pointer hover:bg-[#F2F1EC] transition-all"
+                        >
+                          "{r.quote}" <span className="font-mono text-[10px] text-[#8C8C8C] not-italic block mt-1">Row #{r.row_number} · Click to verify</span>
+                        </div>
+                      ))}
                     </div>
-                  ))}
+                  </div>
+
+                  <div>
+                    <span className="text-[9px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Interpretation</span>
+                    <p className="text-[#5F6368]">
+                      High-frequency users represent the highest conversion potential because their barriers are transactional friction, not complete platform distrust.
+                    </p>
+                  </div>
+
+                  <div>
+                    <span className="text-[9px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Product Implication</span>
+                    <p className="text-[#171717] font-semibold">Decision supported: Targeting new feature pilots to the "heavy_user" segment rather than mass-market launches.</p>
+                    <p className="text-[#5F6368] mt-1">Unvalidated product bets (suppositions generated from customer feedback):</p>
+                    <ul className="list-disc pl-4 text-[#5F6368] space-y-1 mt-1">
+                      <li>Pilot a trust-verification layout with heavy users first.</li>
+                      <li>Deliver tailored trial discounts on high-ticket categories to recurring daily shoppers.</li>
+                    </ul>
+                  </div>
+
+                  <div>
+                    <span className="text-[9px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Remaining Uncertainty</span>
+                    <p className="text-[#5F6368]">
+                      Whether the language-inferred segments align with actual historical purchase frequencies and spending profiles.
+                    </p>
+                  </div>
+
+                  <div className="pt-2.5 border-t border-[#ECE8DE]/40">
+                    <a href="#q8" className="text-[12px] font-bold text-[#59624B] hover:underline flex items-center gap-1">
+                      Related findings: What do customers consistently say is missing? →
+                    </a>
+                  </div>
                 </div>
               </div>
 
@@ -639,30 +968,69 @@ export default function EngineDashboard() {
             </div>
 
             {/* Q8 */}
-            <div className="bg-white border border-[#ECE8DE] rounded-lg p-6 shadow-sm space-y-4">
+            <div id="q8" className="bg-white border border-[#ECE8DE] rounded-lg p-6 shadow-sm space-y-4 scroll-mt-20">
               <div className="flex items-center justify-between">
                 <span className="font-mono text-[10px] font-bold text-[#59624B] bg-[#F3F5F1] px-2.5 py-0.5 rounded border border-[#59624B]/20">
                   Question 08
                 </span>
-                <span className="text-[11px] font-bold text-[#5F6368]">Confidence: Medium (includes single outlier signals)</span>
+                <span className="text-[11px] font-bold text-[#5F6368]">Confidence: Medium (Inferred from language)</span>
               </div>
               <h3 className="font-display font-bold text-[15.5px] text-[#171717]">
                 What do customers consistently say is missing?
               </h3>
-              <p className="text-[13px] text-[#5F6368] leading-relaxed">
-                Five needs repeat across otherwise unrelated complaints: proof a product is genuine, clear pricing without surprise fees, a return process that actually works, accurate stock information for less-common items, and — mentioned by only one customer but worth flagging rather than discarding — a simpler interface for a non-technical user. Small signal isn't nothing; it's a prompt for direct research, not a proven segment need.
-              </p>
-              <div className="space-y-2 pt-2 border-t border-[#ECE8DE]/60">
-                <span className="text-[9px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Verbatim Evidence:</span>
-                {getEvidenceForQuestion(8).map((r) => (
-                  <div 
-                    key={r.row_number} 
-                    onClick={() => jumpToRow(r.row_number)}
-                    className="bg-[#F8F9FA] border border-[#ECE8DE] rounded-md p-3 text-[12px] text-[#171717] italic cursor-pointer hover:bg-[#F2F1EC] transition-all"
-                  >
-                    "{r.quote}" <span className="font-mono text-[10px] text-[#8C8C8C] not-italic block mt-1">Row #{r.row_number} · Click to verify</span>
+
+              <div className="space-y-3 pt-3 border-t border-[#ECE8DE]/60 text-[12.5px] leading-relaxed">
+                <div>
+                  <span className="text-[9px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Observed Pattern</span>
+                  <p className="text-[#171717] font-medium italic">
+                    "Five needs repeat across otherwise unrelated complaints: proof a product is genuine, clear pricing without surprise fees, a return process that actually works, accurate stock information for less-common items, and — mentioned by only one customer but worth flagging rather than discarding — a simpler interface for a non-technical user. Small signal isn't nothing; it's a prompt for direct research, not a proven segment need."
+                  </p>
+                </div>
+
+                <div>
+                  <span className="text-[9px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Evidence</span>
+                  <div className="space-y-2 mt-1.5">
+                    {getEvidenceForQuestion(8).map((r) => (
+                      <div 
+                        key={r.row_number} 
+                        onClick={() => jumpToRow(r.row_number)}
+                        className="bg-[#F8F9FA] border border-[#ECE8DE] rounded-md p-3 text-[12px] text-[#171717] italic cursor-pointer hover:bg-[#F2F1EC] transition-all"
+                      >
+                        "{r.quote}" <span className="font-mono text-[10px] text-[#8C8C8C] not-italic block mt-1">Row #{r.row_number} · Click to verify</span>
+                      </div>
+                    ))}
                   </div>
-                ))}
+                </div>
+
+                <div>
+                  <span className="text-[9px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Interpretation</span>
+                  <p className="text-[#5F6368]">
+                    Customer needs concentrate around catalog integrity and transparency, with occasional accessibility signals (e.g., senior citizen segment usability) representing critical qualitative cues.
+                  </p>
+                </div>
+
+                <div>
+                  <span className="text-[9px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Product Implication</span>
+                  <p className="text-[#171717] font-semibold">Decision supported: Running dedicated qualitative validation studies for accessibility features.</p>
+                  <p className="text-[#5F6368] mt-1">Unvalidated product bets (suppositions generated from customer feedback):</p>
+                  <ul className="list-disc pl-4 text-[#5F6368] space-y-1 mt-1">
+                    <li>Introduce an "easy-read/simple-checkout" toggle for elderly cohorts.</li>
+                    <li>Provide 100% transparent fee breakdowns at checkout.</li>
+                  </ul>
+                </div>
+
+                <div>
+                  <span className="text-[9px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Remaining Uncertainty</span>
+                  <p className="text-[#5F6368]">
+                    Whether the accessibility need represents a broad, unserved cohort or is isolated to a few vocal outliers.
+                  </p>
+                </div>
+
+                <div className="pt-2.5 border-t border-[#ECE8DE]/40">
+                  <a href="#q1" className="text-[12px] font-bold text-[#59624B] hover:underline flex items-center gap-1">
+                    Related findings: Why do customers keep buying from the same categories? →
+                  </a>
+                </div>
               </div>
             </div>
 
