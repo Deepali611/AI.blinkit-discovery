@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import { 
   reviews, 
@@ -10,36 +10,18 @@ import {
   SEGMENT_COLORS 
 } from "@/lib/data";
 import { 
-  ChevronDown, 
-  ChevronUp, 
   SlidersHorizontal, 
-  RefreshCw, 
-  FileDown, 
-  Check, 
-  ExternalLink,
-  ShieldCheck, 
-  FileCode,
-  Layers,
   Database,
-  ArrowRightLeft,
-  Quote
+  Search,
+  ArrowRight,
+  Check,
+  ExternalLink,
+  BookOpen,
+  Info,
+  Lock
 } from "lucide-react";
 
-// Segment initial-avatar mapping helper
-const getSegmentAvatar = (segment: string) => {
-  const map: Record<string, string> = {
-    heavy_user: "HU",
-    quality_focused: "QF",
-    price_sensitive: "PS",
-    light_new_user: "LN",
-    one_time_complainer: "OC",
-    senior_citizen: "SC",
-    unclear: "UN"
-  };
-  return map[segment] || "U";
-};
-
-// Expose bucketInfoNeeded locally
+// Local helper to bucket info needed
 function bucketInfoNeeded(text: string): string | null {
   if (!text || text === "none" || text === "not stated") return null;
   const t = text.toLowerCase();
@@ -57,712 +39,593 @@ function bucketInfoNeeded(text: string): string | null {
   return "Other";
 }
 
-export default function LandingPage() {
-  // Tab State
-  const [activeTab, setActiveTab] = useState<"dashboard" | "collect_analyze">("dashboard");
+const SOURCES = ["Google Play", "Reddit", "YouTube", "App Store"];
+const SEGMENTS = [
+  "heavy_user",
+  "quality_focused",
+  "price_sensitive",
+  "light_new_user",
+  "one_time_complainer",
+  "senior_citizen",
+  "unclear"
+];
+const REASONS = ["trust", "price", "convenience", "no_discovery", "habit", "other"];
 
-  // Filter States
-  const [selectedSources, setSelectedSources] = useState<string[]>([]);
-  const [selectedSegments, setSelectedSegments] = useState<string[]>([]);
-  const [hideWeakSignal, setHideWeakSignal] = useState(false);
-  const [matrixFilter, setMatrixFilter] = useState<{ segment: string; reason: string } | null>(null);
+export default function EngineDashboard() {
+  // Navigation State: "landing", "methodology", "workspace", "explorer", "docs"
+  const [currentView, setCurrentView] = useState<"landing" | "methodology" | "workspace" | "explorer" | "docs">("landing");
 
-  // Guide expand states
-  const [guide1Expanded, setGuide1Expanded] = useState(false);
-  const [guide2Expanded, setGuide2Expanded] = useState(false);
-  const [downloadsOpen, setDownloadsOpen] = useState(false);
+  // Evidence Explorer Filter States
+  const [explorerSearch, setExplorerSearch] = useState("");
+  const [explorerSource, setExplorerSource] = useState<string>("all");
+  const [explorerSegment, setExplorerSegment] = useState<string>("all");
+  const [explorerReason, setExplorerReason] = useState<string>("all");
+  const [explorerConfidence, setExplorerConfidence] = useState<string>("all");
 
-  // Filter computation
-  const filteredReviews = reviews.filter((r) => {
-    // 1. Source Filter
-    if (selectedSources.length > 0 && !selectedSources.includes(r.source)) {
-      return false;
-    }
-    // 2. Segment Filter
-    if (selectedSegments.length > 0 && !selectedSegments.includes(r.user_segment)) {
-      return false;
-    }
-    // 3. Weak signal filter
-    if (hideWeakSignal) {
-      if (r.user_segment === "unclear" || r.confidence === "low") {
-        return false;
-      }
-    }
-    // 4. Matrix interactive filter
-    if (matrixFilter) {
-      if (r.user_segment !== matrixFilter.segment || r.reason_type !== matrixFilter.reason) {
-        return false;
-      }
-    }
-    return true;
-  });
+  // Try It Live Analyzer States
+  const [apiKey, setApiKey] = useState("");
+  const [reviewInput, setReviewInput] = useState("");
+  const [analyzerLoading, setAnalyzerLoading] = useState(false);
+  const [analyzerResult, setAnalyzerResult] = useState<any>(null);
+  const [analyzerError, setAnalyzerError] = useState("");
+  const [analyzerStep, setAnalyzerStep] = useState(0);
 
-  // Recompute signal quality count live
-  const highConfCount = filteredReviews.filter((r) => r.confidence === "high").length;
-  const lowerConfCount = filteredReviews.filter((r) => r.confidence !== "high").length;
+  // Methodology list expanded states
+  const [methodologyStep1Expanded, setMethodologyStep1Expanded] = useState(false);
+  const [methodologyStep2Expanded, setMethodologyStep2Expanded] = useState(false);
 
-  // Reset all filters
-  const resetFilters = () => {
-    setSelectedSources([]);
-    setSelectedSegments([]);
-    setHideWeakSignal(false);
-    setMatrixFilter(null);
-  };
-
-  // Source list and segment list for UI rendering
-  const sourcesList = ["Google Play", "Reddit", "YouTube", "App Store"];
-  const segmentsList = [
-    "heavy_user",
-    "quality_focused",
-    "price_sensitive",
-    "light_new_user",
-    "one_time_complainer",
-    "senior_citizen",
-    "unclear"
+  const ANALYZER_STEPS = [
+    "Reading customer text...",
+    "Normalizing signals...",
+    "Grouping patterns...",
+    "Measuring confidence..."
   ];
 
-  // Helper for toggle multi-select sources
-  const toggleSource = (src: string) => {
-    if (selectedSources.includes(src)) {
-      setSelectedSources(selectedSources.filter((s) => s !== src));
-    } else {
-      setSelectedSources([...selectedSources, src]);
+  // Helper to jump to a specific row in the Explorer
+  const jumpToRow = (rowNumber: number) => {
+    setExplorerSearch(String(rowNumber));
+    setExplorerSource("all");
+    setExplorerSegment("all");
+    setExplorerReason("all");
+    setExplorerConfidence("all");
+    setCurrentView("explorer");
+  };
+
+  // Helper to navigate to explorer with specific cell filter
+  const filterByMatrixCell = (segment: string, reason: string) => {
+    setExplorerSegment(segment);
+    setExplorerReason(reason);
+    setExplorerSearch("");
+    setExplorerSource("all");
+    setExplorerConfidence("all");
+    setCurrentView("explorer");
+  };
+
+  // Run analyzer logic
+  const handleAnalyze = async () => {
+    setAnalyzerError("");
+    setAnalyzerResult(null);
+    if (!apiKey.trim()) {
+      setAnalyzerError("Please input an API Key.");
+      return;
+    }
+    if (!reviewInput.trim()) {
+      setAnalyzerError("Please paste a review to check.");
+      return;
+    }
+    setAnalyzerLoading(true);
+    setAnalyzerStep(0);
+
+    const interval = setInterval(() => {
+      setAnalyzerStep((prev) => (prev + 1) % ANALYZER_STEPS.length);
+    }, 1200);
+
+    try {
+      const res = await fetch("/api/analyze", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ apiKey, review: reviewInput }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Execution failed");
+      setAnalyzerResult(data);
+    } catch (e: any) {
+      setAnalyzerError(e.message);
+    } finally {
+      clearInterval(interval);
+      setAnalyzerLoading(false);
     }
   };
 
-  // Helper for toggle multi-select segments
-  const toggleSegment = (seg: string) => {
-    if (selectedSegments.includes(seg)) {
-      setSelectedSegments(selectedSegments.filter((s) => s !== seg));
-    } else {
-      setSelectedSegments([...selectedSegments, seg]);
+  // Discovery Questions Data & Sourcing
+  const getEvidenceForQuestion = (qIndex: number): ReviewRow[] => {
+    switch (qIndex) {
+      case 1:
+        return reviews.filter(r => r.repeat_buying_signal === "yes" && r.reason_type === "habit").slice(0, 2);
+      case 2:
+        return reviews.filter(r => r.repeat_buying_signal === "no" && r.reason_type === "trust" && r.category_mentioned !== "none").slice(0, 2);
+      case 3:
+        return reviews.filter(r => r.reason_type === "no_discovery").slice(0, 2);
+      case 4:
+        return reviews.filter(r => r.reason_type === "price" && r.user_segment === "price_sensitive").slice(0, 2);
+      case 5:
+        return reviews.filter(r => r.info_needed !== "none" && r.info_needed !== "not stated" && r.confidence === "high").slice(0, 2);
+      case 6:
+        return reviews.filter(r => r.barrier_to_new_category !== "none" && r.reason_type === "trust").slice(0, 2);
+      case 7:
+        return reviews.filter(r => r.user_segment === "heavy_user" && r.reason_type === "trust").slice(0, 2);
+      case 8:
+        return reviews.filter(r => r.info_needed !== "none" && r.info_needed !== "not stated" && r.user_segment === "senior_citizen").slice(0, 1)
+          .concat(reviews.filter(r => r.info_needed !== "none" && r.info_needed !== "not stated" && r.confidence === "med").slice(0, 1));
+      default:
+        return [];
     }
-  };
-
-  // Dynamic takeaway logic
-  const getTopTwoTakeaway = (data: { name: string; count: number }[]) => {
-    const sorted = [...data].sort((a, b) => b.count - a.count);
-    if (sorted.length >= 2 && sorted[0].count > 0) {
-      return `${sorted[0].name.replace(/_/g, " ")} and ${sorted[1].name.replace(/_/g, " ")} lead this view, but signal is spread across multiple themes.`;
-    } else if (sorted.length === 1 && sorted[0].count > 0) {
-      return `${sorted[0].name.replace(/_/g, " ")} leads this view.`;
-    }
-    return "No active signals match the selected filters.";
-  };
-
-  // Download logic helpers
-  const triggerDownload = (content: string, filename: string, contentType: string) => {
-    const blob = new Blob([content], { type: contentType });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement("a");
-    link.href = url;
-    link.download = filename;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    URL.revokeObjectURL(url);
-    setDownloadsOpen(false);
-  };
-
-  const downloadCSV = () => {
-    const headers = ["Row Number", "Repeat Signal", "Category", "Barrier", "Reason Type", "Info Needed", "Segment", "Duplicate", "Confidence", "Source", "Quote"];
-    const rows = filteredReviews.map((r) => [
-      r.row_number,
-      r.repeat_buying_signal,
-      `"${r.category_mentioned}"`,
-      `"${r.barrier_to_new_category}"`,
-      r.reason_type,
-      `"${r.info_needed}"`,
-      r.user_segment,
-      r.duplicate_flag,
-      r.confidence,
-      r.source,
-      `"${r.quote.replace(/"/g, '""')}"`
-    ]);
-    const csvContent = [headers.join(","), ...rows.map(e => e.join(","))].join("\n");
-    triggerDownload(csvContent, "blinkit_filtered_feedback.csv", "text/csv;charset=utf-8;");
-  };
-
-  const downloadJSON = () => {
-    const jsonContent = JSON.stringify(filteredReviews, null, 2);
-    triggerDownload(jsonContent, "blinkit_filtered_feedback.json", "application/json");
-  };
-
-  const downloadMD = () => {
-    let md = `# Blinkit Discovery Engine - Summary Report\n\n`;
-    md += `**Date:** ${new Date().toLocaleDateString()}\n`;
-    md += `**Active Records in Filter View:** ${filteredReviews.length} / 189\n\n`;
-    md += `## Filter Settings\n`;
-    md += `- **Sources:** ${selectedSources.length ? selectedSources.join(", ") : "All sources"}\n`;
-    md += `- **Segments:** ${selectedSegments.length ? selectedSegments.join(", ") : "All segments"}\n`;
-    md += `- **Hide Weak Signals:** ${hideWeakSignal ? "Yes" : "No"}\n`;
-    if (matrixFilter) {
-      md += `- **Matrix Focus Cell:** Segment "${matrixFilter.segment}" × Reason "${matrixFilter.reason}"\n`;
-    }
-    md += `\n`;
-    md += `## Top Qualitative Evidence (Verbatim Proofs)\n\n`;
-    filteredReviews.slice(0, 8).forEach((r, idx) => {
-      md += `### Evidence #${idx + 1} (Row #${r.row_number})\n`;
-      md += `> "${r.quote}"\n\n`;
-      md += `- **Category:** ${r.category_mentioned}\n`;
-      md += `- **Barrier:** ${r.barrier_to_new_category}\n`;
-      md += `- **Segment:** ${r.user_segment}\n`;
-      md += `- **Reason:** ${r.reason_type}\n`;
-      md += `- **Confidence:** ${r.confidence}\n\n`;
-    });
-    triggerDownload(md, "blinkit_filter_summary.md", "text/markdown");
   };
 
   // Matrix calculation data
-  const matrixSegments = segmentsList;
-  const matrixReasons = ["trust", "price", "convenience", "no_discovery", "habit", "other"];
+  const maxMatrixCount = (() => {
+    let max = 0;
+    SEGMENTS.forEach(seg => {
+      REASONS.forEach(reason => {
+        const count = reviews.filter(r => r.user_segment === seg && r.reason_type === reason).length;
+        if (count > max) max = count;
+      });
+    });
+    return max || 1;
+  })();
 
-  // Click handler for matrix cell
-  const handleMatrixCellClick = (segment: string, reason: string) => {
-    if (matrixFilter && matrixFilter.segment === segment && matrixFilter.reason === reason) {
-      setMatrixFilter(null);
-    } else {
-      setMatrixFilter({ segment, reason });
+  // Filtered reviews for Explorer
+  const filteredExplorerReviews = reviews.filter((r) => {
+    if (explorerSearch.trim()) {
+      const s = explorerSearch.toLowerCase();
+      // match row number exactly or search quote content
+      if (r.row_number.toString() !== s && !r.quote.toLowerCase().includes(s)) {
+        return false;
+      }
     }
-  };
-
-  // Ranked segments calculation
-  const segmentStats = segmentsList.map(seg => {
-    const matching = filteredReviews.filter(r => r.user_segment === seg);
-    const count = matching.length;
-    const avgConf = matching.length > 0
-      ? matching.reduce((sum, r) => sum + (r.confidence === "high" ? 1.0 : r.confidence === "med" ? 0.6 : 0.3), 0) / matching.length
-      : 0;
-    return { name: seg, count, avgConf };
-  }).filter(e => e.count > 0).sort((a, b) => b.count - a.count);
-
-  const segmentStatsTotal = segmentStats.reduce((a, b) => a + b.count, 0) || 1;
-
-  // Unmet Needs calculation
-  const unmetNeedsStats = Object.keys(REASON_COLORS).map(() => null); // mock placeholder loop length
-  const unmetNeedsCounts: Record<string, number> = {};
-  filteredReviews.forEach(r => {
-    const b = bucketInfoNeeded(r.info_needed);
-    if (b) {
-      unmetNeedsCounts[b] = (unmetNeedsCounts[b] || 0) + 1;
-    }
+    if (explorerSource !== "all" && r.source !== explorerSource) return false;
+    if (explorerSegment !== "all" && r.user_segment !== explorerSegment) return false;
+    if (explorerReason !== "all" && r.reason_type !== explorerReason) return false;
+    if (explorerConfidence !== "all" && r.confidence !== explorerConfidence) return false;
+    return true;
   });
-  const unmetNeedsSorted = Object.entries(unmetNeedsCounts)
-    .map(([name, count]) => ({ name, count }))
-    .sort((a, b) => b.count - a.count);
-  const unmetNeedsTotal = unmetNeedsSorted.reduce((a, b) => a + b.count, 0) || 1;
-
-  // Strongest Evidence calculation
-  const strongestEvidence = filteredReviews
-    .filter(r => r.duplicate_flag === "no")
-    .map(r => {
-      let score = 0;
-      if (r.confidence === "high") score += 3;
-      else if (r.confidence === "med") score += 2;
-      else score += 1;
-
-      const hasAsk = r.info_needed && r.info_needed !== "none" && r.info_needed !== "not stated";
-      if (hasAsk) score += 2;
-
-      return { ...r, score };
-    })
-    .sort((a, b) => b.score - a.score)
-    .slice(0, 8);
 
   return (
-    <div className="space-y-12">
-      {/* ═══════════════════════════════════════════
-          LANDING PAGE HERO & GUIDE CARDS
-          ═══════════════════════════════════════════ */}
-      <div className="space-y-8">
-        {/* Hero Header */}
-        <div className="text-center max-w-3xl mx-auto space-y-4">
-          <span className="text-[10px] font-bold text-[#59624B] uppercase tracking-[0.2em] bg-[#F3F5F1] px-3.5 py-1 rounded-full border border-[#59624B]/20 inline-block">
-            AI-Powered Category Discovery Engine
-          </span>
-          <h1 className="font-display font-extrabold text-[42px] leading-tight text-[#171717] tracking-tight">
-            Blinkit Discovery Engine
-          </h1>
-          <p className="text-[15px] text-[#5F6368] leading-relaxed">
-            Collect real customer feedback, keep only meaningful behavioral signal, 
-            and turn it into a dashboard that explains why customers repeat-buy the same 
-            categories, where trust breaks down, and which segments are ready to explore 
-            something new.
-          </p>
-
-          {/* 4 Pill Chips */}
-          <div className="flex flex-wrap items-center justify-center gap-2 pt-2">
-            <span className="text-[11px] font-bold text-[#59624B] bg-white border border-[#ECE8DE] px-3.5 py-1.5 rounded-full shadow-sm hover:border-[#59624B]/30 transition-all">
-              Trust barriers
-            </span>
-            <span className="text-[11px] font-bold text-[#59624B] bg-white border border-[#ECE8DE] px-3.5 py-1.5 rounded-full shadow-sm hover:border-[#59624B]/30 transition-all">
-              Price switching
-            </span>
-            <span className="text-[11px] font-bold text-[#59624B] bg-white border border-[#ECE8DE] px-3.5 py-1.5 rounded-full shadow-sm hover:border-[#59624B]/30 transition-all">
-              Segment evidence
-            </span>
-            <span className="text-[11px] font-bold text-[#59624B] bg-white border border-[#ECE8DE] px-3.5 py-1.5 rounded-full shadow-sm hover:border-[#59624B]/30 transition-all">
-              Verbatim proof
-            </span>
+    <div className="space-y-8 font-sans antialiased text-[#171717]">
+      {/* Navigation Header (Hidden on Landing) */}
+      {currentView !== "landing" && (
+        <header className="border-b border-[#ECE8DE] bg-[#F2F1EC] p-4 rounded-lg flex flex-col md:flex-row items-center justify-between gap-4">
+          <div className="flex items-center gap-3">
+            <button 
+              onClick={() => setCurrentView("landing")}
+              className="w-8 h-8 rounded-lg bg-[#F8CB46] flex items-center justify-center text-[#171717] text-[15px] font-black shadow-sm"
+            >
+              B
+            </button>
+            <div>
+              <span className="font-display font-extrabold text-[14px]">Blinkit Discovery Engine</span>
+              <div className="text-[9px] text-[#5F6368] font-bold tracking-wide uppercase">Internal Tool</div>
+            </div>
           </div>
-        </div>
+          
+          <nav className="flex items-center gap-1">
+            <button
+              onClick={() => setCurrentView("workspace")}
+              className={`px-4 py-1.5 text-[12px] font-bold rounded-md transition-all ${
+                currentView === "workspace"
+                  ? "bg-white text-[#171717] shadow-sm"
+                  : "text-[#5F6368] hover:text-[#171717]"
+              }`}
+            >
+              Discovery Workspace
+            </button>
+            <button
+              onClick={() => setCurrentView("methodology")}
+              className={`px-4 py-1.5 text-[12px] font-bold rounded-md transition-all ${
+                currentView === "methodology"
+                  ? "bg-white text-[#171717] shadow-sm"
+                  : "text-[#5F6368] hover:text-[#171717]"
+              }`}
+            >
+              How the Engine Works
+            </button>
+            <button
+              onClick={() => setCurrentView("explorer")}
+              className={`px-4 py-1.5 text-[12px] font-bold rounded-md transition-all ${
+                currentView === "explorer"
+                  ? "bg-white text-[#171717] shadow-sm"
+                  : "text-[#5F6368] hover:text-[#171717]"
+              }`}
+            >
+              Evidence Explorer
+            </button>
+            <button
+              onClick={() => setCurrentView("docs")}
+              className={`px-4 py-1.5 text-[12px] font-bold rounded-md transition-all ${
+                currentView === "docs"
+                  ? "bg-white text-[#171717] shadow-sm"
+                  : "text-[#5F6368] hover:text-[#171717]"
+              }`}
+            >
+              Engine Documentation
+            </button>
+          </nav>
+        </header>
+      )}
 
-        {/* Green Execution Banner */}
-        <div className="bg-[#F3F5F1] border border-[#59624B]/20 rounded-[18px] p-6 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-6 max-w-4xl mx-auto">
-          <div className="space-y-2 flex-1">
-            <span className="text-[10px] font-extrabold text-[#59624B] uppercase tracking-wider block">
-              Executed Analysis Loaded by Default
-            </span>
-            <h2 className="font-display font-extrabold text-[18px] text-[#171717] leading-snug">
-              Start with the ready dashboard. The review analysis is already 
-              collected, analyzed, and waiting for review.
-            </h2>
+      {/* ═══════════════════════════════════════════
+          1. LANDING VIEW
+          ═══════════════════════════════════════════ */}
+      {currentView === "landing" && (
+        <div className="min-h-[70vh] flex flex-col items-center justify-center max-w-2xl mx-auto text-center space-y-8 py-10">
+          <div className="space-y-4">
+            <div className="w-12 h-12 rounded-xl bg-[#F8CB46] text-[#171717] font-black text-[22px] flex items-center justify-center mx-auto shadow-sm">
+              B
+            </div>
+            <h1 className="font-display font-extrabold text-[32px] leading-tight tracking-tight text-[#171717]">
+              Blinkit Discovery Engine — reads customer feedback so Product doesn't have to guess why customers stay inside the categories they already trust.
+            </h1>
+            <p className="text-[14px] text-[#5F6368] font-medium leading-relaxed border-t border-[#ECE8DE] pt-4">
+              189 behavioral signals extracted from 1,176 reviews across 4 sources. Every signal traces back to a real customer sentence.
+            </p>
+          </div>
+
+          <button
+            onClick={() => setCurrentView("workspace")}
+            className="bg-[#59624B] hover:bg-[#59624B]/90 text-white font-bold text-[13px] px-6 py-3 rounded-lg flex items-center gap-2 transition-all shadow-sm"
+          >
+            Open the engine <ArrowRight size={14} />
+          </button>
+        </div>
+      )}
+
+      {/* ═══════════════════════════════════════════
+          2. HOW THE ENGINE WORKS VIEW
+          ═══════════════════════════════════════════ */}
+      {currentView === "methodology" && (
+        <div className="space-y-8 max-w-4xl mx-auto">
+          {/* Engineering docs block */}
+          <div className="bg-white border border-[#ECE8DE] rounded-lg p-6 shadow-sm space-y-6">
+            <div>
+              <span className="text-[9px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Methodology Reference</span>
+              <h2 className="font-display font-bold text-[18px] text-[#171717] mt-0.5">What this engine does, in order:</h2>
+            </div>
+            
+            <ol className="space-y-4 text-[13.5px] text-[#5F6368] leading-relaxed">
+              <li className="flex gap-3">
+                <span className="font-mono font-bold text-[#59624B]">1.</span>
+                <div>
+                  <strong>Reads customer feedback:</strong> Ingests entries from Google Play (662), Reddit (360), YouTube comments (144), and App Store (10).
+                </div>
+              </li>
+              <li className="flex gap-3">
+                <span className="font-mono font-bold text-[#59624B]">2.</span>
+                <div>
+                  <strong>Rejects reviews with no behavioral content:</strong> A one-word rating or generic praise carries no signal and is discarded before the model sees it as analyzable evidence. 987 of 1,176 reviews were rejected at this step; that's not a flaw, it reflects how little of this kind of feedback actually contains reasoning.
+                </div>
+              </li>
+              <li className="flex gap-3">
+                <span className="font-mono font-bold text-[#59624B]">3.</span>
+                <div>
+                  <strong>Extracts structure:</strong> Classifies from what is left whether the review shows repeat-buying behavior, what category is named, what is the stated barrier, what would fix it, what segment the language suggests, and how confident the model is in its own read.
+                </div>
+              </li>
+              <li className="flex gap-3">
+                <span className="font-mono font-bold text-[#59624B]">4.</span>
+                <div>
+                  <strong>Requires quote-grounding:</strong> Requires every extracted claim to quote the exact source sentence. If the model's stated reasoning can't be found verbatim in the original review, that record is discarded, not corrected or reworded.
+                </div>
+              </li>
+              <li className="flex gap-3">
+                <span className="font-mono font-bold text-[#59624B]">5.</span>
+                <div>
+                  <strong>Deduplicates feed:</strong> Flags near-duplicate content (20% of extracted signals) so a single viral complaint copy-pasted across threads doesn't inflate a theme's apparent size.
+                </div>
+              </li>
+            </ol>
+          </div>
+
+          {/* AI vs Human block */}
+          <div className="bg-white border border-[#ECE8DE] rounded-lg p-6 shadow-sm space-y-3">
+            <h3 className="font-display font-bold text-[15px] text-[#171717]">
+              Why this needed AI, not a person reading 1,176 reviews
+            </h3>
             <p className="text-[13px] text-[#5F6368] leading-relaxed">
-              Want to see how the pipeline works end to end?{" "}
-              <button 
-                onClick={() => setActiveTab("collect_analyze")}
-                className="text-[#59624B] font-bold underline hover:text-[#171717]"
-              >
-                Open the methodology walkthrough
-              </button>
-              .{" "}
-              <span className="text-[#8C8C8C] italic">
-                This uses a fixed dataset of 1,176 reviews collected for this analysis.
-              </span>
+              A person could read all 1,176 reviews. What they couldn't do reliably is apply the exact same extraction standard to review #4 and review #1,150 — attention degrades, categorization drifts, and two different afternoons produce two different judgment calls on the same review. This engine applies one fixed extraction standard to every review, and every output is traceable back to the sentence that produced it — which a manual read-through doesn't produce as a byproduct.
             </p>
           </div>
-          {/* Stat Card */}
-          <div className="bg-white border border-[#ECE8DE] rounded-[14px] p-4 text-center shrink-0 min-w-[170px] shadow-sm">
-            <div className="text-[28px] font-black text-[#59624B] leading-none">
-              189
-            </div>
-            <div className="text-[10px] font-bold text-[#5F6368] uppercase tracking-wider mt-1.5">
-              meaningful signals
-            </div>
-            <div className="text-[9px] text-[#8C8C8C] font-mono mt-0.5">
-              analyzed & tagged
-            </div>
-          </div>
-        </div>
 
-        {/* Two Guide Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
-          {/* Card 1 */}
-          <div className="bg-white border border-[#ECE8DE] rounded-[18px] p-6 shadow-sm space-y-4">
-            <div>
-              <span className="text-[9px] font-bold text-[#8C8C8C] uppercase tracking-wider block">
-                For demo users
-              </span>
-              <h3 className="font-display font-bold text-[16px] text-[#171717] mt-0.5">
-                How to operate this tool
-              </h3>
-            </div>
-            <div>
-              <button
-                onClick={() => setGuide1Expanded(!guide1Expanded)}
-                className="text-[11px] font-bold text-[#59624B] hover:text-[#171717] flex items-center gap-1 focus:outline-none"
-              >
-                {guide1Expanded ? "Hide preview details" : "Preview operate guide"}
-                {guide1Expanded ? <ChevronUp size={12} /> : <ChevronDown size={12} />}
-              </button>
-              {guide1Expanded && (
-                <ul className="list-disc pl-4 text-[12px] text-[#5F6368] space-y-1.5 mt-2 bg-[#F8F9FA] p-3 rounded-[12px] border border-[#ECE8DE]/60 leading-relaxed">
-                  <li>What the sources and customer segment filters do</li>
-                  <li>How to read high-confidence vs. low-confidence signals</li>
-                  <li>How to trace findings back to verbatim customer evidence quotes</li>
-                </ul>
-              )}
-            </div>
-            <Link
-              href="/guide"
-              className="inline-flex items-center gap-1 text-[12px] font-bold text-[#59624B] hover:text-[#171717] hover:underline"
-            >
-              Open guide <ExternalLink size={12} />
-            </Link>
-          </div>
-
-          {/* Card 2 */}
-          <div className="bg-white border border-[#ECE8DE] rounded-[18px] p-6 shadow-sm space-y-4">
-            <div>
-              <span className="text-[9px] font-bold text-[#8C8C8C] uppercase tracking-wider block">
-                For PMs and reviewers
-              </span>
-              <h3 className="font-display font-bold text-[16px] text-[#171717] mt-0.5">
-                Backend architecture one-pager
-              </h3>
-            </div>
-            <div>
-              <button
-                onClick={() => setGuide2Expanded(!guide2Expanded)}
-                className="text-[11px] font-bold text-[#59624B] hover:text-[#171717] flex items-center gap-1 focus:outline-none"
-              >
-                {guide2Expanded ? "Hide preview details" : "Preview synopsis details"}
-                {guide2Expanded ? <ChevronUp size={12} /> : <ChevronDown size={12} />}
-              </button>
-              {guide2Expanded && (
-                <ul className="list-disc pl-4 text-[12px] text-[#5F6368] space-y-1.5 mt-2 bg-[#F8F9FA] p-3 rounded-[12px] border border-[#ECE8DE]/60 leading-relaxed">
-                  <li>Where each raw source comes from (Reddit, YouTube, App Store)</li>
-                  <li>How quality filtering and structured extraction gates work</li>
-                  <li>Why every dashboard number stays traceable to real reviews</li>
-                </ul>
-              )}
-            </div>
-            <Link
-              href="/architecture"
-              className="inline-flex items-center gap-1 text-[12px] font-bold text-[#59624B] hover:text-[#171717] hover:underline"
-            >
-              Open synopsis <ExternalLink size={12} />
-            </Link>
-          </div>
-        </div>
-
-        {/* Top-Level Tab Toggle */}
-        <div className="flex justify-center pt-2">
-          <div className="bg-[#F2F1EC] p-1 rounded-[14px] border border-[#ECE8DE] flex gap-1 shadow-sm">
-            <button
-              onClick={() => setActiveTab("collect_analyze")}
-              className={`px-6 py-2 text-[12.5px] font-bold rounded-[10px] transition-all flex items-center gap-2 ${
-                activeTab === "collect_analyze"
-                  ? "bg-white text-[#171717] shadow-sm"
-                  : "text-[#5F6368] hover:text-[#171717]"
-              }`}
-            >
-              <Layers size={14} /> Collect & Analyze
-            </button>
-            <button
-              onClick={() => setActiveTab("dashboard")}
-              className={`px-6 py-2 text-[12.5px] font-bold rounded-[10px] transition-all flex items-center gap-2 ${
-                activeTab === "dashboard"
-                  ? "bg-white text-[#171717] shadow-sm"
-                  : "text-[#5F6368] hover:text-[#171717]"
-              }`}
-            >
-              <SlidersHorizontal size={14} /> Dashboard View
-            </button>
-          </div>
-        </div>
-      </div>
-
-      {/* ═══════════════════════════════════════════
-          TAB 1: COLLECT & ANALYZE (Methodology & Demo)
-          ═══════════════════════════════════════════ */}
-      {activeTab === "collect_analyze" && (
-        <div className="max-w-4xl mx-auto space-y-10">
-          <div className="bg-white border border-[#ECE8DE] rounded-[18px] p-6 shadow-sm space-y-4">
-            <h2 className="font-display font-extrabold text-[20px] text-[#171717]">
-              Pipeline Transformation Demonstration
-            </h2>
-            <p className="text-[13.5px] text-[#5F6368] leading-relaxed">
-              Blinkit feedback is ingested from four organic channels, normalized, filtered for noise (removing short comments or courier complaints), and classified into structured parameters. Here is a live example of the before-and-after extraction:
-            </p>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
-              {/* Raw Before */}
-              <div className="bg-[#F8F9FA] border border-[#ECE8DE] rounded-[14px] p-5 space-y-3">
-                <span className="text-[9px] font-bold text-[#8C8C8C] uppercase tracking-wider block">
-                  Before: Raw Review
-                </span>
-                <blockquote className="text-[13px] text-[#5F6368] leading-relaxed italic bg-white p-4 rounded-[12px] border border-[#ECE8DE]/60">
-                  "Ordered fresh milk packets and some vegetables. The milk was bloated and expired tomorrow, and the tomatoes were half rotten. I'm going back to buying perishables from Mother Dairy nearby. Can't risk it."
-                </blockquote>
-                <p className="text-[11.5px] text-[#8C8C8C]">
-                  Messy, descriptive text containing spelling errors and generic frustration.
-                </p>
-              </div>
-
-              {/* JSON After */}
-              <div className="bg-[#F8F9FA] border border-[#ECE8DE] rounded-[14px] p-5 space-y-3">
-                <span className="text-[9px] font-bold text-[#59624B] uppercase tracking-wider block">
-                  After: Structured Schema Output
-                </span>
-                <pre className="bg-white border border-[#ECE8DE]/60 rounded-[12px] p-4 text-[10.5px] font-mono text-[#5F6368] overflow-x-auto leading-normal">
-{`{
-  "has_signal": true,
-  "repeat_buying_signal": "no",
-  "category_mentioned": "produce (perishables)",
-  "barrier_to_new_category": "spoiled items and short expiry dates",
-  "reason_type": "trust",
-  "info_needed": "expiry visibility and freshness badges",
-  "user_segment": "quality_focused",
-  "confidence": "high"
-}`}
-                </pre>
-                <p className="text-[11.5px] text-[#59624B] font-semibold flex items-center gap-1">
-                  ✓ Grounded character-match validated.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          {/* Dataset Source breakdown */}
-          <div className="bg-white border border-[#ECE8DE] rounded-[18px] p-6 shadow-sm space-y-6">
-            <h2 className="font-display font-extrabold text-[20px] text-[#171717]">
-              Dataset Source Breakdown
-            </h2>
-            <p className="text-[13.5px] text-[#5F6368] leading-relaxed">
-              The analysis is based on 1,176 raw reviews scanned. Out of these, 189 high-quality records were extracted and tagged:
-            </p>
-
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              <div className="bg-[#F8F9FA] border border-[#ECE8DE] rounded-[14px] p-4 text-center">
-                <div className="text-[20px] font-bold text-[#171717]">662</div>
-                <div className="text-[10px] font-semibold text-[#8C8C8C] uppercase tracking-wider mt-1">
-                  Google Play
-                </div>
-                <div className="text-[11px] text-[#5F6368] font-semibold mt-0.5">56.3% of feed</div>
-              </div>
-              
-              <div className="bg-[#F8F9FA] border border-[#ECE8DE] rounded-[14px] p-4 text-center">
-                <div className="text-[20px] font-bold text-[#171717]">360</div>
-                <div className="text-[10px] font-semibold text-[#8C8C8C] uppercase tracking-wider mt-1">
-                  Reddit Threads
-                </div>
-                <div className="text-[11px] text-[#5F6368] font-semibold mt-0.5">30.6% of feed</div>
-              </div>
-
-              <div className="bg-[#F8F9FA] border border-[#ECE8DE] rounded-[14px] p-4 text-center">
-                <div className="text-[20px] font-bold text-[#171717]">144</div>
-                <div className="text-[10px] font-semibold text-[#8C8C8C] uppercase tracking-wider mt-1">
-                  YouTube Comments
-                </div>
-                <div className="text-[11px] text-[#5F6368] font-semibold mt-0.5">12.2% of feed</div>
-              </div>
-
-              <div className="bg-[#F8F9FA] border border-[#ECE8DE] rounded-[14px] p-4 text-center">
-                <div className="text-[20px] font-bold text-[#171717]">10</div>
-                <div className="text-[10px] font-semibold text-[#8C8C8C] uppercase tracking-wider mt-1">
-                  App Store
-                </div>
-                <div className="text-[11px] text-[#5F6368] font-semibold mt-0.5">0.9% of feed</div>
-              </div>
-            </div>
-
-            <div className="border-l-2 border-[#D64545] pl-4 py-2 bg-[#FFF5F5] rounded-r-lg">
-              <p className="text-[12.5px] text-[#5F6368]">
-                <strong>Source bias disclaimer:</strong> App Store sample is extremely small (n=10) and yields directional qualitative cues only. Reddit feedback skews to comparison debates (e.g. Blinkit vs Zepto) whereas Google Play Store reviews capture quick post-delivery complaints.
-              </p>
-            </div>
+          {/* System risks / Limitations block */}
+          <div className="bg-white border border-[#ECE8DE] rounded-lg p-6 shadow-sm space-y-4">
+            <h3 className="font-display font-bold text-[15px] text-[#171717]">
+              Where this engine could be wrong
+            </h3>
+            <ul className="list-disc pl-5 space-y-2 text-[13px] text-[#5F6368] leading-relaxed">
+              <li>
+                The model's confidence score is self-reported, not independently checked against ground truth — treat 'high confidence' as 'the model didn't hedge,' not as a guarantee.
+              </li>
+              <li>
+                Reddit reviews in this dataset are mostly post titles, not full posts — the model sometimes has less context than a full review would give it.
+              </li>
+              <li>
+                App Store contributed only 10 reviews — anything drawn primarily from that source is not statistically reliable on its own.
+              </li>
+              <li>
+                Segment labels (heavy_user, price_sensitive, etc.) are inferred from word choice and phrasing, not verified against account or purchase history — they are a language-based hypothesis about the customer, not a confirmed fact.
+              </li>
+              <li>
+                A customer who leaves a review is not a random sample of all customers — this dataset systematically over-represents people who had something to complain about.
+              </li>
+            </ul>
           </div>
         </div>
       )}
 
       {/* ═══════════════════════════════════════════
-          TAB 2: INTERACTIVE DASHBOARD VIEW
+          3. DISCOVERY WORKSPACE VIEW
           ═══════════════════════════════════════════ */}
-      {activeTab === "dashboard" && (
-        <div className="space-y-10">
-          
-          {/* Filters & Signal Quality Row */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+      {currentView === "workspace" && (
+        <div className="space-y-10 max-w-4xl mx-auto">
+          {/* Header info */}
+          <div className="border-b border-[#ECE8DE] pb-4">
+            <h2 className="font-display font-bold text-[20px] text-[#171717]">Discovery Workspace</h2>
+            <p className="text-[13px] text-[#5F6368] mt-1">
+              Active structured evaluation of the 8 core customer discovery questions.
+            </p>
+          </div>
+
+          {/* 8 Questions list */}
+          <div className="space-y-6">
             
-            {/* Filters panel */}
-            <div className="lg:col-span-4 bg-white border border-[#ECE8DE] rounded-[18px] p-6 shadow-sm space-y-6">
-              <div className="flex items-center justify-between border-b border-[#ECE8DE]/60 pb-3">
-                <h3 className="font-display font-bold text-[15px] text-[#171717] flex items-center gap-1.5">
-                  <SlidersHorizontal size={14} className="text-[#59624B]" /> Filters Panel
-                </h3>
-                <button
-                  onClick={resetFilters}
-                  className="text-[11px] font-bold text-[#59624B] hover:text-[#171717] flex items-center gap-1"
-                >
-                  <RefreshCw size={11} /> Reset
-                </button>
+            {/* Q1 */}
+            <div className="bg-white border border-[#ECE8DE] rounded-lg p-6 shadow-sm space-y-4">
+              <div className="flex items-center justify-between">
+                <span className="font-mono text-[10px] font-bold text-[#59624B] bg-[#F3F5F1] px-2.5 py-0.5 rounded border border-[#59624B]/20">
+                  Question 01
+                </span>
+                <span className="text-[11px] font-bold text-[#59624B]">Confidence: High (supported by clear metric gap)</span>
               </div>
-
-              {/* Description */}
-              <p className="text-[12px] text-[#5F6368] leading-relaxed">
-                Filter by feedback source and customer segment. Every chart below recalculates 
-                from the selected evidence.
+              <h3 className="font-display font-bold text-[15.5px] text-[#171717]">
+                Why do customers keep buying from the same categories?
+              </h3>
+              <p className="text-[13px] text-[#5F6368] leading-relaxed">
+                This isn't habit. Only 7 of 189 signals (3.7%) describe routine or automatic buying — the weakest pattern in the entire dataset. What actually repeats is caution: customers keep returning to categories where nothing has gone wrong for them yet, and they describe this as a deliberate choice, not a default.
               </p>
-
-              {/* Source filter pills */}
-              <div className="space-y-2">
-                <span className="font-sans text-[9px] font-bold text-[#8C8C8C] uppercase tracking-wider block">
-                  Feedback Sources
-                </span>
-                <div className="flex flex-wrap gap-2">
-                  {sourcesList.map((src) => {
-                    const isSelected = selectedSources.includes(src);
-                    return (
-                      <button
-                        key={src}
-                        onClick={() => toggleSource(src)}
-                        className={`text-[11px] font-semibold px-3 py-1.5 rounded-full border transition-all ${
-                          isSelected
-                            ? "bg-[#59624B] text-white border-[#59624B]"
-                            : "bg-[#F8F9FA] text-[#5F6368] border-[#ECE8DE] hover:border-[#8C8C8C]/50"
-                        }`}
-                      >
-                        {src}
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
-
-              {/* Segment checkboxes */}
-              <div className="space-y-2">
-                <span className="font-sans text-[9px] font-bold text-[#8C8C8C] uppercase tracking-wider block">
-                  Customer Segments
-                </span>
-                <div className="space-y-2">
-                  {segmentsList.map((seg) => {
-                    const isSelected = selectedSegments.includes(seg);
-                    return (
-                      <label 
-                        key={seg} 
-                        className="flex items-center gap-2.5 text-[12.5px] text-[#171717] cursor-pointer group"
-                      >
-                        <input
-                          type="checkbox"
-                          checked={isSelected}
-                          onChange={() => toggleSegment(seg)}
-                          className="w-4 h-4 rounded border-[#ECE8DE] text-[#59624B] focus:ring-[#59624B]/30"
-                        />
-                        <span className="capitalize group-hover:text-[#59624B] transition-colors">
-                          {seg.replace(/_/g, " ")}
-                        </span>
-                      </label>
-                    );
-                  })}
-                </div>
-              </div>
-
-              {/* Weak Signal Checkbox */}
-              <div className="border-t border-[#ECE8DE]/60 pt-4">
-                <label className="flex items-start gap-2.5 text-[12.5px] text-[#171717] cursor-pointer">
-                  <input
-                    type="checkbox"
-                    checked={hideWeakSignal}
-                    onChange={(e) => setHideWeakSignal(e.target.checked)}
-                    className="w-4 h-4 rounded border-[#ECE8DE] text-[#59624B] focus:ring-[#59624B]/30 mt-0.5"
-                  />
-                  <div>
-                    <span className="font-semibold block leading-tight">
-                      Hide unclassified or weak-signal records
-                    </span>
-                    <span className="text-[10px] text-[#8C8C8C] block mt-0.5 leading-normal">
-                      Excludes unclear user segments and low-confidence classifications.
-                    </span>
+              {/* Evidence Quotes */}
+              <div className="space-y-2 pt-2 border-t border-[#ECE8DE]/60">
+                <span className="text-[9px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Verbatim Evidence:</span>
+                {getEvidenceForQuestion(1).map((r) => (
+                  <div 
+                    key={r.row_number} 
+                    onClick={() => jumpToRow(r.row_number)}
+                    className="bg-[#F8F9FA] border border-[#ECE8DE] rounded-md p-3 text-[12px] text-[#171717] italic cursor-pointer hover:bg-[#F2F1EC] transition-all"
+                  >
+                    "{r.quote}" <span className="font-mono text-[10px] text-[#8C8C8C] not-italic block mt-1">Row #{r.row_number} · Click to verify</span>
                   </div>
-                </label>
+                ))}
               </div>
-
-              {/* Interactive Matrix active filter card details */}
-              {matrixFilter && (
-                <div className="bg-[#FFF6DD] border border-[#F8CB46]/30 p-3.5 rounded-[12px] text-[12px] space-y-1.5">
-                  <div className="flex justify-between items-center">
-                    <span className="font-bold text-[#8C8C8C] uppercase text-[9px] tracking-wider block">
-                      Active Matrix Cell Focus
-                    </span>
-                    <button
-                      onClick={() => setMatrixFilter(null)}
-                      className="text-[10px] font-bold text-[#171717] underline hover:text-[#59624B]"
-                    >
-                      Clear cell focus
-                    </button>
-                  </div>
-                  <p className="text-[#171717] leading-relaxed">
-                    Showing Segment <strong className="capitalize">"{matrixFilter.segment.replace(/_/g, " ")}"</strong> with Reason <strong className="capitalize">"{matrixFilter.reason}"</strong>.
-                  </p>
-                </div>
-              )}
             </div>
 
-            {/* Right details: Signal Quality and Matrix */}
-            <div className="lg:col-span-8 space-y-6">
-              
-              {/* Signal Quality Banner */}
-              <div className="bg-[#F3F5F1] border border-[#59624B]/20 rounded-[18px] p-5 flex items-start gap-3.5 shadow-sm">
-                <ShieldCheck size={20} className="text-[#59624B] shrink-0 mt-0.5" />
-                <div>
-                  <h4 className="font-display font-bold text-[14px] text-[#171717] leading-none mb-1">
-                    Signal Quality Verification
-                  </h4>
-                  <p className="text-[12.5px] text-[#5F6368] leading-relaxed">
-                    Using <strong className="text-[#171717]">{highConfCount}</strong> high-confidence records 
-                    from 189 meaningful feedback items. <strong className="text-[#171717]">{lowerConfCount}</strong> lower-confidence 
-                    records are kept out so the charts stay reliable.
-                  </p>
-                  <p className="text-[11px] text-[#8C8C8C] italic mt-1 leading-normal">
-                    *Segment classification is inferred from review language, not verified account data — treat as directional.
-                  </p>
+            {/* Q2 */}
+            <div className="bg-white border border-[#ECE8DE] rounded-lg p-6 shadow-sm space-y-4">
+              <div className="flex items-center justify-between">
+                <span className="font-mono text-[10px] font-bold text-[#59624B] bg-[#F3F5F1] px-2.5 py-0.5 rounded border border-[#59624B]/20">
+                  Question 02
+                </span>
+                <span className="text-[11px] font-bold text-[#59624B]">Confidence: High (majority patterns match)</span>
+              </div>
+              <h3 className="font-display font-bold text-[15.5px] text-[#171717]">
+                What's stopping customers from trying a new category?
+              </h3>
+              <p className="text-[13px] text-[#5F6368] leading-relaxed">
+                Trust is the blocker, and it's specific, not vague — customers aren't saying 'I don't trust Blinkit,' they're describing concrete failures: a fake product, an expired item, a tampered electronics box. 105 of 189 signals (55.6%) cite this. Price uncertainty is real but secondary (40 signals, 21.2%) — customers comparing prices across apps are a different behavior from customers avoiding a category altogether.
+              </p>
+              <div className="space-y-2 pt-2 border-t border-[#ECE8DE]/60">
+                <span className="text-[9px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Verbatim Evidence:</span>
+                {getEvidenceForQuestion(2).map((r) => (
+                  <div 
+                    key={r.row_number} 
+                    onClick={() => jumpToRow(r.row_number)}
+                    className="bg-[#F8F9FA] border border-[#ECE8DE] rounded-md p-3 text-[12px] text-[#171717] italic cursor-pointer hover:bg-[#F2F1EC] transition-all"
+                  >
+                    "{r.quote}" <span className="font-mono text-[10px] text-[#8C8C8C] not-italic block mt-1">Row #{r.row_number} · Click to verify</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Q3 */}
+            <div className="bg-white border border-[#ECE8DE] rounded-lg p-6 shadow-sm space-y-4">
+              <div className="flex items-center justify-between">
+                <span className="font-mono text-[10px] font-bold text-[#59624B] bg-[#F3F5F1] px-2.5 py-0.5 rounded border border-[#59624B]/20">
+                  Question 03
+                </span>
+                <span className="text-[11px] font-bold text-[#5F6368]">Confidence: Medium (low sample size of 9 signals)</span>
+              </div>
+              <h3 className="font-display font-bold text-[15.5px] text-[#171717]">
+                How do customers find products today?
+              </h3>
+              <p className="text-[13px] text-[#5F6368] leading-relaxed">
+                Weakly, and mostly by accident. The smallest but most telling pattern (9 signals, 4.8%) shows customers leaving for a competitor not because they distrust Blinkit, but because a specific product they wanted — a cat food variant, a collectible — wasn't visible or in stock. Discovery isn't failing on trust here, it's failing on basic inventory visibility.
+              </p>
+              <div className="space-y-2 pt-2 border-t border-[#ECE8DE]/60">
+                <span className="text-[9px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Verbatim Evidence:</span>
+                {getEvidenceForQuestion(3).map((r) => (
+                  <div 
+                    key={r.row_number} 
+                    onClick={() => jumpToRow(r.row_number)}
+                    className="bg-[#F8F9FA] border border-[#ECE8DE] rounded-md p-3 text-[12px] text-[#171717] italic cursor-pointer hover:bg-[#F2F1EC] transition-all"
+                  >
+                    "{r.quote}" <span className="font-mono text-[10px] text-[#8C8C8C] not-italic block mt-1">Row #{r.row_number} · Click to verify</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Q4 */}
+            <div className="bg-white border border-[#ECE8DE] rounded-lg p-6 shadow-sm space-y-4">
+              <div className="flex items-center justify-between">
+                <span className="font-mono text-[10px] font-bold text-[#59624B] bg-[#F3F5F1] px-2.5 py-0.5 rounded border border-[#59624B]/20">
+                  Question 04
+                </span>
+                <span className="text-[11px] font-bold text-[#59624B]">Confidence: High (supported by clear comparison metrics)</span>
+              </div>
+              <h3 className="font-display font-bold text-[15.5px] text-[#171717]">
+                What role does habit actually play?
+              </h3>
+              <p className="text-[13px] text-[#5F6368] leading-relaxed">
+                Less than assumed. 7 signals (3.7%) describe habitual buying, while 40 signals (21.2%) describe customers actively price-shopping across Blinkit, Zepto, and Instamart in the same shopping session. Customers are not passively loyal — they're evaluating, constantly, and that means engagement mechanics have room to work if the underlying trust problem is addressed first.
+              </p>
+              <div className="space-y-2 pt-2 border-t border-[#ECE8DE]/60">
+                <span className="text-[9px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Verbatim Evidence:</span>
+                {getEvidenceForQuestion(4).map((r) => (
+                  <div 
+                    key={r.row_number} 
+                    onClick={() => jumpToRow(r.row_number)}
+                    className="bg-[#F8F9FA] border border-[#ECE8DE] rounded-md p-3 text-[12px] text-[#171717] italic cursor-pointer hover:bg-[#F2F1EC] transition-all"
+                  >
+                    "{r.quote}" <span className="font-mono text-[10px] text-[#8C8C8C] not-italic block mt-1">Row #{r.row_number} · Click to verify</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Q5 */}
+            <div className="bg-white border border-[#ECE8DE] rounded-lg p-6 shadow-sm space-y-4">
+              <div className="flex items-center justify-between">
+                <span className="font-mono text-[10px] font-bold text-[#59624B] bg-[#F3F5F1] px-2.5 py-0.5 rounded border border-[#59624B]/20">
+                  Question 05
+                </span>
+                <span className="text-[11px] font-bold text-[#59624B]">Confidence: High (strong actionable volume)</span>
+              </div>
+              <h3 className="font-display font-bold text-[15.5px] text-[#171717]">
+                What would make a customer trust a category enough to try it?
+              </h3>
+              <p className="text-[13px] text-[#5F6368] leading-relaxed">
+                Nearly half of all signal (86 of 189, 45.5%) answers this directly and specifically — not 'better service' but concrete asks: visible authenticity checks, tamper-evident packaging, expiry dates shown before checkout, a working return process, accurate stock counts. This is the most actionable finding in the dataset because customers described the fix, not just the problem.
+              </p>
+              <div className="space-y-2 pt-2 border-t border-[#ECE8DE]/60">
+                <span className="text-[9px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Verbatim Evidence:</span>
+                {getEvidenceForQuestion(5).map((r) => (
+                  <div 
+                    key={r.row_number} 
+                    onClick={() => jumpToRow(r.row_number)}
+                    className="bg-[#F8F9FA] border border-[#ECE8DE] rounded-md p-3 text-[12px] text-[#171717] italic cursor-pointer hover:bg-[#F2F1EC] transition-all"
+                  >
+                    "{r.quote}" <span className="font-mono text-[10px] text-[#8C8C8C] not-italic block mt-1">Row #{r.row_number} · Click to verify</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Q6 */}
+            <div className="bg-white border border-[#ECE8DE] rounded-lg p-6 shadow-sm space-y-4">
+              <div className="flex items-center justify-between">
+                <span className="font-mono text-[10px] font-bold text-[#59624B] bg-[#F3F5F1] px-2.5 py-0.5 rounded border border-[#59624B]/20">
+                  Question 06
+                </span>
+                <span className="text-[11px] font-bold text-[#59624B]">Confidence: High (consistent platform failures reported)</span>
+              </div>
+              <h3 className="font-display font-bold text-[15.5px] text-[#171717]">
+                What frustrates customers repeatedly?
+              </h3>
+              <p className="text-[13px] text-[#5F6368] leading-relaxed">
+                The same five failures recur across unrelated categories: counterfeit goods, expired perishables, refund promises that don't get honored, substitutions made without asking, and promo codes that don't work at checkout. These aren't category-specific complaints — they're platform-trust failures that happen to surface most often in electronics and perishables because that's where the cost of being wrong is highest for the customer.
+              </p>
+              <div className="space-y-2 pt-2 border-t border-[#ECE8DE]/60">
+                <span className="text-[9px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Verbatim Evidence:</span>
+                {getEvidenceForQuestion(6).map((r) => (
+                  <div 
+                    key={r.row_number} 
+                    onClick={() => jumpToRow(r.row_number)}
+                    className="bg-[#F8F9FA] border border-[#ECE8DE] rounded-md p-3 text-[12px] text-[#171717] italic cursor-pointer hover:bg-[#F2F1EC] transition-all"
+                  >
+                    "{r.quote}" <span className="font-mono text-[10px] text-[#8C8C8C] not-italic block mt-1">Row #{r.row_number} · Click to verify</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Q7 */}
+            <div className="bg-white border border-[#ECE8DE] rounded-lg p-6 shadow-sm space-y-6">
+              <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <span className="font-mono text-[10px] font-bold text-[#59624B] bg-[#F3F5F1] px-2.5 py-0.5 rounded border border-[#59624B]/20">
+                    Question 07
+                  </span>
+                  <span className="text-[11px] font-bold text-[#5F6368]">Confidence: Medium (inferred from phrasing, not transactional data)</span>
+                </div>
+                <h3 className="font-display font-bold text-[15.5px] text-[#171717]">
+                  Which customers are closest to trying something new?
+                </h3>
+                <p className="text-[13px] text-[#5F6368] leading-relaxed">
+                  Customers whose language suggests frequent, ongoing use (19 signals, 10.1%) describe specific, fixable complaints rather than blanket distrust — that distinction matters. A customer who says 'I won't buy electronics here because of X' is different from a customer who says 'I'll never use this app again.' The first is telling you what to fix. Treat this as a hypothesis about where to test first, not a confirmed customer list — segment inference here comes from language, not verified purchase history.
+                </p>
+                <div className="space-y-2 pt-2 border-t border-[#ECE8DE]/60">
+                  <span className="text-[9px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Verbatim Evidence:</span>
+                  {getEvidenceForQuestion(7).map((r) => (
+                    <div 
+                      key={r.row_number} 
+                      onClick={() => jumpToRow(r.row_number)}
+                      className="bg-[#F8F9FA] border border-[#ECE8DE] rounded-md p-3 text-[12px] text-[#171717] italic cursor-pointer hover:bg-[#F2F1EC] transition-all"
+                    >
+                      "{r.quote}" <span className="font-mono text-[10px] text-[#8C8C8C] not-italic block mt-1">Row #{r.row_number} · Click to verify</span>
+                    </div>
+                  ))}
                 </div>
               </div>
 
-              {/* ANCHOR VISUAL: Segment x Reason-Type Matrix */}
-              <div className="bg-white border border-[#ECE8DE] rounded-[18px] p-6 shadow-sm space-y-4">
+              {/* Segment x Reason Matrix (Belongs inside Workspace here as supporting evidence for Q7) */}
+              <div className="bg-[#F8F9FA] border border-[#ECE8DE] rounded-lg p-5 space-y-4">
                 <div>
-                  <h3 className="font-display font-bold text-[16px] text-[#171717]">
-                    Segment × Reason-Type Matrix
-                  </h3>
-                  <p className="text-[12.5px] text-[#5F6368] leading-relaxed mt-1">
-                    Matrix compares segments by reason type. Cells show count, percentage of active matrix, and average confidence rating. Click cells to filter the entire page view.
+                  <h4 className="text-[14px] font-bold text-[#171717]">Supporting Matrix: Segments × Reason-Types</h4>
+                  <p className="text-[12px] text-[#5F6368] mt-1 leading-relaxed">
+                    Matrix compares segments by reason type. It is read-only; use the filters in the explorer tab to narrow by one or more segments. Cells are clickable to filter and browse matching records in the Evidence Explorer.
                   </p>
                 </div>
 
                 <div className="overflow-x-auto">
-                  <table className="w-full border-collapse text-left text-[11px]">
+                  <table className="w-full border-collapse text-left text-[11px] bg-white">
                     <thead>
-                      <tr className="border-b border-[#ECE8DE] bg-[#F8F9FA]">
-                        <th className="p-3 font-bold text-[#8C8C8C] uppercase tracking-wider">
-                          Segment
-                        </th>
-                        {matrixReasons.map((reason) => (
-                          <th key={reason} className="p-3 font-bold text-[#8C8C8C] uppercase tracking-wider capitalize text-center">
-                            {reason}
-                          </th>
+                      <tr className="border-b border-[#ECE8DE] bg-[#F2F1EC]/60">
+                        <th className="p-2.5 font-bold text-[#5F6368] uppercase tracking-wider text-[9px]">Segment</th>
+                        {REASONS.map(r => (
+                          <th key={r} className="p-2.5 font-bold text-[#5F6368] uppercase tracking-wider text-[9px] text-center capitalize">{r}</th>
                         ))}
                       </tr>
                     </thead>
                     <tbody>
-                      {matrixSegments.map((seg) => (
+                      {SEGMENTS.map(seg => (
                         <tr key={seg} className="border-b border-[#ECE8DE] hover:bg-[#F8F9FA]">
-                          <td className="p-3 font-bold text-[#171717] capitalize">
-                            {seg.replace(/_/g, " ")}
-                          </td>
-                          {matrixReasons.map((reason) => {
-                            // Find matches in filteredReviews (without cell filter)
-                            const baseReviews = reviews.filter((r) => {
-                              if (selectedSources.length > 0 && !selectedSources.includes(r.source)) return false;
-                              if (selectedSegments.length > 0 && !selectedSegments.includes(r.user_segment)) return false;
-                              if (hideWeakSignal && (r.user_segment === "unclear" || r.confidence === "low")) return false;
-                              return true;
-                            });
-
-                            const matching = baseReviews.filter(
-                              (r) => r.user_segment === seg && r.reason_type === reason
-                            );
-                            const count = matching.length;
-                            const pct = baseReviews.length > 0 
-                              ? ((count / baseReviews.length) * 100).toFixed(0) 
-                              : "0";
-                            const avgConf = matching.length > 0
-                              ? matching.reduce((sum, r) => sum + (r.confidence === "high" ? 1.0 : r.confidence === "med" ? 0.6 : 0.3), 0) / matching.length
+                          <td className="p-2.5 font-bold text-[#171717] capitalize">{seg.replace(/_/g, " ")}</td>
+                          {REASONS.map(reason => {
+                            const count = reviews.filter(r => r.user_segment === seg && r.reason_type === reason).length;
+                            const totalSegmentReviews = reviews.filter(r => r.user_segment === seg).length || 1;
+                            const pctOfSegment = ((count / totalSegmentReviews) * 100).toFixed(0);
+                            const avgConf = count > 0 
+                              ? reviews.filter(r => r.user_segment === seg && r.reason_type === reason)
+                                  .reduce((sum, r) => sum + (r.confidence === "high" ? 1.0 : r.confidence === "med" ? 0.6 : 0.3), 0) / count
                               : 0;
 
-                            const isCurrentFocus = matrixFilter && matrixFilter.segment === seg && matrixFilter.reason === reason;
-
                             return (
-                              <td
+                              <td 
                                 key={reason}
-                                onClick={() => handleMatrixCellClick(seg, reason)}
-                                className={`p-2.5 border-r border-[#ECE8DE] text-center cursor-pointer transition-all duration-150 ${
-                                  isCurrentFocus
-                                    ? "bg-[#F8CB46] text-[#171717] font-extrabold"
-                                    : count > 0
-                                    ? "hover:bg-[#FFF6DD] text-[#171717]"
-                                    : "text-[#8C8C8C]/50 hover:bg-[#F8F9FA]"
-                                }`}
+                                onClick={() => filterByMatrixCell(seg, reason)}
+                                className="p-2 text-center cursor-pointer transition-colors hover:bg-[#FFF6DD]"
+                                style={{
+                                  backgroundColor: count > 0 
+                                    ? `rgba(89, 98, 75, ${0.05 + (count / maxMatrixCount) * 0.45})` 
+                                    : "transparent"
+                                }}
                               >
                                 {count > 0 ? (
                                   <div className="space-y-0.5">
-                                    <div className="font-bold text-[12px]">{count}</div>
-                                    <div className="text-[9px] opacity-80">{pct}%</div>
-                                    <div className="text-[8.5px] font-mono opacity-60">c={avgConf.toFixed(1)}</div>
+                                    <div className="font-bold text-[11.5px] text-[#171717]">{count}</div>
+                                    <div className="text-[9px] text-[#5F6368]">{pctOfSegment}%</div>
+                                    <div className="text-[8px] text-[#8C8C8C] font-mono">c={avgConf.toFixed(1)}</div>
                                   </div>
                                 ) : (
-                                  <span className="text-[9px] font-mono opacity-30">-</span>
+                                  <span className="text-[#8C8C8C]/30 text-[10px]">-</span>
                                 )}
                               </td>
                             );
@@ -772,560 +635,382 @@ export default function LandingPage() {
                     </tbody>
                   </table>
                 </div>
-
-                <p className="text-[11px] text-[#8C8C8C] leading-normal italic text-center">
-                  Caption: Matrix compares segments by reason type. It is read-only; use the filters above to narrow by one or more segments. Click a cell to focus.
-                </p>
               </div>
-
             </div>
-          </div>
 
-          {/* ═══════════════════════════════════════════
-              THE 8 RESEARCH QUESTIONS
-              ═══════════════════════════════════════════ */}
-          <div className="space-y-6">
-            <h2 className="font-display font-extrabold text-[22px] text-[#171717] tracking-tight border-b border-[#ECE8DE] pb-3">
-              Research Synthesis Cards
-            </h2>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              
-              {/* Q1 Card */}
-              {(() => {
-                const qReviews = filteredReviews.filter(r => r.repeat_buying_signal === "yes");
-                const stats = ["habit", "convenience", "trust", "price", "no_discovery", "other"].map(type => {
-                  const count = qReviews.filter(r => r.reason_type === type).length;
-                  return { name: type, count };
-                });
-                const total = stats.reduce((a, b) => a + b.count, 0) || 1;
-                const bars = stats
-                  .map(e => ({ name: e.name, count: e.count, pct: ((e.count / total) * 100).toFixed(0) }))
-                  .sort((a, b) => b.count - a.count);
-
-                return (
-                  <QuestionCard
-                    qNum={1}
-                    title="Why do customers repeatedly purchase from the same categories?"
-                    description="Shows the breakdown of reason types for customers who repeat-buy, explaining why routine shopping is risk-avoidance."
-                    explanation="This chart shows how many repeat shoppers cite specific drivers like habit or convenience vs. avoiding other categories out of concern. Note that a single review can touch multiple themes, so percentages may not sum to 100%."
-                    bars={bars}
-                    takeaway={getTopTwoTakeaway(stats)}
-                    colors={REASON_COLORS}
-                  />
-                );
-              })()}
-
-              {/* Q2 Card */}
-              {(() => {
-                const qReviews = filteredReviews.filter(r => r.repeat_buying_signal === "no");
-                const stats = ["trust", "price", "convenience", "no_discovery", "habit", "other"].map(type => {
-                  const count = qReviews.filter(r => r.reason_type === type).length;
-                  return { name: type, count };
-                });
-                const total = stats.reduce((a, b) => a + b.count, 0) || 1;
-                const bars = stats
-                  .map(e => ({ name: e.name, count: e.count, pct: ((e.count / total) * 100).toFixed(0) }))
-                  .sort((a, b) => b.count - a.count);
-
-                return (
-                  <QuestionCard
-                    qNum={2}
-                    title="What prevents customers from exploring new categories?"
-                    description="Breaks down barriers preventing customers from trials, highlighting trust and quality risks."
-                    explanation="This aggregates the primary reasons cited by customers who refuse to try new categories. Trust/quality risk dominates, followed by price switching. Percentages represent the proportion of barrier mentions in the active view."
-                    bars={bars}
-                    takeaway={getTopTwoTakeaway(stats)}
-                    colors={REASON_COLORS}
-                  />
-                );
-              })()}
-
-              {/* Q3 Card */}
-              {(() => {
-                // Count category_mentioned when reason_type is no_discovery or trust/other
-                const catCounts: Record<string, number> = {};
-                filteredReviews.forEach(r => {
-                  if (r.category_mentioned !== "none") {
-                    catCounts[r.category_mentioned] = (catCounts[r.category_mentioned] || 0) + 1;
-                  }
-                });
-                const stats = Object.entries(catCounts).map(([name, count]) => ({ name, count }));
-                const total = stats.reduce((a, b) => a + b.count, 0) || 1;
-                const bars = stats
-                  .map(e => ({ name: e.name, count: e.count, pct: ((e.count / total) * 100).toFixed(0) }))
-                  .sort((a, b) => b.count - a.count)
-                  .slice(0, 5);
-
-                return (
-                  <QuestionCard
-                    qNum={3}
-                    title="How do customers discover products today?"
-                    description="Highlights current discovery channel signals, showing broken search and regional stocking."
-                    explanation="Shows review counts discussing product discovery issues. Highly directional as discovery complaints are usually silent churn rather than vocal feedback."
-                    bars={bars}
-                    takeaway={getTopTwoTakeaway(stats)}
-                    colors={SEGMENT_COLORS}
-                  />
-                );
-              })()}
-
-              {/* Q4 Card */}
-              {(() => {
-                const stats = ["habit", "price", "trust", "convenience", "no_discovery", "other"].map(type => {
-                  const count = filteredReviews.filter(r => r.reason_type === type).length;
-                  return { name: type, count };
-                });
-                const total = stats.reduce((a, b) => a + b.count, 0) || 1;
-                const bars = stats
-                  .map(e => ({ name: e.name, count: e.count, pct: ((e.count / total) * 100).toFixed(0) }))
-                  .sort((a, b) => b.count - a.count);
-
-                return (
-                  <QuestionCard
-                    qNum={4}
-                    title="What role do habits play in shopping behaviour?"
-                    description="Compares habit-based shopping with active app-switching price evaluations."
-                    explanation="Measures habit as a driver of shopping compared to other variables. Extremely low counts indicate that quick-commerce customers evaluate platforms actively rather than shop by routine."
-                    bars={bars}
-                    takeaway={getTopTwoTakeaway(stats)}
-                    colors={REASON_COLORS}
-                  />
-                );
-              })()}
-
-              {/* Q5 Card */}
-              {(() => {
-                const stats = unmetNeedsSorted.slice(0, 5);
-                const total = stats.reduce((a, b) => a + b.count, 0) || 1;
-                const bars = stats.map(e => ({ name: e.name, count: e.count, pct: ((e.count / total) * 100).toFixed(0) }));
-
-                return (
-                  <QuestionCard
-                    qNum={5}
-                    title="What information do customers need before trying a new category?"
-                    description="Ranks the specific informational requirements customers name before trials."
-                    explanation="Buckets customer requests into actionable themes (e.g., expiry transparency, seal guarantees). Bars represent the frequency of these requests in the filtered dataset."
-                    bars={bars}
-                    takeaway={getTopTwoTakeaway(stats)}
-                    colors={SEGMENT_COLORS}
-                  />
-                );
-              })()}
-
-              {/* Q6 Card */}
-              {(() => {
-                const frustCounts: Record<string, number> = {};
-                filteredReviews.forEach(r => {
-                  if (r.barrier_to_new_category !== "none") {
-                    frustCounts[r.barrier_to_new_category] = (frustCounts[r.barrier_to_new_category] || 0) + 1;
-                  }
-                });
-                const stats = Object.entries(frustCounts).map(([name, count]) => ({ name, count }));
-                const total = stats.reduce((a, b) => a + b.count, 0) || 1;
-                const bars = stats
-                  .map(e => ({ name: e.name, count: e.count, pct: ((e.count / total) * 100).toFixed(0) }))
-                  .sort((a, b) => b.count - a.count)
-                  .slice(0, 5);
-
-                return (
-                  <QuestionCard
-                    qNum={6}
-                    title="What frustrations emerge repeatedly?"
-                    description="Details the specific catalog and delivery quality frustrations mentioned by customers."
-                    explanation="Ranked complaints such as counterfeit goods, short expiry, and substitutions. Shows where quality checks fail."
-                    bars={bars}
-                    takeaway={getTopTwoTakeaway(stats)}
-                    colors={REASON_COLORS}
-                  />
-                );
-              })()}
-
-              {/* Q7 Card */}
-              {(() => {
-                const qReviews = filteredReviews.filter(r => r.repeat_buying_signal === "yes");
-                const stats = segmentsList.map(seg => {
-                  const count = qReviews.filter(r => r.user_segment === seg).length;
-                  return { name: seg, count };
-                });
-                const total = stats.reduce((a, b) => a + b.count, 0) || 1;
-                const bars = stats
-                  .map(e => ({ name: e.name, count: e.count, pct: ((e.count / total) * 100).toFixed(0) }))
-                  .sort((a, b) => b.count - a.count)
-                  .filter(e => e.count > 0);
-
-                return (
-                  <QuestionCard
-                    qNum={7}
-                    title="Which customer segments are more likely to experiment?"
-                    description="Displays segment breakdown for active experimenters vs. loyal buyers."
-                    explanation="Shows which cohorts yield the highest readiness index. Heavy users and quality-focused buyers represent the clearest target audiences."
-                    bars={bars}
-                    takeaway={getTopTwoTakeaway(stats)}
-                    colors={SEGMENT_COLORS}
-                  />
-                );
-              })()}
-
-              {/* Q8 Card */}
-              {(() => {
-                const stats = unmetNeedsSorted.slice(0, 5);
-                const total = stats.reduce((a, b) => a + b.count, 0) || 1;
-                const bars = stats.map(e => ({ name: e.name, count: e.count, pct: ((e.count / total) * 100).toFixed(0) }));
-
-                return (
-                  <QuestionCard
-                    qNum={8}
-                    title="What unmet needs emerge consistently?"
-                    description="Ranks top catalog gaps and service needs based on customer suggestions."
-                    explanation="Synthesizes customer suggestions for what Blinkit should build (freshness badges, easy return policies) to enable discovery."
-                    bars={bars}
-                    takeaway={getTopTwoTakeaway(stats)}
-                    colors={REASON_COLORS}
-                  />
-                );
-              })()}
-
-            </div>
-          </div>
-
-          {/* ═══════════════════════════════════════════
-              WHICH SEGMENTS FACE WHICH ISSUES & UNMET NEEDS
-              ═══════════════════════════════════════════ */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            
-            {/* Segments list card */}
-            <div className="bg-white border border-[#ECE8DE] rounded-[18px] p-6 shadow-sm space-y-4">
-              <h3 className="font-display font-bold text-[16px] text-[#171717]">
-                Which Segments Face Which Issues
+            {/* Q8 */}
+            <div className="bg-white border border-[#ECE8DE] rounded-lg p-6 shadow-sm space-y-4">
+              <div className="flex items-center justify-between">
+                <span className="font-mono text-[10px] font-bold text-[#59624B] bg-[#F3F5F1] px-2.5 py-0.5 rounded border border-[#59624B]/20">
+                  Question 08
+                </span>
+                <span className="text-[11px] font-bold text-[#5F6368]">Confidence: Medium (includes single outlier signals)</span>
+              </div>
+              <h3 className="font-display font-bold text-[15.5px] text-[#171717]">
+                What do customers consistently say is missing?
               </h3>
-              
-              <div className="space-y-4">
-                {segmentStats.length === 0 ? (
-                  <p className="text-[12.5px] text-[#8C8C8C] italic text-center py-4">
-                    No active segments in filter view
-                  </p>
-                ) : (
-                  segmentStats.map((stat) => {
-                    const pct = ((stat.count / segmentStatsTotal) * 100).toFixed(0);
-                    return (
-                      <div key={stat.name} className="flex items-center gap-3">
-                        <div className="w-8 h-8 rounded-full bg-[#59624B]/15 text-[#59624B] font-mono font-bold text-[11px] flex items-center justify-center shrink-0">
-                          {getSegmentAvatar(stat.name)}
-                        </div>
-                        <div className="flex-1 min-w-0 space-y-1">
-                          <div className="flex justify-between items-center text-[12px] font-semibold text-[#171717]">
-                            <span className="truncate capitalize">{stat.name.replace(/_/g, " ")}</span>
-                            <span className="text-[#5F6368] font-mono shrink-0">
-                              {stat.count} recs · avg c={stat.avgConf.toFixed(1)}
-                            </span>
-                          </div>
-                          <div className="w-full h-1.5 bg-[#F2F1EC] rounded-full overflow-hidden">
-                            <div
-                              className="h-full bg-[#59624B] rounded-full"
-                              style={{ width: `${pct}%` }}
-                            />
-                          </div>
-                        </div>
-                      </div>
-                    );
-                  })
+              <p className="text-[13px] text-[#5F6368] leading-relaxed">
+                Five needs repeat across otherwise unrelated complaints: proof a product is genuine, clear pricing without surprise fees, a return process that actually works, accurate stock information for less-common items, and — mentioned by only one customer but worth flagging rather than discarding — a simpler interface for a non-technical user. Small signal isn't nothing; it's a prompt for direct research, not a proven segment need.
+              </p>
+              <div className="space-y-2 pt-2 border-t border-[#ECE8DE]/60">
+                <span className="text-[9px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Verbatim Evidence:</span>
+                {getEvidenceForQuestion(8).map((r) => (
+                  <div 
+                    key={r.row_number} 
+                    onClick={() => jumpToRow(r.row_number)}
+                    className="bg-[#F8F9FA] border border-[#ECE8DE] rounded-md p-3 text-[12px] text-[#171717] italic cursor-pointer hover:bg-[#F2F1EC] transition-all"
+                  >
+                    "{r.quote}" <span className="font-mono text-[10px] text-[#8C8C8C] not-italic block mt-1">Row #{r.row_number} · Click to verify</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+          </div>
+        </div>
+      )}
+
+      {/* ═══════════════════════════════════════════
+          4. EVIDENCE EXPLORER VIEW
+          ═══════════════════════════════════════════ */}
+      {currentView === "explorer" && (
+        <div className="space-y-6 max-w-5xl mx-auto">
+          {/* Header */}
+          <div className="border-b border-[#ECE8DE] pb-3">
+            <h2 className="font-display font-bold text-[20px] text-[#171717]">Evidence Explorer</h2>
+            <p className="text-[12px] text-[#5F6368] mt-1">
+              Verify claims against the underlying customer feedback records. Apply filter parameters to recompute the list.
+            </p>
+          </div>
+
+          {/* Explorer Filters Header Card */}
+          <div className="bg-white border border-[#ECE8DE] rounded-lg p-5 shadow-sm grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-4 items-end">
+            {/* Search input */}
+            <div className="space-y-1">
+              <label className="text-[9.5px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Search Quote/Row</label>
+              <div className="relative">
+                <input
+                  type="text"
+                  placeholder="e.g. 22 or 'spoiled'"
+                  value={explorerSearch}
+                  onChange={(e) => setExplorerSearch(e.target.value)}
+                  className="w-full bg-[#F2F1EC] border border-[#ECE8DE] rounded px-3 py-1.5 text-[12px] focus:outline-none focus:ring-1 focus:ring-[#59624B] text-[#171717] font-medium"
+                />
+                {explorerSearch && (
+                  <button 
+                    onClick={() => setExplorerSearch("")}
+                    className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[10px] font-bold text-[#8C8C8C] hover:text-[#171717]"
+                  >
+                    ×
+                  </button>
                 )}
               </div>
             </div>
 
-            {/* Unmet Needs Chart */}
-            <div className="bg-white border border-[#ECE8DE] rounded-[18px] p-6 shadow-sm space-y-4">
-              <h3 className="font-display font-bold text-[16px] text-[#171717]">
-                Unmet Needs Breakdown
-              </h3>
-
-              <div className="space-y-4">
-                {unmetNeedsSorted.length === 0 ? (
-                  <p className="text-[12.5px] text-[#8C8C8C] italic text-center py-4">
-                    No unmet needs in filter view
-                  </p>
-                ) : (
-                  unmetNeedsSorted.map((stat) => {
-                    const pct = ((stat.count / unmetNeedsTotal) * 100).toFixed(0);
-                    return (
-                      <div key={stat.name} className="space-y-1">
-                        <div className="flex justify-between text-[12px] font-semibold text-[#171717]">
-                          <span>{stat.name}</span>
-                          <span className="text-[#5F6368] font-mono">{stat.count}</span>
-                        </div>
-                        <div className="w-full h-2 bg-[#F2F1EC] rounded-full overflow-hidden">
-                          <div
-                            className="h-full bg-[#59624B] rounded-full"
-                            style={{ width: `${pct}%` }}
-                          />
-                        </div>
-                      </div>
-                    );
-                  })
-                )}
-              </div>
-
-              <p className="text-[11px] text-[#8C8C8C] leading-normal italic pt-2">
-                Caption: This shows what customers need but don't feel Blinkit currently provides.
-              </p>
-            </div>
-
-          </div>
-
-          {/* ═══════════════════════════════════════════
-              STRONGEST EVIDENCE & VERBATIMS
-              ═══════════════════════════════════════════ */}
-          <div className="space-y-8">
-            {/* Strongest Evidence table */}
-            <div className="bg-white border border-[#ECE8DE] rounded-[18px] p-6 shadow-sm space-y-4">
-              <h3 className="font-display font-bold text-[16px] text-[#171717]">
-                Strongest Evidence
-              </h3>
-              <p className="text-[12.5px] text-[#5F6368]">
-                Reviews ranked by classification confidence + presence of an actionable ask (excluding duplicate flags).
-              </p>
-
-              <div className="overflow-x-auto">
-                <table className="w-full text-left text-[12px] border-collapse">
-                  <thead>
-                    <tr className="bg-[#F8F9FA] border-b border-[#ECE8DE]">
-                      <th className="p-3 font-bold text-[#8C8C8C] uppercase tracking-wider text-center">Score</th>
-                      <th className="p-3 font-bold text-[#8C8C8C] uppercase tracking-wider">Source</th>
-                      <th className="p-3 font-bold text-[#8C8C8C] uppercase tracking-wider">Confidence</th>
-                      <th className="p-3 font-bold text-[#8C8C8C] uppercase tracking-wider">Reason Type</th>
-                      <th className="p-3 font-bold text-[#8C8C8C] uppercase tracking-wider">Segment</th>
-                      <th className="p-3 font-bold text-[#8C8C8C] uppercase tracking-wider">Verbatim Quote</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {strongestEvidence.length === 0 ? (
-                      <tr>
-                        <td colSpan={6} className="p-4 text-center text-[#8C8C8C] italic">
-                          No matching records in filter view
-                        </td>
-                      </tr>
-                    ) : (
-                      strongestEvidence.map((e) => (
-                        <tr key={e.row_number} className="border-b border-[#ECE8DE] hover:bg-[#F8F9FA]">
-                          <td className="p-3 font-mono font-bold text-[#59624B] text-center">{e.score}/5</td>
-                          <td className="p-3 font-semibold text-[#171717]">{e.source}</td>
-                          <td className="p-3">
-                            <span className={`text-[10px] font-extrabold uppercase px-2 py-0.5 rounded border ${
-                              e.confidence === "high" 
-                                ? "bg-[#59624B]/10 text-[#59624B] border-[#59624B]/20" 
-                                : "bg-[#F59E0B]/10 text-[#F59E0B] border-[#F59E0B]/20"
-                            }`}>
-                              {e.confidence}
-                            </span>
-                          </td>
-                          <td className="p-3 capitalize">{e.reason_type}</td>
-                          <td className="p-3 capitalize">{e.user_segment.replace(/_/g, " ")}</td>
-                          <td className="p-3 italic text-[#5F6368]">"{e.quote}"</td>
-                        </tr>
-                      ))
-                    )}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-
-            {/* Verbatim Evidence Section */}
-            <div className="bg-white border border-[#ECE8DE] rounded-[18px] p-6 shadow-sm space-y-4">
-              <h3 className="font-display font-bold text-[16px] text-[#171717]">
-                Verbatim Evidence
-              </h3>
-
-              <div className="space-y-4 max-h-[400px] overflow-y-auto pr-2">
-                {filteredReviews.length === 0 ? (
-                  <p className="text-[12.5px] text-[#8C8C8C] italic text-center py-6">
-                    No verbatim feedback matches current filters.
-                  </p>
-                ) : (
-                  filteredReviews.slice(0, 15).map((r) => (
-                    <div key={r.row_number} className="border border-[#ECE8DE] bg-[#F8F9FA] rounded-[12px] p-4 space-y-2">
-                      <p className="italic text-[#171717] text-[13px] leading-relaxed">
-                        &quot;{r.quote}&quot;
-                      </p>
-                      <div className="flex flex-wrap items-center gap-3 text-[10px] text-[#8C8C8C] font-mono">
-                        <span className="bg-[#E4E8E1] text-[#171717] px-2 py-0.5 rounded uppercase font-bold">
-                          {r.user_segment}
-                        </span>
-                        <span className="bg-[#E4E8E1] text-[#171717] px-2 py-0.5 rounded uppercase font-bold">
-                          {r.reason_type}
-                        </span>
-                        <span className="bg-[#E4E8E1] text-[#171717] px-2 py-0.5 rounded uppercase font-bold">
-                          {r.confidence}
-                        </span>
-                        <span>Row #{r.row_number}</span>
-                      </div>
-                    </div>
-                  ))
-                )}
-              </div>
-
-              <p className="text-[11.5px] text-[#8C8C8C] leading-normal italic">
-                Showing the strongest qualitative evidence from {filteredReviews.length} records in the active filter view.
-              </p>
-            </div>
-
-          </div>
-
-          {/* Downloads Dropdown */}
-          <div className="flex justify-center pt-2">
-            <div className="relative">
-              <button
-                onClick={() => setDownloadsOpen(!downloadsOpen)}
-                className="bg-[#59624B] hover:bg-[#59624B]/90 text-white text-[12.5px] font-bold px-6 py-3 rounded-[14px] shadow-sm flex items-center gap-2 transition-all"
+            {/* Source dropdown */}
+            <div className="space-y-1">
+              <label className="text-[9.5px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Source</label>
+              <select
+                value={explorerSource}
+                onChange={(e) => setExplorerSource(e.target.value)}
+                className="w-full bg-[#F2F1EC] border border-[#ECE8DE] rounded px-2.5 py-1.5 text-[12px] focus:outline-none focus:ring-1 focus:ring-[#59624B] text-[#171717] font-medium"
               >
-                <FileDown size={14} /> Download Active Data <ChevronDown size={14} />
-              </button>
-              {downloadsOpen && (
-                <div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 bg-white border border-[#ECE8DE] rounded-[14px] shadow-lg w-56 p-2 z-50">
-                  <button
-                    onClick={downloadCSV}
-                    className="w-full text-left px-4 py-2 text-[12px] font-semibold text-[#5F6368] hover:text-[#171717] hover:bg-[#F2F1EC] rounded-[8px] transition-colors"
-                  >
-                    Export dataset as CSV
-                  </button>
-                  <button
-                    onClick={downloadJSON}
-                    className="w-full text-left px-4 py-2 text-[12px] font-semibold text-[#5F6368] hover:text-[#171717] hover:bg-[#F2F1EC] rounded-[8px] transition-colors"
-                  >
-                    Export dataset as JSON
-                  </button>
-                  <button
-                    onClick={downloadMD}
-                    className="w-full text-left px-4 py-2 text-[12px] font-semibold text-[#5F6368] hover:text-[#171717] hover:bg-[#F2F1EC] rounded-[8px] transition-colors"
-                  >
-                    Export Markdown report
-                  </button>
-                </div>
-              )}
+                <option value="all">All Sources</option>
+                {SOURCES.map(s => <option key={s} value={s}>{s}</option>)}
+              </select>
+            </div>
+
+            {/* Segment dropdown */}
+            <div className="space-y-1">
+              <label className="text-[9.5px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Segment</label>
+              <select
+                value={explorerSegment}
+                onChange={(e) => setExplorerSegment(e.target.value)}
+                className="w-full bg-[#F2F1EC] border border-[#ECE8DE] rounded px-2.5 py-1.5 text-[12px] focus:outline-none focus:ring-1 focus:ring-[#59624B] text-[#171717] font-medium capitalize"
+              >
+                <option value="all">All Segments</option>
+                {SEGMENTS.map(s => <option key={s} value={s}>{s.replace(/_/g, " ")}</option>)}
+              </select>
+            </div>
+
+            {/* Reason dropdown */}
+            <div className="space-y-1">
+              <label className="text-[9.5px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Reason Type</label>
+              <select
+                value={explorerReason}
+                onChange={(e) => setExplorerReason(e.target.value)}
+                className="w-full bg-[#F2F1EC] border border-[#ECE8DE] rounded px-2.5 py-1.5 text-[12px] focus:outline-none focus:ring-1 focus:ring-[#59624B] text-[#171717] font-medium capitalize"
+              >
+                <option value="all">All Reasons</option>
+                {REASONS.map(r => <option key={r} value={r}>{r}</option>)}
+              </select>
+            </div>
+
+            {/* Confidence dropdown */}
+            <div className="space-y-1">
+              <label className="text-[9.5px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Confidence</label>
+              <select
+                value={explorerConfidence}
+                onChange={(e) => setExplorerConfidence(e.target.value)}
+                className="w-full bg-[#F2F1EC] border border-[#ECE8DE] rounded px-2.5 py-1.5 text-[12px] focus:outline-none focus:ring-1 focus:ring-[#59624B] text-[#171717] font-medium capitalize"
+              >
+                <option value="all">All Confidence</option>
+                <option value="high">High</option>
+                <option value="med">Medium</option>
+                <option value="low">Low</option>
+              </select>
             </div>
           </div>
 
+          {/* Reset Filters button */}
+          {(explorerSearch || explorerSource !== "all" || explorerSegment !== "all" || explorerReason !== "all" || explorerConfidence !== "all") && (
+            <div className="flex justify-start">
+              <button
+                onClick={() => {
+                  setExplorerSearch("");
+                  setExplorerSource("all");
+                  setExplorerSegment("all");
+                  setExplorerReason("all");
+                  setExplorerConfidence("all");
+                }}
+                className="text-[11px] font-bold text-[#59624B] hover:text-[#171717] underline"
+              >
+                Clear all filters
+              </button>
+            </div>
+          )}
+
+          {/* Results Table */}
+          <div className="bg-white border border-[#ECE8DE] rounded-lg shadow-sm overflow-hidden">
+            <div className="overflow-x-auto">
+              <table className="w-full border-collapse text-left text-[12px]">
+                <thead>
+                  <tr className="bg-[#F2F1EC]/60 border-b border-[#ECE8DE]">
+                    <th className="p-3 font-mono font-bold text-[#8C8C8C] uppercase tracking-wider text-center w-16">Row</th>
+                    <th className="p-3 font-bold text-[#8C8C8C] uppercase tracking-wider w-24">Source</th>
+                    <th className="p-3 font-bold text-[#8C8C8C] uppercase tracking-wider w-24">Confidence</th>
+                    <th className="p-3 font-bold text-[#8C8C8C] uppercase tracking-wider w-28">Segment</th>
+                    <th className="p-3 font-bold text-[#8C8C8C] uppercase tracking-wider w-28">Reason Type</th>
+                    <th className="p-3 font-bold text-[#8C8C8C] uppercase tracking-wider">Verbatim customer sentence</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {filteredExplorerReviews.length === 0 ? (
+                    <tr>
+                      <td colSpan={6} className="p-8 text-center text-[#8C8C8C] italic">
+                        No records match the current filter selection.
+                      </td>
+                    </tr>
+                  ) : (
+                    filteredExplorerReviews.map((r) => (
+                      <tr key={r.row_number} className="border-b border-[#ECE8DE] hover:bg-[#F8F9FA] transition-colors">
+                        <td className="p-3 font-mono font-bold text-center text-[#59624B]">{r.row_number}</td>
+                        <td className="p-3 font-medium text-[#171717]">{r.source}</td>
+                        <td className="p-3">
+                          <span className={`text-[10px] font-bold uppercase px-1.5 py-0.2 rounded border ${
+                            r.confidence === "high"
+                              ? "bg-[#59624B]/10 text-[#59624B] border-[#59624B]/20"
+                              : r.confidence === "med"
+                              ? "bg-[#F59E0B]/10 text-[#F59E0B] border-[#F59E0B]/20"
+                              : "bg-[#8C8C8C]/10 text-[#5F6368] border-[#ECE8DE]"
+                          }`}>
+                            {r.confidence}
+                          </span>
+                        </td>
+                        <td className="p-3 capitalize">{r.user_segment.replace(/_/g, " ")}</td>
+                        <td className="p-3 capitalize">{r.reason_type}</td>
+                        <td className="p-3 italic text-[#5F6368] leading-relaxed">"{r.quote}"</td>
+                      </tr>
+                    ))
+                  )}
+                </tbody>
+              </table>
+            </div>
+            {/* Summary info footer */}
+            <div className="bg-[#F8F9FA] p-3 text-[11px] text-[#8C8C8C] border-t border-[#ECE8DE] text-right font-mono">
+              Showing {filteredExplorerReviews.length} of 189 matching records
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ═══════════════════════════════════════════
+          5. ENGINE DOCUMENTATION VIEW
+          ═══════════════════════════════════════════ */}
+      {currentView === "docs" && (
+        <div className="space-y-8 max-w-4xl mx-auto">
+          {/* User Guide Doc Section */}
+          <div className="bg-white border border-[#ECE8DE] rounded-lg p-6 shadow-sm space-y-4">
+            <h2 className="font-display font-bold text-[18px] text-[#171717] flex items-center gap-2">
+              <BookOpen size={16} className="text-[#59624B]" /> User Guide
+            </h2>
+            <p className="text-[13px] text-[#5F6368] leading-relaxed">
+              Use the **Evidence Explorer** tab to search and verify findings. You can input a row number to view its details directly, or select a source, segment, or reason type from the dropdown selectors to recompute the list. The **Discovery Workspace** presents the 8 primary questions, each containing quote-grounded customer sentences. Click any quote block to jump directly to the Explorer and verify the sentence in the table.
+            </p>
+            <div className="text-[12.5px] text-[#5F6368] bg-[#F8F9FA] p-3.5 rounded border border-[#ECE8DE] space-y-2">
+              <div>
+                <strong>Confidence Levels:</strong> Sourced self-reported scores indicating model classification depth. Treats "high" as zero hedging, and "medium/low" as directional cues requiring follow-up inspection.
+              </div>
+              <div>
+                <strong>Verbatim Quotes:</strong> Every record is grounded in character-match validation. Claims are only retained if the exact text resides word-for-word in the raw source feedback database.
+              </div>
+            </div>
+          </div>
+
+          {/* Links to engineering methodology */}
+          <div className="bg-white border border-[#ECE8DE] rounded-lg p-5 shadow-sm flex items-center justify-between">
+            <div className="space-y-1">
+              <h4 className="text-[14px] font-bold text-[#171717]">Technical Pipeline Reference</h4>
+              <p className="text-[12px] text-[#5F6368]">
+                Read the details on review noise rejection steps, source biases, and extraction standards.
+              </p>
+            </div>
+            <button
+              onClick={() => setCurrentView("methodology")}
+              className="bg-[#F2F1EC] hover:bg-[#ECE8DE] text-[#171717] font-bold text-[11.5px] px-4 py-2 rounded transition-colors"
+            >
+              Open Technical Docs
+            </button>
+          </div>
+
+          {/* Try It: Live Review Analyzer */}
+          <div className="bg-white border border-[#ECE8DE] rounded-lg p-6 shadow-sm space-y-5">
+            <div>
+              <h3 className="font-display font-bold text-[16px] text-[#171717] flex items-center gap-2">
+                <Lock size={15} className="text-[#59624B]" /> Try It: Live Review Analyzer
+              </h3>
+              <p className="text-[12.5px] text-[#5F6368] mt-1">
+                Enter your Gemini API key and paste a raw customer review to process it through the extraction schema.
+              </p>
+            </div>
+
+            <div className="space-y-4">
+              {/* API Key */}
+              <div>
+                <label className="text-[10px] font-bold text-[#8C8C8C] uppercase tracking-wider block mb-1.5">
+                  Gemini API Key
+                </label>
+                <input
+                  type="password"
+                  placeholder="AIzaSy..."
+                  value={apiKey}
+                  onChange={(e) => setApiKey(e.target.value)}
+                  className="w-full bg-[#F2F1EC] border border-[#ECE8DE] rounded px-3 py-2 text-[12px] focus:outline-none focus:ring-1 focus:ring-[#59624B] text-[#171717] font-medium"
+                />
+              </div>
+
+              {/* Text Area */}
+              <div>
+                <label className="text-[10px] font-bold text-[#8C8C8C] uppercase tracking-wider block mb-1.5">
+                  Raw Review Text
+                </label>
+                <textarea
+                  rows={3}
+                  placeholder="e.g. Received a fake charging cable from the delivery person today. Quality control is highly disappointing, I will stick to buying electronics offline."
+                  value={reviewInput}
+                  onChange={(e) => setReviewInput(e.target.value)}
+                  className="w-full bg-[#F2F1EC] border border-[#ECE8DE] rounded px-3 py-2 text-[12px] focus:outline-none focus:ring-1 focus:ring-[#59624B] text-[#171717] font-medium leading-relaxed"
+                />
+              </div>
+
+              {/* Submit button */}
+              <button
+                onClick={handleAnalyze}
+                disabled={analyzerLoading}
+                className="bg-[#59624B] hover:bg-[#59624B]/90 text-white font-bold text-[12.5px] px-5 py-2.5 rounded transition-colors disabled:opacity-60 shadow-sm"
+              >
+                {analyzerLoading ? "Processing signal..." : "Analyze review"}
+              </button>
+            </div>
+
+            {/* Loading step indicators */}
+            {analyzerLoading && (
+              <div className="mt-4 pt-4 border-t border-[#ECE8DE] space-y-2">
+                <div className="flex justify-between text-[11px] font-bold text-[#59624B] uppercase tracking-wider animate-pulse">
+                  <span>{ANALYZER_STEPS[analyzerStep]}</span>
+                  <span>{Math.round(((analyzerStep + 1) / ANALYZER_STEPS.length) * 100)}%</span>
+                </div>
+                <div className="w-full h-1 bg-[#F2F1EC] rounded-full overflow-hidden">
+                  <div 
+                    className="h-full bg-[#59624B] transition-all duration-300 ease-out"
+                    style={{ width: `${((analyzerStep + 1) / ANALYZER_STEPS.length) * 100}%` }}
+                  />
+                </div>
+              </div>
+            )}
+
+            {/* Error output */}
+            {analyzerError && (
+              <div className="mt-4 p-3 bg-[#FFF5F5] border border-[#D64545]/20 text-[#D64545] rounded text-[12px] font-semibold">
+                Error: {analyzerError}
+              </div>
+            )}
+
+            {/* Result output */}
+            {analyzerResult && (
+              <div className="mt-6 pt-5 border-t border-[#ECE8DE] space-y-4">
+                <span className="text-[10px] font-bold text-[#59624B] bg-[#F3F5F1] px-2.5 py-0.5 rounded border border-[#59624B]/20 inline-block uppercase tracking-wider">
+                  Resulting Parameters
+                </span>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-[12px] bg-[#F8F9FA] p-4 rounded border border-[#ECE8DE]/60 leading-relaxed text-[#171717]">
+                  <div>
+                    <span className="text-[9px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Has Signal</span>
+                    <span className="font-semibold">{String(analyzerResult.has_signal)}</span>
+                  </div>
+                  <div>
+                    <span className="text-[9px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Category</span>
+                    <span className="font-semibold capitalize">{analyzerResult.category_mentioned || "none"}</span>
+                  </div>
+                  <div>
+                    <span className="text-[9px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Stated Barrier</span>
+                    <span className="font-semibold">{analyzerResult.barrier_to_new_category || "none"}</span>
+                  </div>
+                  <div>
+                    <span className="text-[9px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Reason Type</span>
+                    <span className="font-semibold capitalize">{analyzerResult.reason_type || "none"}</span>
+                  </div>
+                  <div>
+                    <span className="text-[9px] font-bold text-[#8C8C8C] uppercase tracking-wider block">User Segment</span>
+                    <span className="font-semibold capitalize">{(analyzerResult.user_segment_signal || "unclear").replace(/_/g, " ")}</span>
+                  </div>
+                  <div>
+                    <span className="text-[9px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Confidence</span>
+                    <span className="font-semibold capitalize">{analyzerResult.confidence || "low"}</span>
+                  </div>
+                  <div className="md:col-span-2 border-t border-[#ECE8DE]/60 pt-2.5">
+                    <span className="text-[9px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Verbatim Sentence Match</span>
+                    <span className="font-semibold italic text-[#5F6368]">"{analyzerResult.quote || "none"}"</span>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
         </div>
       )}
 
       {/* ═══════════════════════════════════════════
           PROJECT REPOSITORY CARD (FOOTER)
           ═══════════════════════════════════════════ */}
-      <div className="max-w-4xl mx-auto border-t border-[#ECE8DE] pt-8">
-        <div className="bg-[#F2F1EC] border border-[#ECE8DE] rounded-[18px] p-6 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <footer className="max-w-4xl mx-auto border-t border-[#ECE8DE] pt-8">
+        <div className="bg-[#F2F1EC] border border-[#ECE8DE] rounded-lg p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="space-y-1">
-            <span className="text-[9px] font-bold text-[#8C8C8C] uppercase tracking-wider block">
-              Source Code
-            </span>
-            <h4 className="font-display font-bold text-[15px] text-[#171717]">
-              Project Repository
-            </h4>
+            <span className="text-[9px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Source Code Repository</span>
+            <h4 className="font-display font-bold text-[14.5px] text-[#171717]">Project Repository</h4>
             <p className="text-[12px] text-[#5F6368]">
-              Access the codebase, schema configurations, and static JSON feedback tables on GitHub.
+              Access the codebase, data mapping pipeline, and static files on GitHub.
             </p>
           </div>
           <a
             href="https://github.com/Deepali611/AI.blinkit-discovery"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 bg-white border border-[#ECE8DE] text-[#171717] hover:bg-[#ECE8DE]/20 text-[12px] font-bold px-4 py-2.5 rounded-[12px] shadow-sm transition-all"
+            className="inline-flex items-center gap-1 bg-white border border-[#ECE8DE] text-[#171717] hover:bg-[#F2F1EC]/40 text-[12px] font-bold px-4 py-2 rounded shadow-sm transition-all"
           >
             Open on GitHub <ExternalLink size={13} />
           </a>
         </div>
-      </div>
-    </div>
-  );
-}
-
-// QuestionCard collapsible child component
-function QuestionCard({
-  qNum,
-  title,
-  description,
-  explanation,
-  bars,
-  takeaway,
-  colors,
-}: {
-  qNum: number;
-  title: string;
-  description: string;
-  explanation: string;
-  bars: { name: string; count: number; pct: string }[];
-  takeaway: string;
-  colors: Record<string, string>;
-}) {
-  const [expanded, setExpanded] = useState(false);
-
-  return (
-    <div className="bg-white border border-[#ECE8DE] rounded-[18px] p-6 shadow-sm space-y-4">
-      {/* Title + Q tag */}
-      <div className="flex items-start justify-between gap-4">
-        <h3 className="font-display font-bold text-[14.5px] text-[#171717] leading-snug">
-          {title}
-        </h3>
-        <span className="font-mono text-[9px] font-bold text-[#59624B] bg-[#F3F5F1] px-2.5 py-0.5 rounded-full border border-[#59624B]/20 shrink-0">
-          Q{qNum}
-        </span>
-      </div>
-
-      {/* Description */}
-      <p className="text-[12px] text-[#5F6368] leading-relaxed">
-        {description}
-      </p>
-
-      {/* Expandable what this means */}
-      <div>
-        <button
-          onClick={() => setExpanded(!expanded)}
-          className="text-[11px] font-bold text-[#59624B] hover:text-[#171717] flex items-center gap-1 focus:outline-none"
-        >
-          {expanded ? <ChevronUp size={12} /> : <ChevronDown size={12} />}
-          {expanded ? "Hide explanation" : "What this chart means"}
-        </button>
-        {expanded && (
-          <div className="mt-2 text-[11.5px] text-[#5F6368] bg-[#F3F5F1]/60 border border-[#ECE8DE] p-3 rounded-[12px] leading-relaxed">
-            {explanation}
-          </div>
-        )}
-      </div>
-
-      {/* Ranked Bar List */}
-      <div className="space-y-3 pt-2">
-        {bars.length === 0 ? (
-          <div className="text-[12px] text-[#8C8C8C] italic text-center py-4 bg-[#F8F9FA] rounded-[12px] border border-[#ECE8DE]/60">
-            No matching data in current filtered view
-          </div>
-        ) : (
-          bars.slice(0, 5).map((bar, i) => (
-            <div key={i} className="space-y-1">
-              <div className="flex justify-between text-[11.5px] font-semibold text-[#171717]">
-                <span className="capitalize">{bar.name.replace(/_/g, " ")}</span>
-                <span className="text-[#5F6368] font-mono">
-                  {bar.count} ({bar.pct}%)
-                </span>
-              </div>
-              <div className="w-full h-1.5 bg-[#F2F1EC] rounded-full overflow-hidden">
-                <div
-                  className="h-full rounded-full transition-all duration-500 ease-out"
-                  style={{
-                    width: `${bar.pct}%`,
-                    backgroundColor: colors[bar.name.replace(/ /g, "_")] || "#C9C4B8",
-                  }}
-                />
-              </div>
-            </div>
-          ))
-        )}
-      </div>
-
-      {/* Takeaway Sentence */}
-      <div className="border-t border-[#ECE8DE]/60 pt-3">
-        <p className="text-[11px] text-[#59624B] font-semibold italic bg-[#F3F5F1] px-3 py-1.5 rounded-[10px] border border-[#59624B]/10 leading-snug">
-          Takeaway: {takeaway}
-        </p>
-      </div>
+      </footer>
     </div>
   );
 }
