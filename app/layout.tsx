@@ -4,8 +4,8 @@ import "./globals.css";
 import Sidebar from "@/components/Sidebar";
 
 export const metadata: Metadata = {
-  title: "Blinkit Growth Intelligence",
-  description: "AI-Powered Discovery Engine for Cross-Category Customer Growth",
+  title: "Blinkit Discovery Engine",
+  description: "Review Analysis Workflow",
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {

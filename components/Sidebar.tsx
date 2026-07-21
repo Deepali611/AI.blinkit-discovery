@@ -11,8 +11,9 @@ const WORKFLOW_STEPS = [
   { href: "/validation", label: "Validation & Risks", numStr: "04" },
   { href: "/themes", label: "Themes & Signals", numStr: "05" },
   { href: "/insights", label: "Discovery Synthesis", numStr: "06" },
-  { href: "/opportunities", label: "Opportunities", numStr: "07" },
-  { href: "/sandbox", label: "Sandbox Playground", numStr: "08" },
+  { href: "/segmentation", label: "Segmentation & Hypotheses", numStr: "07" },
+  { href: "/opportunities", label: "Opportunities", numStr: "08" },
+  { href: "/sandbox", label: "Sandbox Playground", numStr: "09" },
 ];
 
 export default function Sidebar() {

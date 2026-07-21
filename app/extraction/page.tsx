@@ -6,7 +6,7 @@ export default function ExtractionStage() {
   return (
     <div className="space-y-8 max-w-4xl">
       <PageHeader
-        title="Blinkit Review Analysis Workflow"
+        title="Blinkit Discovery Engine"
         subtitle="Stage 2 — Filtering & Extraction"
       />
 

@@ -6,7 +6,7 @@ export default function ValidationStage() {
   return (
     <div className="space-y-8 max-w-4xl">
       <PageHeader
-        title="Blinkit Review Analysis Workflow"
+        title="Blinkit Discovery Engine"
         subtitle="Stage 3 — Validation & Safety Controls"
       />
 
@@ -58,8 +58,9 @@ export default function ValidationStage() {
               <p>
                 <strong className="text-[#171717]">Mitigation:</strong> Programmatic schema checks require strict categorization codes that isolate delivery agent errors from root catalog selection gaps. Low-confidence responses are logged and audited manually.
               </p>
-              <div className="border-l-2 border-[#D64545] pl-4 py-1.5 bg-[#FFF5F5] rounded-r-lg">
-                <span className="text-[12px] font-semibold text-[#D64545]">Limitation: Non-English feedback and emoji-only comments are filtered out due to schema mapping limitations.</span>
+              <div className="border-l-2 border-[#D64545] pl-4 py-1.5 bg-[#FFF5F5] rounded-r-lg space-y-2">
+                <span className="text-[12px] font-semibold text-[#D64545] block">Limitation: Non-English feedback and emoji-only comments are filtered out due to schema mapping limitations.</span>
+                <span className="text-[12.5px] text-[#5F6368] block">Source selection bias: Reddit and app-store reviews skew toward customers with negative experiences; satisfied customers are underrepresented in this dataset by nature of who leaves reviews.</span>
               </div>
             </div>
           </div>

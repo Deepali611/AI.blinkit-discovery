@@ -63,8 +63,8 @@ export default function SandboxStage() {
   return (
     <div className="space-y-8 max-w-3xl">
       <PageHeader
-        title="Blinkit Review Analysis Workflow"
-        subtitle="Stage 7 — Sandbox Playground"
+        title="Blinkit Discovery Engine"
+        subtitle="Stage 9 — Sandbox Playground"
       />
 
       <div className="space-y-6">
@@ -209,7 +209,7 @@ export default function SandboxStage() {
           href="/opportunities"
           className="bg-surface border border-[#ECE8DE] text-[#5F6368] hover:text-[#171717] text-[13px] font-extrabold px-5 py-3 rounded-[14px] transition-colors ease-out flex items-center gap-1.5 shadow-standard"
         >
-          <ArrowLeft size={14} strokeWidth={1.5} /> Stage 6: Strategic Opportunities
+          <ArrowLeft size={14} strokeWidth={1.5} /> Stage 8: Opportunities
         </Link>
       </div>
     </div>

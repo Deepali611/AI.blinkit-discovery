@@ -29,7 +29,7 @@ export default function EvidenceStage() {
   return (
     <div className="space-y-8 max-w-5xl">
       <PageHeader
-        title="Blinkit Review Analysis Workflow"
+        title="Blinkit Discovery Engine"
         subtitle="Stage 1 — Gathering Evidence"
       />
 

@@ -31,7 +31,7 @@ export default function ThemesStage() {
   return (
     <div className="space-y-8 max-w-4xl">
       <PageHeader
-        title="Blinkit Review Analysis Workflow"
+        title="Blinkit Discovery Engine"
         subtitle="Stage 4 — Themes & Behavioral Signals"
       />
 
@@ -80,6 +80,30 @@ export default function ThemesStage() {
               {t.matters}
             </p>
           </div>
+
+          {/* Root Cause Chain */}
+          {t.id === "trust" && (
+            <div className="mt-6 pt-5 border-t border-[#ECE8DE] space-y-4">
+              <span className="font-sans text-[9px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Root Cause Chain:</span>
+              <div className="space-y-3 pl-4 border-l-2 border-[#59624B]/30 text-[12.5px] leading-relaxed">
+                <div>
+                  <strong className="text-[#171717]">Step 1 — Symptom:</strong> Customers don't explore new categories.
+                </div>
+                <div>
+                  <strong className="text-[#171717]">Step 2 — Why:</strong> A single bad experience in an unfamiliar category (fake item, expired product, damaged electronics) causes customers to generalize distrust to the entire category.
+                </div>
+                <div>
+                  <strong className="text-[#171717]">Step 3 — Why:</strong> Unlike groceries (where repeat purchase has built implicit trust over time), new categories offer no established trust history for the customer to rely on.
+                </div>
+                <div>
+                  <strong className="text-[#171717]">Step 4 — Why:</strong> At the point of purchase, Blinkit shows no category-specific trust signal — no visible authenticity badge, no expiry countdown, no tamper-evidence indicator — for electronics or perishables specifically, the two categories where risk mentions concentrate.
+                </div>
+                <div className="bg-[#F3F5F1] p-3 rounded-[10px] border border-[#59624B]/15">
+                  <strong className="text-[#59624B]">Root Cause:</strong> The purchase decision UI treats all categories identically, but risk tolerance is not identical across categories — high-risk categories need visible, category-specific trust signals that don't currently exist.
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </div>
 
