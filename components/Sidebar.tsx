@@ -95,6 +95,24 @@ export default function Sidebar() {
             );
           })}
 
+          {/* Optional Engine Architecture Reference Page */}
+          <div className="pt-4 border-t border-[#ECE8DE]/60 mt-4 space-y-1">
+            <span className="text-[9px] font-bold text-[#8C8C8C] uppercase tracking-wider block pl-1 mb-2">
+              System References
+            </span>
+            <Link
+              href="/architecture"
+              className={`flex items-center gap-2.5 py-2 pl-3 text-[12px] font-semibold rounded-[8px] transition-all w-full border border-transparent ${
+                pathname === "/architecture"
+                  ? "bg-[#FFFFFF]/50 text-[#171717] font-bold border-[#ECE8DE]"
+                  : "text-[#5F6368] hover:text-[#171717] hover:bg-[#FFFFFF]/20"
+              }`}
+            >
+              <span className="w-1.5 h-1.5 rounded-full bg-[#59624B]"></span>
+              <span>Engine Architecture</span>
+            </Link>
+          </div>
+
         </div>
       </div>
 
