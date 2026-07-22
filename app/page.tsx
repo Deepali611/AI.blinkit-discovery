@@ -293,7 +293,7 @@ export default function EngineDashboard() {
     <div className="space-y-8 font-sans antialiased text-[#171717]">
       {/* Navigation Header (Hidden on Landing) */}
       {currentView !== "landing" && (
-        <header className="border-2 border-[#000000] bg-[#F8CB46] p-4 rounded-lg flex flex-col md:flex-row items-center justify-between gap-4 text-[#000000]">
+        <header className="bg-[#F8CB46] p-4 flex flex-col md:flex-row items-center justify-between gap-4 text-[#000000] border-none rounded-none">
           <div className="flex items-center gap-3">
             <button 
               onClick={() => setCurrentView("landing")}
@@ -354,7 +354,7 @@ export default function EngineDashboard() {
 
       {/* Primary Business Objective Banner (Shown once on Discovery Workspace entry point) */}
       {currentView === "workspace" && (
-        <div className="bg-[#FFFFFF] border-2 border-[#000000] p-4 rounded-lg text-[13px] text-[#000000] leading-relaxed max-w-4xl mx-auto shadow-sm">
+        <div className="bg-[#FFFFFF] border-none shadow-[0_1px_3px_rgba(0,0,0,0.08),0_1px_2px_rgba(0,0,0,0.06)] p-4 rounded-lg text-[13px] text-[#000000] leading-relaxed max-w-4xl mx-auto">
           <strong>Primary Objective:</strong> Understand why customers who already trust Blinkit for one category hesitate to expand into additional categories, and identify evidence-backed opportunities to reduce that hesitation.
         </div>
       )}
@@ -371,7 +371,7 @@ export default function EngineDashboard() {
             <h1 className="font-display font-[900] text-[32px] leading-tight tracking-tight text-[#000000]">
               Blinkit Discovery Engine — reads customer feedback so Product doesn't have to guess why customers stay inside the categories they already trust.
             </h1>
-            <p className="text-[14px] text-[#5F6368] font-medium leading-relaxed border-t-2 border-[#000000] pt-4">
+            <p className="text-[14px] text-[#5F6368] font-medium leading-relaxed border-t border-gray-200 pt-4">
               189 behavioral signals extracted from 1,176 reviews across 4 sources. Every signal traces back to a real customer sentence.
             </p>
             <p className="text-[12.5px] text-[#737373] font-normal leading-relaxed mt-2">
@@ -381,7 +381,7 @@ export default function EngineDashboard() {
 
           <button
             onClick={() => setCurrentView("workspace")}
-            className="bg-[#000000] text-[#FFFFFF] font-bold text-[13px] px-6 py-3 rounded-[8px] border-none flex items-center gap-2 transition-all shadow-sm"
+            className="bg-[#000000] text-[#FFFFFF] font-bold text-[13px] px-6 py-3 rounded-[8px] border-2 border-[#000000] flex items-center gap-2 transition-all shadow-sm"
           >
             Open the engine <ArrowRight size={14} />
           </button>
@@ -655,7 +655,7 @@ export default function EngineDashboard() {
                   </h3>
                   
                   {/* Assumed vs Found Block */}
-                  <div className="bg-[#FFFFFF] border-2 border-[#000000] rounded-md p-3 text-[12px] space-y-1">
+                  <div className="bg-[#F8F9FA] border border-gray-100 rounded-md p-3 text-[12px] space-y-1">
                     <div className="text-[#8C8C8C] line-through font-mono">
                       <strong className="no-underline">ASSUMED:</strong> Customers buy the same things out of habit.
                     </div>
@@ -674,10 +674,10 @@ export default function EngineDashboard() {
               </div>
               
               {/* Structured Body Sections */}
-              <div className="space-y-4 pt-3 border-t-2 border-[#000000] text-[13px] font-normal leading-relaxed">
+              <div className="space-y-4 pt-3 border-t border-gray-100 text-[13px] font-normal leading-relaxed">
                 <div>
                   <span className="text-[9.5px] font-bold text-[#8C8C8C] uppercase tracking-wider block mb-1">Observed Pattern</span>
-                  <p className="text-[#171717] font-medium italic bg-[#FFFFFF] p-3 rounded border-2 border-[#000000]">
+                  <p className="text-[#171717] font-medium italic bg-[#F8F9FA] p-3 rounded border border-gray-100">
                     "This isn't habit. Only 7 of 189 signals (3.7%) describe routine or automatic buying — the weakest pattern in the entire dataset. What actually repeats is caution: customers keep returning to categories where nothing has gone wrong for them yet, and they describe this as a deliberate choice, not a default."
                   </p>
                 </div>
@@ -689,7 +689,7 @@ export default function EngineDashboard() {
                       <div 
                         key={r.row_number} 
                         onClick={() => jumpToRow(r.row_number)}
-                        className="bg-[#FFFFFF] border-2 border-[#000000] rounded-md p-3.5 text-[12px] text-[#171717] italic cursor-pointer hover:bg-[#000000]/5 transition-all duration-200 shadow-sm"
+                        className="bg-[#F4F3EE] border border-gray-100 rounded-md p-3.5 text-[12px] text-[#171717] italic cursor-pointer hover:bg-[#EDEBE3] transition-all duration-200 shadow-sm"
                       >
                         "{r.quote}" <span className="font-mono text-[10px] text-[#8C8C8C] not-italic block mt-1">Row #{r.row_number} · Click to verify</span>
                       </div>
@@ -716,7 +716,7 @@ export default function EngineDashboard() {
                   </p>
                 </div>
 
-                <div className="pt-3 border-t-2 border-[#000000]">
+                <div className="pt-3 border-t border-gray-100">
                   <a href="#q2" className="text-[12px] font-bold text-[#000000] hover:underline flex items-center gap-1">
                     Related findings: What's stopping customers from trying a new category? →
                   </a>
@@ -725,9 +725,9 @@ export default function EngineDashboard() {
             </div>
 
             {/* Q2 */}
-            <div id="q2" className="bg-[#FFFFFF] border-2 border-[#000000] border-l-4 border-l-red-600 rounded-lg p-6 md:p-7 shadow-sm space-y-6 scroll-mt-20">
+            <div id="q2" className="bg-[#FFFFFF] border-none shadow-[0_1px_3px_rgba(0,0,0,0.08),0_1px_2px_rgba(0,0,0,0.06)] border-l-4 border-l-red-600 rounded-lg p-6 md:p-7 space-y-6 scroll-mt-20">
               {/* Card Header */}
-              <div className="flex items-center justify-between gap-2 border-b-2 border-[#000000] pb-3">
+              <div className="flex items-center justify-between gap-2 border-b border-gray-100 pb-3">
                 <span className="font-mono text-[10px] font-bold text-[#737373] uppercase tracking-wider">
                   WHAT'S STOPPING CUSTOMERS FROM TRYING A NEW CATEGORY?
                 </span>
@@ -735,7 +735,7 @@ export default function EngineDashboard() {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ duration: 0.5 }}
-                  className="text-[11px] font-bold text-[#000000] bg-[#FFFFFF] px-2.5 py-0.5 rounded border-2 border-[#000000] shrink-0"
+                  className="text-[11px] font-bold text-[#000000] bg-[#F8F9FA] px-2.5 py-0.5 rounded border border-gray-200 shrink-0"
                 >
                   Confidence: High (Known from evidence)
                 </motion.span>
@@ -758,10 +758,10 @@ export default function EngineDashboard() {
               </div>
 
               {/* Structured Body Sections */}
-              <div className="space-y-4 pt-3 border-t-2 border-[#000000] text-[13px] font-normal leading-relaxed">
+              <div className="space-y-4 pt-3 border-t border-gray-100 text-[13px] font-normal leading-relaxed">
                 <div>
                   <span className="text-[9.5px] font-bold text-[#8C8C8C] uppercase tracking-wider block mb-1">Observed Pattern</span>
-                  <p className="text-[#171717] font-medium italic bg-[#FFFFFF] p-3 rounded border-2 border-[#000000]">
+                  <p className="text-[#171717] font-medium italic bg-[#F8F9FA] p-3 rounded border border-gray-100">
                     "Trust is the blocker, and it's specific, not vague — customers aren't saying 'I don't trust Blinkit,' they're describing concrete failures: a fake product, an expired item, a tampered electronics box. 105 of 189 signals (55.6%) cite this. Price uncertainty is real but secondary (40 signals, 21.2%) — customers comparing prices across apps are a different behavior from customers avoiding a category altogether."
                   </p>
                 </div>
@@ -773,7 +773,7 @@ export default function EngineDashboard() {
                       <div 
                         key={r.row_number} 
                         onClick={() => jumpToRow(r.row_number)}
-                        className="bg-[#FFFFFF] border-2 border-[#000000] rounded-md p-3.5 text-[12px] text-[#171717] italic cursor-pointer hover:bg-[#000000]/5 transition-all duration-200 shadow-sm"
+                        className="bg-[#F4F3EE] border border-gray-100 rounded-md p-3.5 text-[12px] text-[#171717] italic cursor-pointer hover:bg-[#EDEBE3] transition-all duration-200 shadow-sm"
                       >
                         "{r.quote}" <span className="font-mono text-[10px] text-[#8C8C8C] not-italic block mt-1">Row #{r.row_number} · Click to verify</span>
                       </div>
@@ -800,7 +800,7 @@ export default function EngineDashboard() {
                   </p>
                 </div>
 
-                <div className="pt-3 border-t-2 border-[#000000]">
+                <div className="pt-3 border-t border-gray-100">
                   <a href="#q5" className="text-[12px] font-bold text-[#000000] hover:underline flex items-center gap-1">
                     Related findings: What would make a customer trust a category? →
                   </a>
@@ -809,9 +809,9 @@ export default function EngineDashboard() {
             </div>
 
             {/* Q3 */}
-            <div id="q3" className="bg-[#FFFFFF] border-2 border-[#000000] border-l-4 border-l-purple-600 rounded-lg p-6 md:p-7 shadow-sm space-y-6 scroll-mt-20">
+            <div id="q3" className="bg-[#FFFFFF] border-none shadow-[0_1px_3px_rgba(0,0,0,0.08),0_1px_2px_rgba(0,0,0,0.06)] border-l-4 border-l-purple-600 rounded-lg p-6 md:p-7 space-y-6 scroll-mt-20">
               {/* Card Header */}
-              <div className="flex items-center justify-between gap-2 border-b-2 border-[#000000] pb-3">
+              <div className="flex items-center justify-between gap-2 border-b border-gray-100 pb-3">
                 <span className="font-mono text-[10px] font-bold text-[#737373] uppercase tracking-wider">
                   HOW DO CUSTOMERS FIND PRODUCTS TODAY?
                 </span>
@@ -819,7 +819,7 @@ export default function EngineDashboard() {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ duration: 0.5 }}
-                  className="text-[11px] font-bold text-[#000000] bg-[#FFFFFF] px-2.5 py-0.5 rounded border-2 border-[#000000] shrink-0"
+                  className="text-[11px] font-bold text-[#000000] bg-[#F8F9FA] px-2.5 py-0.5 rounded border border-gray-200 shrink-0"
                 >
                   Confidence: Medium (Inferred from language)
                 </motion.span>
@@ -842,10 +842,10 @@ export default function EngineDashboard() {
               </div>
 
               {/* Structured Body Sections */}
-              <div className="space-y-4 pt-3 border-t-2 border-[#000000] text-[13px] font-normal leading-relaxed">
+              <div className="space-y-4 pt-3 border-t border-gray-100 text-[13px] font-normal leading-relaxed">
                 <div>
                   <span className="text-[9.5px] font-bold text-[#8C8C8C] uppercase tracking-wider block mb-1">Observed Pattern</span>
-                  <p className="text-[#171717] font-medium italic bg-[#FFFFFF] p-3 rounded border-2 border-[#000000]">
+                  <p className="text-[#171717] font-medium italic bg-[#F8F9FA] p-3 rounded border border-gray-100">
                     "Weakly, and mostly by accident. The smallest but most telling pattern (9 signals, 4.8%) shows customers leaving for a competitor not because they distrust Blinkit, but because a specific product they wanted — a cat food variant, a collectible — wasn't visible or in stock. Discovery isn't failing on trust here, it's failing on basic inventory visibility."
                   </p>
                 </div>
@@ -857,7 +857,7 @@ export default function EngineDashboard() {
                       <div 
                         key={r.row_number} 
                         onClick={() => jumpToRow(r.row_number)}
-                        className="bg-[#FFFFFF] border-2 border-[#000000] rounded-md p-3.5 text-[12px] text-[#171717] italic cursor-pointer hover:bg-[#000000]/5 transition-all duration-200 shadow-sm"
+                        className="bg-[#F4F3EE] border border-gray-100 rounded-md p-3.5 text-[12px] text-[#171717] italic cursor-pointer hover:bg-[#EDEBE3] transition-all duration-200 shadow-sm"
                       >
                         "{r.quote}" <span className="font-mono text-[10px] text-[#8C8C8C] not-italic block mt-1">Row #{r.row_number} · Click to verify</span>
                       </div>
@@ -884,7 +884,7 @@ export default function EngineDashboard() {
                   </p>
                 </div>
 
-                <div className="pt-3 border-t-2 border-[#000000]">
+                <div className="pt-3 border-t border-gray-100">
                   <a href="#q8" className="text-[12px] font-bold text-[#000000] hover:underline flex items-center gap-1">
                     Related findings: What do customers consistently say is missing? →
                   </a>
@@ -893,9 +893,9 @@ export default function EngineDashboard() {
             </div>
 
             {/* Q4 */}
-            <div id="q4" className="bg-[#FFFFFF] border-2 border-[#000000] border-l-4 border-l-blue-600 rounded-lg p-6 md:p-7 shadow-sm space-y-6 scroll-mt-20">
+            <div id="q4" className="bg-[#FFFFFF] border-none shadow-[0_1px_3px_rgba(0,0,0,0.08),0_1px_2px_rgba(0,0,0,0.06)] border-l-4 border-l-blue-600 rounded-lg p-6 md:p-7 space-y-6 scroll-mt-20">
               {/* Card Header */}
-              <div className="flex items-center justify-between gap-2 border-b-2 border-[#000000] pb-3">
+              <div className="flex items-center justify-between gap-2 border-b border-gray-100 pb-3">
                 <span className="font-mono text-[10px] font-bold text-[#737373] uppercase tracking-wider">
                   WHAT ROLE DOES HABIT ACTUALLY PLAY?
                 </span>
@@ -903,7 +903,7 @@ export default function EngineDashboard() {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ duration: 0.5 }}
-                  className="text-[11px] font-bold text-[#000000] bg-[#FFFFFF] px-2.5 py-0.5 rounded border-2 border-[#000000] shrink-0"
+                  className="text-[11px] font-bold text-[#000000] bg-[#F8F9FA] px-2.5 py-0.5 rounded border border-gray-200 shrink-0"
                 >
                   Confidence: High (Known from evidence)
                 </motion.span>
@@ -917,7 +917,7 @@ export default function EngineDashboard() {
                   </h3>
 
                   {/* Assumed vs Found Block */}
-                  <div className="bg-[#FFFFFF] border-2 border-[#000000] rounded-md p-3 text-[12px] space-y-1">
+                  <div className="bg-[#F8F9FA] border border-gray-100 rounded-md p-3 text-[12px] space-y-1">
                     <div className="text-[#8C8C8C] line-through font-mono">
                       <strong className="no-underline">ASSUMED:</strong> Customers passively return out of app loyalty.
                     </div>
@@ -936,10 +936,10 @@ export default function EngineDashboard() {
               </div>
 
               {/* Structured Body Sections */}
-              <div className="space-y-4 pt-3 border-t-2 border-[#000000] text-[13px] font-normal leading-relaxed">
+              <div className="space-y-4 pt-3 border-t border-gray-100 text-[13px] font-normal leading-relaxed">
                 <div>
                   <span className="text-[9.5px] font-bold text-[#8C8C8C] uppercase tracking-wider block mb-1">Observed Pattern</span>
-                  <p className="text-[#171717] font-medium italic bg-[#FFFFFF] p-3 rounded border-2 border-[#000000]">
+                  <p className="text-[#171717] font-medium italic bg-[#F8F9FA] p-3 rounded border border-gray-100">
                     "Less than assumed. 7 signals (3.7%) describe habitual buying, while 40 signals (21.2%) describe customers actively price-shopping across Blinkit, Zepto, and Instamart in the same shopping session. Customers are not passively loyal — they're evaluating, constantly, and that means engagement mechanics have room to work if the underlying trust problem is addressed first."
                   </p>
                 </div>
@@ -951,7 +951,7 @@ export default function EngineDashboard() {
                       <div 
                         key={r.row_number} 
                         onClick={() => jumpToRow(r.row_number)}
-                        className="bg-[#FFFFFF] border-2 border-[#000000] rounded-md p-3.5 text-[12px] text-[#171717] italic cursor-pointer hover:bg-[#000000]/5 transition-all duration-200 shadow-sm"
+                        className="bg-[#F4F3EE] border border-gray-100 rounded-md p-3.5 text-[12px] text-[#171717] italic cursor-pointer hover:bg-[#EDEBE3] transition-all duration-200 shadow-sm"
                       >
                         "{r.quote}" <span className="font-mono text-[10px] text-[#8C8C8C] not-italic block mt-1">Row #{r.row_number} · Click to verify</span>
                       </div>
@@ -978,7 +978,7 @@ export default function EngineDashboard() {
                   </p>
                 </div>
 
-                <div className="pt-3 border-t-2 border-[#000000]">
+                <div className="pt-3 border-t border-gray-100">
                   <a href="#q2" className="text-[12px] font-bold text-[#000000] hover:underline flex items-center gap-1">
                     Related findings: What's stopping customers from trying a new category? →
                   </a>
@@ -987,9 +987,9 @@ export default function EngineDashboard() {
             </div>
 
             {/* Q5 */}
-            <div id="q5" className="bg-[#FFFFFF] border-2 border-[#000000] border-l-4 border-l-amber-500 rounded-lg p-6 md:p-7 shadow-sm space-y-6 scroll-mt-20">
+            <div id="q5" className="bg-[#FFFFFF] border-none shadow-[0_1px_3px_rgba(0,0,0,0.08),0_1px_2px_rgba(0,0,0,0.06)] border-l-4 border-l-amber-500 rounded-lg p-6 md:p-7 space-y-6 scroll-mt-20">
               {/* Card Header */}
-              <div className="flex items-center justify-between gap-2 border-b-2 border-[#000000] pb-3">
+              <div className="flex items-center justify-between gap-2 border-b border-gray-100 pb-3">
                 <span className="font-mono text-[10px] font-bold text-[#737373] uppercase tracking-wider">
                   WHAT WOULD MAKE A CUSTOMER TRUST A CATEGORY ENOUGH TO TRY IT?
                 </span>
@@ -997,7 +997,7 @@ export default function EngineDashboard() {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ duration: 0.5 }}
-                  className="text-[11px] font-bold text-[#000000] bg-[#FFFFFF] px-2.5 py-0.5 rounded border-2 border-[#000000] shrink-0"
+                  className="text-[11px] font-bold text-[#000000] bg-[#F8F9FA] px-2.5 py-0.5 rounded border border-gray-200 shrink-0"
                 >
                   Confidence: High (Known from evidence)
                 </motion.span>
@@ -1020,10 +1020,10 @@ export default function EngineDashboard() {
               </div>
 
               {/* Structured Body Sections */}
-              <div className="space-y-4 pt-3 border-t-2 border-[#000000] text-[13px] font-normal leading-relaxed">
+              <div className="space-y-4 pt-3 border-t border-gray-100 text-[13px] font-normal leading-relaxed">
                 <div>
                   <span className="text-[9.5px] font-bold text-[#8C8C8C] uppercase tracking-wider block mb-1">Observed Pattern</span>
-                  <p className="text-[#171717] font-medium italic bg-[#FFFFFF] p-3 rounded border-2 border-[#000000]">
+                  <p className="text-[#171717] font-medium italic bg-[#F8F9FA] p-3 rounded border border-gray-100">
                     "Nearly half of all signal (86 of 189, 45.5%) answers this directly and specifically — not 'better service' but concrete asks: visible authenticity checks, tamper-evident packaging, expiry dates shown before checkout, a working return process, accurate stock counts. This is the most actionable finding in the dataset because customers described the fix, not just the problem."
                   </p>
                 </div>
@@ -1035,7 +1035,7 @@ export default function EngineDashboard() {
                       <div 
                         key={r.row_number} 
                         onClick={() => jumpToRow(r.row_number)}
-                        className="bg-[#FFFFFF] border-2 border-[#000000] rounded-md p-3.5 text-[12px] text-[#171717] italic cursor-pointer hover:bg-[#000000]/5 transition-all duration-200 shadow-sm"
+                        className="bg-[#F4F3EE] border border-gray-100 rounded-md p-3.5 text-[12px] text-[#171717] italic cursor-pointer hover:bg-[#EDEBE3] transition-all duration-200 shadow-sm"
                       >
                         "{r.quote}" <span className="font-mono text-[10px] text-[#8C8C8C] not-italic block mt-1">Row #{r.row_number} · Click to verify</span>
                       </div>
@@ -1062,7 +1062,7 @@ export default function EngineDashboard() {
                   </p>
                 </div>
 
-                <div className="pt-3 border-t-2 border-[#000000]">
+                <div className="pt-3 border-t border-gray-100">
                   <a href="#q6" className="text-[12px] font-bold text-[#000000] hover:underline flex items-center gap-1">
                     Related findings: What frustrates customers repeatedly? →
                   </a>
@@ -1071,9 +1071,9 @@ export default function EngineDashboard() {
             </div>
 
             {/* Q6 */}
-            <div id="q6" className="bg-[#FFFFFF] border-2 border-[#000000] border-l-4 border-l-red-600 rounded-lg p-6 md:p-7 shadow-sm space-y-6 scroll-mt-20">
+            <div id="q6" className="bg-[#FFFFFF] border-none shadow-[0_1px_3px_rgba(0,0,0,0.08),0_1px_2px_rgba(0,0,0,0.06)] border-l-4 border-l-red-600 rounded-lg p-6 md:p-7 space-y-6 scroll-mt-20">
               {/* Card Header */}
-              <div className="flex items-center justify-between gap-2 border-b-2 border-[#000000] pb-3">
+              <div className="flex items-center justify-between gap-2 border-b border-gray-100 pb-3">
                 <span className="font-mono text-[10px] font-bold text-[#737373] uppercase tracking-wider">
                   WHAT FRUSTRATES CUSTOMERS REPEATEDLY?
                 </span>
@@ -1081,7 +1081,7 @@ export default function EngineDashboard() {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ duration: 0.5 }}
-                  className="text-[11px] font-bold text-[#000000] bg-[#FFFFFF] px-2.5 py-0.5 rounded border-2 border-[#000000] shrink-0"
+                  className="text-[11px] font-bold text-[#000000] bg-[#F8F9FA] px-2.5 py-0.5 rounded border border-gray-200 shrink-0"
                 >
                   Confidence: High (Known from evidence)
                 </motion.span>
@@ -1104,10 +1104,10 @@ export default function EngineDashboard() {
               </div>
 
               {/* Structured Body Sections */}
-              <div className="space-y-4 pt-3 border-t-2 border-[#000000] text-[13px] font-normal leading-relaxed">
+              <div className="space-y-4 pt-3 border-t border-gray-100 text-[13px] font-normal leading-relaxed">
                 <div>
                   <span className="text-[9.5px] font-bold text-[#8C8C8C] uppercase tracking-wider block mb-1">Observed Pattern</span>
-                  <p className="text-[#171717] font-medium italic bg-[#FFFFFF] p-3 rounded border-2 border-[#000000]">
+                  <p className="text-[#171717] font-medium italic bg-[#F8F9FA] p-3 rounded border border-gray-100">
                     "The same five failures recur across unrelated categories: counterfeit goods, expired perishables, refund promises that don't get honored, substitutions made without asking, and promo codes that don't work at checkout. These aren't category-specific complaints — they're platform-trust failures that happen to surface most often in electronics and perishables because that's where the cost of being wrong is highest for the customer."
                   </p>
                 </div>
@@ -1119,7 +1119,7 @@ export default function EngineDashboard() {
                       <div 
                         key={r.row_number} 
                         onClick={() => jumpToRow(r.row_number)}
-                        className="bg-[#FFFFFF] border-2 border-[#000000] rounded-md p-3.5 text-[12px] text-[#171717] italic cursor-pointer hover:bg-[#000000]/5 transition-all duration-200 shadow-sm"
+                        className="bg-[#F4F3EE] border border-gray-100 rounded-md p-3.5 text-[12px] text-[#171717] italic cursor-pointer hover:bg-[#EDEBE3] transition-all duration-200 shadow-sm"
                       >
                         "{r.quote}" <span className="font-mono text-[10px] text-[#8C8C8C] not-italic block mt-1">Row #{r.row_number} · Click to verify</span>
                       </div>
@@ -1146,7 +1146,7 @@ export default function EngineDashboard() {
                   </p>
                 </div>
 
-                <div className="pt-3 border-t-2 border-[#000000]">
+                <div className="pt-3 border-t border-gray-100">
                   <a href="#q7" className="text-[12px] font-bold text-[#000000] hover:underline flex items-center gap-1">
                     Related findings: Which customers are closest to trying something new? →
                   </a>
@@ -1155,9 +1155,9 @@ export default function EngineDashboard() {
             </div>
 
             {/* Q7 */}
-            <div id="q7" className="bg-[#FFFFFF] border-2 border-[#000000] border-l-4 border-l-[#000000] rounded-lg p-6 md:p-7 shadow-sm space-y-6 scroll-mt-20">
+            <div id="q7" className="bg-[#FFFFFF] border-none shadow-[0_1px_3px_rgba(0,0,0,0.08),0_1px_2px_rgba(0,0,0,0.06)] border-l-4 border-l-[#000000] rounded-lg p-6 md:p-7 space-y-6 scroll-mt-20">
               {/* Card Header */}
-              <div className="flex items-center justify-between gap-2 border-b-2 border-[#000000] pb-3">
+              <div className="flex items-center justify-between gap-2 border-b border-gray-100 pb-3">
                 <span className="font-mono text-[10px] font-bold text-[#737373] uppercase tracking-wider">
                   WHICH CUSTOMERS ARE CLOSEST TO TRYING SOMETHING NEW?
                 </span>
@@ -1165,7 +1165,7 @@ export default function EngineDashboard() {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ duration: 0.5 }}
-                  className="text-[11px] font-bold text-[#000000] bg-[#FFFFFF] px-2.5 py-0.5 rounded border-2 border-[#000000] shrink-0"
+                  className="text-[11px] font-bold text-[#000000] bg-[#F8F9FA] px-2.5 py-0.5 rounded border border-gray-200 shrink-0"
                 >
                   Confidence: Medium (Inferred from language)
                 </motion.span>
@@ -1179,7 +1179,7 @@ export default function EngineDashboard() {
                   </h3>
 
                   {/* Assumed vs Found Block */}
-                  <div className="bg-[#FFFFFF] border-2 border-[#000000] rounded-md p-3 text-[12px] space-y-1">
+                  <div className="bg-[#F8F9FA] border border-gray-100 rounded-md p-3 text-[12px] space-y-1">
                     <div className="text-[#8C8C8C] line-through font-mono">
                       <strong className="no-underline">ASSUMED:</strong> Non-buyers across categories have blanket distrust of the platform.
                     </div>
@@ -1198,10 +1198,10 @@ export default function EngineDashboard() {
               </div>
 
               {/* Structured Body Sections */}
-              <div className="space-y-4 pt-3 border-t-2 border-[#000000] text-[13px] font-normal leading-relaxed">
+              <div className="space-y-4 pt-3 border-t border-gray-100 text-[13px] font-normal leading-relaxed">
                 <div>
                   <span className="text-[9.5px] font-bold text-[#8C8C8C] uppercase tracking-wider block mb-1">Observed Pattern</span>
-                  <p className="text-[#171717] font-medium italic bg-[#FFFFFF] p-3 rounded border-2 border-[#000000]">
+                  <p className="text-[#171717] font-medium italic bg-[#F8F9FA] p-3 rounded border border-gray-100">
                     "Customers whose language suggests frequent, ongoing use (19 signals, 10.1%) describe specific, fixable complaints rather than blanket distrust — that distinction matters. A customer who says 'I won't buy electronics here because of X' is different from a customer who says 'I'll never use this app again.' The first is telling you what to fix. Treat this as a supposition about where to test first, not a confirmed customer list — segment inference here comes from language, not verified purchase history."
                   </p>
                 </div>
@@ -1213,7 +1213,7 @@ export default function EngineDashboard() {
                       <div 
                         key={r.row_number} 
                         onClick={() => jumpToRow(r.row_number)}
-                        className="bg-[#FFFFFF] border-2 border-[#000000] rounded-md p-3.5 text-[12px] text-[#171717] italic cursor-pointer hover:bg-[#000000]/5 transition-all duration-200 shadow-sm"
+                        className="bg-[#F4F3EE] border border-gray-100 rounded-md p-3.5 text-[12px] text-[#171717] italic cursor-pointer hover:bg-[#EDEBE3] transition-all duration-200 shadow-sm"
                       >
                         "{r.quote}" <span className="font-mono text-[10px] text-[#8C8C8C] not-italic block mt-1">Row #{r.row_number} · Click to verify</span>
                       </div>
@@ -1240,7 +1240,7 @@ export default function EngineDashboard() {
                   </p>
                 </div>
 
-                <div className="pt-3 border-t-2 border-[#000000]">
+                <div className="pt-3 border-t border-gray-100">
                   <a href="#q8" className="text-[12px] font-bold text-[#000000] hover:underline flex items-center gap-1">
                     Related findings: What do customers consistently say is missing? →
                   </a>
@@ -1248,7 +1248,7 @@ export default function EngineDashboard() {
               </div>
 
               {/* Segment x Reason Matrix */}
-              <div className="bg-[#FFFFFF] border-2 border-[#000000] rounded-lg p-5 space-y-4 mt-4">
+              <div className="bg-[#FFFFFF] border-none shadow-[0_1px_3px_rgba(0,0,0,0.08),0_1px_2px_rgba(0,0,0,0.06)] rounded-lg p-5 space-y-4 mt-4">
                 <div>
                   <h4 className="text-[14px] font-bold text-[#171717]">Supporting Matrix: Segments × Reason-Types</h4>
                   <p className="text-[12px] text-[#5F6368] mt-1 leading-relaxed">
@@ -1257,9 +1257,9 @@ export default function EngineDashboard() {
                 </div>
 
                 <div className="overflow-x-auto">
-                  <table className="w-full border-collapse text-left text-[11px] bg-white border-2 border-[#000000]">
+                  <table className="w-full border-collapse text-left text-[11px] bg-white border border-gray-100 rounded">
                     <thead>
-                      <tr className="border-b-2 border-[#000000] bg-[#FFFFFF]">
+                      <tr className="border-b border-gray-200 bg-[#F8F9FA]">
                         <th className="p-2.5 font-bold text-[#5F6368] uppercase tracking-wider text-[9px]">Segment</th>
                         {REASONS.map(r => (
                           <th key={r} className="p-2.5 font-bold text-[#5F6368] uppercase tracking-wider text-[9px] text-center capitalize">{r}</th>
@@ -1268,7 +1268,7 @@ export default function EngineDashboard() {
                     </thead>
                     <tbody>
                       {SEGMENTS.map(seg => (
-                        <tr key={seg} className="border-b border-[#000000]/20 hover:bg-[#FFFFFF]">
+                        <tr key={seg} className="border-b border-gray-100 hover:bg-[#F8F9FA]">
                           <td className="p-2.5 font-bold text-[#171717] capitalize">{seg.replace(/_/g, " ")}</td>
                           {REASONS.map(reason => {
                             const count = reviews.filter(r => r.user_segment === seg && r.reason_type === reason).length;
@@ -1311,9 +1311,9 @@ export default function EngineDashboard() {
             </div>
 
             {/* Q8 */}
-            <div id="q8" className="bg-[#FFFFFF] border-2 border-[#000000] border-l-4 border-l-purple-600 rounded-lg p-6 md:p-7 shadow-sm space-y-6 scroll-mt-20">
+            <div id="q8" className="bg-[#FFFFFF] border-none shadow-[0_1px_3px_rgba(0,0,0,0.08),0_1px_2px_rgba(0,0,0,0.06)] border-l-4 border-l-purple-600 rounded-lg p-6 md:p-7 space-y-6 scroll-mt-20">
               {/* Card Header */}
-              <div className="flex items-center justify-between gap-2 border-b-2 border-[#000000] pb-3">
+              <div className="flex items-center justify-between gap-2 border-b border-gray-100 pb-3">
                 <span className="font-mono text-[10px] font-bold text-[#737373] uppercase tracking-wider">
                   WHAT DO CUSTOMERS CONSISTENTLY SAY IS MISSING?
                 </span>
@@ -1321,7 +1321,7 @@ export default function EngineDashboard() {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ duration: 0.5 }}
-                  className="text-[11px] font-bold text-[#000000] bg-[#FFFFFF] px-2.5 py-0.5 rounded border-2 border-[#000000] shrink-0"
+                  className="text-[11px] font-bold text-[#000000] bg-[#F8F9FA] px-2.5 py-0.5 rounded border border-gray-200 shrink-0"
                 >
                   Confidence: Medium (Inferred from language)
                 </motion.span>
@@ -1344,10 +1344,10 @@ export default function EngineDashboard() {
               </div>
 
               {/* Structured Body Sections */}
-              <div className="space-y-4 pt-3 border-t-2 border-[#000000] text-[13px] font-normal leading-relaxed">
+              <div className="space-y-4 pt-3 border-t border-gray-100 text-[13px] font-normal leading-relaxed">
                 <div>
                   <span className="text-[9.5px] font-bold text-[#8C8C8C] uppercase tracking-wider block mb-1">Observed Pattern</span>
-                  <p className="text-[#171717] font-medium italic bg-[#FFFFFF] p-3 rounded border-2 border-[#000000]">
+                  <p className="text-[#171717] font-medium italic bg-[#F8F9FA] p-3 rounded border border-gray-100">
                     "Five needs repeat across otherwise unrelated complaints: proof a product is genuine, clear pricing without surprise fees, a return process that actually works, accurate stock information for less-common items, and — mentioned by only one customer but worth flagging rather than discarding — a simpler interface for a non-technical user. Small signal isn't nothing; it's a prompt for direct research, not a proven segment need."
                   </p>
                 </div>
@@ -1359,7 +1359,7 @@ export default function EngineDashboard() {
                       <div 
                         key={r.row_number} 
                         onClick={() => jumpToRow(r.row_number)}
-                        className="bg-[#FFFFFF] border-2 border-[#000000] rounded-md p-3.5 text-[12px] text-[#171717] italic cursor-pointer hover:bg-[#000000]/5 transition-all duration-200 shadow-sm"
+                        className="bg-[#F4F3EE] border border-gray-100 rounded-md p-3.5 text-[12px] text-[#171717] italic cursor-pointer hover:bg-[#EDEBE3] transition-all duration-200 shadow-sm"
                       >
                         "{r.quote}" <span className="font-mono text-[10px] text-[#8C8C8C] not-italic block mt-1">Row #{r.row_number} · Click to verify</span>
                       </div>
@@ -1386,7 +1386,7 @@ export default function EngineDashboard() {
                   </p>
                 </div>
 
-                <div className="pt-3 border-t-2 border-[#000000]">
+                <div className="pt-3 border-t border-gray-100">
                   <a href="#q1" className="text-[12px] font-bold text-[#000000] hover:underline flex items-center gap-1">
                     Related findings: Why do customers keep buying from the same categories? →
                   </a>
@@ -1404,7 +1404,7 @@ export default function EngineDashboard() {
       {currentView === "explorer" && (
         <div className="space-y-6 max-w-5xl mx-auto">
           {/* Header */}
-          <div className="border-b-2 border-[#000000] pb-3">
+          <div className="border-b border-gray-200 pb-3">
             <h2 className="font-display font-bold text-[20px] text-[#171717]">Evidence Explorer</h2>
             <p className="text-[12px] text-[#5F6368] mt-1">
               Verify claims against the underlying customer feedback records. Apply filter parameters to recompute the list.
@@ -1412,7 +1412,7 @@ export default function EngineDashboard() {
           </div>
 
           {/* Explorer Filters Header Card */}
-          <div className="bg-[#FFFFFF] border-2 border-[#000000] rounded-lg p-5 shadow-sm grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-4 items-end">
+          <div className="bg-[#FFFFFF] border-none shadow-[0_1px_3px_rgba(0,0,0,0.08),0_1px_2px_rgba(0,0,0,0.06)] rounded-lg p-5 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-4 items-end">
             {/* Search input */}
             <div className="space-y-1">
               <label className="text-[9.5px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Search Quote/Row</label>
@@ -1422,7 +1422,7 @@ export default function EngineDashboard() {
                   placeholder="e.g. 22 or 'spoiled'"
                   value={explorerSearch}
                   onChange={(e) => setExplorerSearch(e.target.value)}
-                  className="w-full bg-[#FFFFFF] border-2 border-[#000000] rounded px-3 py-1.5 text-[12px] focus:outline-none text-[#171717] font-medium"
+                  className="w-full bg-[#FFFFFF] border border-gray-200 rounded px-3 py-1.5 text-[12px] focus:outline-none text-[#171717] font-medium"
                 />
                 {explorerSearch && (
                   <button 
@@ -1441,7 +1441,7 @@ export default function EngineDashboard() {
               <select
                 value={explorerSource}
                 onChange={(e) => setExplorerSource(e.target.value)}
-                className="w-full bg-[#FFFFFF] border-2 border-[#000000] rounded px-2.5 py-1.5 text-[12px] focus:outline-none text-[#171717] font-medium"
+                className="w-full bg-[#FFFFFF] border border-gray-200 rounded px-2.5 py-1.5 text-[12px] focus:outline-none text-[#171717] font-medium"
               >
                 <option value="all">All Sources</option>
                 {SOURCES.map(s => <option key={s} value={s}>{s}</option>)}
@@ -1454,7 +1454,7 @@ export default function EngineDashboard() {
               <select
                 value={explorerSegment}
                 onChange={(e) => setExplorerSegment(e.target.value)}
-                className="w-full bg-[#FFFFFF] border-2 border-[#000000] rounded px-2.5 py-1.5 text-[12px] focus:outline-none text-[#171717] font-medium capitalize"
+                className="w-full bg-[#FFFFFF] border border-gray-200 rounded px-2.5 py-1.5 text-[12px] focus:outline-none text-[#171717] font-medium capitalize"
               >
                 <option value="all">All Segments</option>
                 {SEGMENTS.map(s => <option key={s} value={s}>{s.replace(/_/g, " ")}</option>)}
@@ -1467,7 +1467,7 @@ export default function EngineDashboard() {
               <select
                 value={explorerReason}
                 onChange={(e) => setExplorerReason(e.target.value)}
-                className="w-full bg-[#FFFFFF] border-2 border-[#000000] rounded px-2.5 py-1.5 text-[12px] focus:outline-none text-[#171717] font-medium capitalize"
+                className="w-full bg-[#FFFFFF] border border-gray-200 rounded px-2.5 py-1.5 text-[12px] focus:outline-none text-[#171717] font-medium capitalize"
               >
                 <option value="all">All Reasons</option>
                 {REASONS.map(r => <option key={r} value={r}>{r}</option>)}
@@ -1480,7 +1480,7 @@ export default function EngineDashboard() {
               <select
                 value={explorerConfidence}
                 onChange={(e) => setExplorerConfidence(e.target.value)}
-                className="w-full bg-[#FFFFFF] border-2 border-[#000000] rounded px-2.5 py-1.5 text-[12px] focus:outline-none text-[#171717] font-medium capitalize"
+                className="w-full bg-[#FFFFFF] border border-gray-200 rounded px-2.5 py-1.5 text-[12px] focus:outline-none text-[#171717] font-medium capitalize"
               >
                 <option value="all">All Confidence</option>
                 <option value="high">High</option>
@@ -1511,13 +1511,13 @@ export default function EngineDashboard() {
           {/* Master-Detail Evidence Inspector */}
           <div className="flex flex-col md:flex-row items-start gap-6">
             {/* LEFT PANEL — compact evidence list */}
-            <div className="w-full md:w-[360px] shrink-0 bg-[#FFFFFF] border-2 border-[#000000] rounded-lg shadow-sm overflow-hidden flex flex-col h-[560px]">
-              <div className="p-3 bg-[#FFFFFF] border-b-2 border-[#000000] flex justify-between items-center text-[10px] font-mono font-bold text-[#000000] uppercase tracking-wider">
+            <div className="w-full md:w-[360px] shrink-0 bg-[#FFFFFF] border-none shadow-[0_1px_3px_rgba(0,0,0,0.08),0_1px_2px_rgba(0,0,0,0.06)] rounded-lg overflow-hidden flex flex-col h-[560px]">
+              <div className="p-3 bg-[#F8F9FA] border-b border-gray-100 flex justify-between items-center text-[10px] font-mono font-bold text-[#000000] uppercase tracking-wider">
                 <span>RECORDS ({filteredExplorerReviews.length})</span>
                 <span>CONFIDENCE</span>
               </div>
               
-              <div className="overflow-y-auto flex-1 divide-y divide-[#000000]/20">
+              <div className="overflow-y-auto flex-1 divide-y divide-gray-100">
                 {filteredExplorerReviews.length === 0 ? (
                   <div className="p-8 text-center text-[#8C8C8C] italic text-[12px]">
                     No records match the current filter selection.
@@ -1554,7 +1554,7 @@ export default function EngineDashboard() {
                   })
                 )}
               </div>
-              <div className="bg-[#FFFFFF] p-2.5 text-[10.5px] text-[#8C8C8C] border-t-2 border-[#000000] text-right font-mono">
+              <div className="bg-[#FFFFFF] p-2.5 text-[10.5px] text-[#8C8C8C] border-t border-gray-100 text-right font-mono">
                 Showing {filteredExplorerReviews.length} of 189 records
               </div>
             </div>
@@ -1562,8 +1562,8 @@ export default function EngineDashboard() {
             {/* RIGHT PANEL — evidence inspection card */}
             <div className="w-full flex-1 min-h-[560px]">
               {!selectedRecord ? (
-                <div className="bg-[#FFFFFF] border-2 border-[#000000] rounded-lg p-8 shadow-sm flex flex-col items-center justify-center text-center h-[560px]">
-                  <div className="w-12 h-12 rounded-full bg-[#FFFFFF] border-2 border-[#000000] text-[#000000] flex items-center justify-center mb-3">
+                <div className="bg-[#FFFFFF] border-none shadow-[0_1px_3px_rgba(0,0,0,0.08),0_1px_2px_rgba(0,0,0,0.06)] rounded-lg p-8 flex flex-col items-center justify-center text-center h-[560px]">
+                  <div className="w-12 h-12 rounded-full bg-[#F8F9FA] text-[#000000] flex items-center justify-center mb-3">
                     <Search size={20} />
                   </div>
                   <h3 className="font-display font-bold text-[16px] text-[#171717]">No Record Selected</h3>
@@ -1572,10 +1572,10 @@ export default function EngineDashboard() {
                   </p>
                 </div>
               ) : (
-                <div className="bg-[#FFFFFF] border-2 border-[#000000] rounded-lg p-6 shadow-sm space-y-6 h-[560px] flex flex-col justify-between overflow-y-auto">
+                <div className="bg-[#FFFFFF] border-none shadow-[0_1px_3px_rgba(0,0,0,0.08),0_1px_2px_rgba(0,0,0,0.06)] rounded-lg p-6 space-y-6 h-[560px] flex flex-col justify-between overflow-y-auto">
                   <div className="space-y-6">
                     {/* Inspection Header */}
-                    <div className="flex items-center justify-between border-b-2 border-[#000000] pb-4">
+                    <div className="flex items-center justify-between border-b border-gray-100 pb-4">
                       <div className="flex items-center gap-3">
                         <PlatformIcon source={selectedRecord.source} size={24} />
                         <div>
@@ -1606,7 +1606,7 @@ export default function EngineDashboard() {
                       <span className="text-[10px] font-bold text-[#8C8C8C] uppercase tracking-wider block">
                         AI-Verified Source Text
                       </span>
-                      <div className="bg-[#FFFFFF] border-2 border-[#000000] rounded-lg p-5">
+                      <div className="bg-[#F8F9FA] border border-gray-100 rounded-lg p-5">
                         <p className="text-[14.5px] font-medium leading-relaxed text-[#171717]">
                           <mark className="bg-[#F8CB46] text-[#000000] px-1.5 py-0.5 rounded font-semibold">
                             "{selectedRecord.quote}"
@@ -1623,22 +1623,22 @@ export default function EngineDashboard() {
                     </div>
 
                     {/* Extracted Structure Pill Tags */}
-                    <div className="space-y-2 pt-2 border-t-2 border-[#000000]">
+                    <div className="space-y-2 pt-2 border-t border-gray-100">
                       <span className="text-[10px] font-bold text-[#8C8C8C] uppercase tracking-wider block">
                         Extracted Structure
                       </span>
                       <div className="flex flex-wrap gap-2 text-[11px] font-medium">
-                        <span className="bg-[#FFFFFF] text-[#000000] border-2 border-[#000000] px-2.5 py-1 rounded-md font-mono">
+                        <span className="bg-[#F8F9FA] text-[#000000] border border-gray-200 px-2.5 py-1 rounded-md font-mono">
                           Reason: <strong className="capitalize">{selectedRecord.reason_type}</strong>
                         </span>
-                        <span className="bg-[#FFFFFF] text-[#171717] border-2 border-[#000000] px-2.5 py-1 rounded-md">
+                        <span className="bg-[#F8F9FA] text-[#171717] border border-gray-200 px-2.5 py-1 rounded-md">
                           Category: <strong>{selectedRecord.category_mentioned === "none" ? "General Catalog" : selectedRecord.category_mentioned}</strong>
                         </span>
-                        <span className="bg-[#FFFFFF] text-[#171717] border-2 border-[#000000] px-2.5 py-1 rounded-md capitalize">
+                        <span className="bg-[#F8F9FA] text-[#171717] border border-gray-200 px-2.5 py-1 rounded-md capitalize">
                           Segment: <strong>{selectedRecord.user_segment.replace(/_/g, " ")}</strong>
                         </span>
                         {selectedRecord.info_needed !== "none" && selectedRecord.info_needed !== "not stated" && (
-                          <span className="bg-[#FFFFFF] text-[#5F6368] border-2 border-[#000000] px-2.5 py-1 rounded-md">
+                          <span className="bg-[#F8F9FA] text-[#5F6368] border border-gray-200 px-2.5 py-1 rounded-md">
                             Info Needed: <strong>{selectedRecord.info_needed}</strong>
                           </span>
                         )}
@@ -1650,7 +1650,7 @@ export default function EngineDashboard() {
                   {(() => {
                     const mappedQ = REASON_TO_QUESTION[selectedRecord.reason_type] || REASON_TO_QUESTION.trust;
                     return (
-                      <div className="pt-4 border-t-2 border-[#000000]">
+                      <div className="pt-4 border-t border-gray-100">
                         <span className="text-[10px] font-bold text-[#8C8C8C] uppercase tracking-wider block mb-1">
                           Supported Finding
                         </span>
@@ -1682,8 +1682,8 @@ export default function EngineDashboard() {
       {currentView === "docs" && (
         <div className="space-y-8 max-w-4xl mx-auto">
           {/* Prominent Top Card: Test the Workflow Yourself */}
-          <div className="bg-[#FFFFFF] border-2 border-[#000000] rounded-lg p-6 md:p-7 shadow-md space-y-5">
-            <div className="flex items-center justify-between gap-4 border-b-2 border-[#000000] pb-4">
+          <div className="bg-[#FFFFFF] border-none shadow-[0_1px_3px_rgba(0,0,0,0.08),0_1px_2px_rgba(0,0,0,0.06)] rounded-lg p-6 md:p-7 space-y-5">
+            <div className="flex items-center justify-between gap-4 border-b border-gray-100 pb-4">
               <div>
                 <span className="text-[10px] font-bold text-[#000000] uppercase tracking-wider block mb-1">Interactive Deliverable</span>
                 <h2 className="font-display font-extrabold text-[22px] text-[#171717] flex items-center gap-2">
@@ -1709,7 +1709,7 @@ export default function EngineDashboard() {
                   placeholder="AIzaSy..."
                   value={apiKey}
                   onChange={(e) => setApiKey(e.target.value)}
-                  className="w-full bg-[#FFFFFF] border-2 border-[#000000] rounded px-3 py-2 text-[12px] focus:outline-none text-[#171717] font-medium"
+                  className="w-full bg-[#FFFFFF] border border-gray-200 rounded px-3 py-2 text-[12px] focus:outline-none text-[#171717] font-medium"
                 />
               </div>
 
@@ -1723,7 +1723,7 @@ export default function EngineDashboard() {
                   placeholder="e.g. Received a fake charging cable from the delivery person today. Quality control is highly disappointing, I will stick to buying electronics offline."
                   value={reviewInput}
                   onChange={(e) => setReviewInput(e.target.value)}
-                  className="w-full bg-[#FFFFFF] border-2 border-[#000000] rounded px-3 py-2 text-[12px] focus:outline-none text-[#171717] font-medium leading-relaxed"
+                  className="w-full bg-[#FFFFFF] border border-gray-200 rounded px-3 py-2 text-[12px] focus:outline-none text-[#171717] font-medium leading-relaxed"
                 />
               </div>
 
@@ -1731,7 +1731,7 @@ export default function EngineDashboard() {
               <button
                 onClick={handleAnalyze}
                 disabled={analyzerLoading}
-                className="bg-[#000000] text-[#FFFFFF] font-bold text-[12.5px] px-5 py-2.5 rounded-[8px] border-none transition-colors disabled:opacity-60 shadow-sm"
+                className="bg-[#000000] text-[#FFFFFF] font-bold text-[12.5px] px-5 py-2.5 rounded-[8px] border-2 border-[#000000] transition-colors disabled:opacity-60 shadow-sm"
               >
                 {analyzerLoading ? "Processing signal..." : "Analyze review"}
               </button>
@@ -1739,12 +1739,12 @@ export default function EngineDashboard() {
 
             {/* Loading step indicators */}
             {analyzerLoading && (
-              <div className="mt-4 pt-4 border-t-2 border-[#000000] space-y-2">
+              <div className="mt-4 pt-4 border-t border-gray-100 space-y-2">
                 <div className="flex justify-between text-[11px] font-bold text-[#000000] uppercase tracking-wider animate-pulse">
                   <span>{ANALYZER_STEPS[analyzerStep]}</span>
                   <span>{Math.round(((analyzerStep + 1) / ANALYZER_STEPS.length) * 100)}%</span>
                 </div>
-                <div className="w-full h-2 bg-[#FFFFFF] border-2 border-[#000000] rounded-full overflow-hidden">
+                <div className="w-full h-2 bg-[#F8F9FA] rounded-full overflow-hidden">
                   <div 
                     className="h-full bg-[#000000] transition-all duration-300 ease-out"
                     style={{ width: `${((analyzerStep + 1) / ANALYZER_STEPS.length) * 100}%` }}
@@ -1755,19 +1755,19 @@ export default function EngineDashboard() {
 
             {/* Error output */}
             {analyzerError && (
-              <div className="mt-4 p-3 bg-[#FFFFFF] border-2 border-red-600 text-red-600 rounded text-[12px] font-semibold">
+              <div className="mt-4 p-3 bg-[#FFF5F5] border border-red-200 text-red-600 rounded text-[12px] font-semibold">
                 Error: {analyzerError}
               </div>
             )}
 
             {/* Result output */}
             {analyzerResult && (
-              <div className="mt-6 pt-5 border-t-2 border-[#000000] space-y-4">
-                <span className="text-[10px] font-bold text-[#000000] bg-[#F8CB46] px-2.5 py-0.5 rounded border-2 border-[#000000] inline-block uppercase tracking-wider">
+              <div className="mt-6 pt-5 border-t border-gray-100 space-y-4">
+                <span className="text-[10px] font-bold text-[#000000] bg-[#F8CB46] px-2.5 py-0.5 rounded border border-gray-200 inline-block uppercase tracking-wider">
                   Resulting Parameters
                 </span>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-[12px] bg-[#FFFFFF] p-4 rounded border-2 border-[#000000] leading-relaxed text-[#171717]">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-[12px] bg-[#F8F9FA] p-4 rounded border border-gray-100 leading-relaxed text-[#171717]">
                   <div>
                     <span className="text-[9px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Has Signal</span>
                     <span className="font-semibold">{String(analyzerResult.has_signal)}</span>
@@ -1792,7 +1792,7 @@ export default function EngineDashboard() {
                     <span className="text-[9px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Confidence</span>
                     <span className="font-semibold capitalize">{analyzerResult.confidence || "low"}</span>
                   </div>
-                  <div className="md:col-span-2 border-t-2 border-[#000000] pt-2.5">
+                  <div className="md:col-span-2 border-t border-gray-100 pt-2.5">
                     <span className="text-[9px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Verbatim Sentence Match</span>
                     <span className="font-semibold italic text-[#5F6368]">"{analyzerResult.quote || "none"}"</span>
                   </div>
@@ -1802,14 +1802,14 @@ export default function EngineDashboard() {
           </div>
 
           {/* User Guide Doc Section */}
-          <div className="bg-[#FFFFFF] border-2 border-[#000000] rounded-lg p-6 shadow-sm space-y-4">
+          <div className="bg-[#FFFFFF] border-none shadow-[0_1px_3px_rgba(0,0,0,0.08),0_1px_2px_rgba(0,0,0,0.06)] rounded-lg p-6 space-y-4">
             <h2 className="font-display font-bold text-[18px] text-[#171717] flex items-center gap-2">
               <BookOpen size={16} className="text-[#000000]" /> User Guide
             </h2>
             <p className="text-[13px] text-[#5F6368] leading-relaxed">
               Use the **Evidence Explorer** tab to search and verify findings. You can input a row number to view its details directly, or select a source, segment, or reason type from the dropdown selectors to recompute the list. The **Discovery Workspace** presents the 8 primary questions, each containing quote-grounded customer sentences. Click any quote block to jump directly to the Explorer and verify the sentence in the table.
             </p>
-            <div className="text-[12.5px] text-[#5F6368] bg-[#FFFFFF] p-3.5 rounded border-2 border-[#000000] space-y-2">
+            <div className="text-[12.5px] text-[#5F6368] bg-[#F8F9FA] p-3.5 rounded border border-gray-100 space-y-2">
               <div>
                 <strong>Confidence Levels:</strong> Sourced self-reported scores indicating model classification depth. Treats "high" as zero hedging, and "medium/low" as directional cues requiring follow-up inspection.
               </div>
@@ -1820,7 +1820,7 @@ export default function EngineDashboard() {
           </div>
 
           {/* Links to engineering methodology */}
-          <div className="bg-[#FFFFFF] border-2 border-[#000000] rounded-lg p-5 shadow-sm flex items-center justify-between">
+          <div className="bg-[#FFFFFF] border-none shadow-[0_1px_3px_rgba(0,0,0,0.08),0_1px_2px_rgba(0,0,0,0.06)] rounded-lg p-5 flex items-center justify-between">
             <div className="space-y-1">
               <h4 className="text-[14px] font-bold text-[#171717]">Technical Pipeline Reference</h4>
               <p className="text-[12px] text-[#5F6368]">
@@ -1829,7 +1829,7 @@ export default function EngineDashboard() {
             </div>
             <button
               onClick={() => setCurrentView("methodology")}
-              className="bg-[#000000] text-[#FFFFFF] font-bold text-[11.5px] px-4 py-2 rounded-[8px] border-none transition-colors"
+              className="bg-[#000000] text-[#FFFFFF] font-bold text-[11.5px] px-4 py-2 rounded-[8px] border-2 border-[#000000] transition-colors"
             >
               Open Technical Docs
             </button>
@@ -1840,8 +1840,8 @@ export default function EngineDashboard() {
       {/* ═══════════════════════════════════════════
           PROJECT REPOSITORY CARD (FOOTER)
           ═══════════════════════════════════════════ */}
-      <footer className="max-w-4xl mx-auto border-t-2 border-[#000000] pt-8">
-        <div className="bg-[#FFFFFF] border-2 border-[#000000] rounded-lg p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <footer className="max-w-4xl mx-auto border-t border-gray-200 pt-8">
+        <div className="bg-[#FFFFFF] border-none shadow-[0_1px_3px_rgba(0,0,0,0.08),0_1px_2px_rgba(0,0,0,0.06)] rounded-lg p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="space-y-1">
             <span className="text-[9px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Source Code Repository</span>
             <h4 className="font-display font-bold text-[14.5px] text-[#171717]">Project Repository</h4>
@@ -1853,7 +1853,7 @@ export default function EngineDashboard() {
             href="https://github.com/Deepali611/AI.blinkit-discovery"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-1 bg-[#000000] text-[#FFFFFF] text-[12px] font-bold px-4 py-2 rounded-[8px] border-none shadow-sm transition-all"
+            className="inline-flex items-center gap-1 bg-[#000000] text-[#FFFFFF] text-[12px] font-bold px-4 py-2 rounded-[8px] border-2 border-[#000000] shadow-sm transition-all"
           >
             Open on GitHub <ExternalLink size={13} />
           </a>
