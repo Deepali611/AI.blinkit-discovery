@@ -33,8 +33,8 @@ export const REASON_COLORS: Record<string, string> = {
 };
 
 export const SEGMENT_COLORS: Record<string, string> = {
-  heavy_user: "#00B140", // Genuinely positive/validated segment
-  quality_focused: "#16201A",
+  heavy_user: "#54B226", // Genuinely positive/validated segment
+  quality_focused: "#1F1F1F",
   price_sensitive: "#4A5447",
   light_new_user: "#6B7566",
   one_time_complainer: "#9A9488",

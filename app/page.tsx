@@ -24,8 +24,8 @@ import {
   ChevronUp
 } from "lucide-react";
 
-// Repeating decorative 5-color palette for list dot bullets
-const DOT_PALETTE = ["#F8CB46", "#7C5CBF", "#9A9488", "#3B5BDB", "#D93025"];
+// Repeating decorative palette for list dot bullets
+const DOT_PALETTE = ["#F8CB45", "#54B226", "#1F1F1F", "#3B5BDB", "#D93025"];
 
 // Count-up Stat Callout component using Framer Motion with two-segment visual progress bar
 function AnimatedStat({ 
@@ -324,20 +324,20 @@ export default function EngineDashboard() {
   }, [explorerSearch, explorerSource, explorerSegment, explorerReason, explorerConfidence]);
 
   return (
-    <div className="space-y-8 font-sans antialiased text-[#171717]">
+    <div className="space-y-8 font-sans antialiased text-[#1F1F1F]">
       {/* Navigation Header (Hidden on Landing) */}
       {currentView !== "landing" && (
-        <header className="bg-[#F8CB46] p-4 flex flex-col md:flex-row items-center justify-between gap-4 text-[#000000] border-none rounded-none">
+        <header className="bg-[#FFFFFF] border-b border-[#E5E5E5] p-4 flex flex-col md:flex-row items-center justify-between gap-4 text-[#1F1F1F]">
           <div className="flex items-center gap-3">
             <button 
               onClick={() => setCurrentView("landing")}
-              className="w-[48px] h-[48px] rounded-[12px] bg-[#F8CB46] text-[#000000] font-bold text-[20px] flex items-center justify-center border-2 border-[#000000] shrink-0"
+              className="w-[44px] h-[44px] rounded-[10px] bg-[#F8CB45] text-[#1F1F1F] font-extrabold text-[20px] flex items-center justify-center border-none shadow-2xs shrink-0"
             >
               B
             </button>
             <div>
-              <span className="font-display font-extrabold text-[14px] text-[#000000]">Blinkit Discovery Engine</span>
-              <div className="text-[9px] text-[#000000] font-bold tracking-wide uppercase">Internal Tool</div>
+              <span className="font-display font-bold text-[14px] text-[#1F1F1F]">Blinkit Discovery Engine</span>
+              <div className="text-[9px] text-[#5F6368] font-bold tracking-wide uppercase">Internal Tool</div>
             </div>
           </div>
           
@@ -346,8 +346,8 @@ export default function EngineDashboard() {
               onClick={() => setCurrentView("workspace")}
               className={`px-4 py-1.5 text-[12px] font-bold rounded-[8px] transition-all ${
                 currentView === "workspace"
-                  ? "bg-[#000000] text-[#FFFFFF] shadow-sm"
-                  : "text-[#000000] hover:bg-[#000000]/10"
+                  ? "bg-[#1F1F1F] text-[#FFFFFF] shadow-2xs"
+                  : "text-[#1F1F1F] hover:bg-[#1F1F1F]/10"
               }`}
             >
               Discovery Workspace
@@ -356,8 +356,8 @@ export default function EngineDashboard() {
               onClick={() => setCurrentView("methodology")}
               className={`px-4 py-1.5 text-[12px] font-bold rounded-[8px] transition-all ${
                 currentView === "methodology"
-                  ? "bg-[#000000] text-[#FFFFFF] shadow-sm"
-                  : "text-[#000000] hover:bg-[#000000]/10"
+                  ? "bg-[#1F1F1F] text-[#FFFFFF] shadow-2xs"
+                  : "text-[#1F1F1F] hover:bg-[#1F1F1F]/10"
               }`}
             >
               How the Engine Works
@@ -366,8 +366,8 @@ export default function EngineDashboard() {
               onClick={() => setCurrentView("explorer")}
               className={`px-4 py-1.5 text-[12px] font-bold rounded-[8px] transition-all ${
                 currentView === "explorer"
-                  ? "bg-[#000000] text-[#FFFFFF] shadow-sm"
-                  : "text-[#000000] hover:bg-[#000000]/10"
+                  ? "bg-[#1F1F1F] text-[#FFFFFF] shadow-2xs"
+                  : "text-[#1F1F1F] hover:bg-[#1F1F1F]/10"
               }`}
             >
               Evidence Explorer
@@ -376,8 +376,8 @@ export default function EngineDashboard() {
               onClick={() => setCurrentView("docs")}
               className={`px-4 py-1.5 text-[12px] font-bold rounded-[8px] transition-all ${
                 currentView === "docs"
-                  ? "bg-[#000000] text-[#FFFFFF] shadow-sm"
-                  : "text-[#000000] hover:bg-[#000000]/10"
+                  ? "bg-[#1F1F1F] text-[#FFFFFF] shadow-2xs"
+                  : "text-[#1F1F1F] hover:bg-[#1F1F1F]/10"
               }`}
             >
               Engine Documentation
@@ -388,7 +388,7 @@ export default function EngineDashboard() {
 
       {/* Primary Business Objective Banner (Shown once on Discovery Workspace entry point) */}
       {currentView === "workspace" && (
-        <div className="bg-[#FFFFFF] border-none shadow-[0_1px_3px_rgba(0,0,0,0.08),0_1px_2px_rgba(0,0,0,0.06)] p-4 rounded-lg text-[13px] text-[#000000] leading-relaxed max-w-4xl mx-auto">
+        <div className="bg-[#FFFFFF] border border-gray-200 shadow-[0_1px_3px_rgba(0,0,0,0.06)] p-4 rounded-lg text-[13px] text-[#1F1F1F] leading-relaxed max-w-4xl mx-auto">
           <strong>Primary Objective:</strong> Understand why customers who already trust Blinkit for one category hesitate to expand into additional categories, and identify evidence-backed opportunities to reduce that hesitation.
         </div>
       )}
@@ -397,55 +397,58 @@ export default function EngineDashboard() {
           1. LANDING VIEW
           ═══════════════════════════════════════════ */}
       {currentView === "landing" && (
-        <div className="min-h-[75vh] flex flex-col items-center justify-center max-w-3xl mx-auto space-y-8 py-10">
+        <div className="min-h-[70vh] flex flex-col items-center justify-center max-w-3xl mx-auto space-y-8 py-10">
           {/* Header Block */}
-          <div className="text-center space-y-4">
-            <div className="w-[48px] h-[48px] rounded-[12px] bg-[#F8CB46] text-[#000000] font-bold text-[22px] flex items-center justify-center mx-auto border-2 border-[#000000] shadow-sm">
+          <div className="text-center space-y-3">
+            <div className="w-[44px] h-[44px] rounded-[10px] bg-[#F8CB45] text-[#1F1F1F] font-extrabold text-[20px] flex items-center justify-center mx-auto border-none shadow-2xs">
               B
             </div>
-            <h1 className="font-display font-[900] text-[28px] md:text-[34px] leading-tight tracking-tight text-[#000000] max-w-2xl mx-auto">
-              Blinkit Discovery Engine — reads customer feedback so Product doesn't have to guess why customers stay inside the categories they already trust.
+            {/* Shrunk Headline: max 2 lines, 32-36px, font-bold */}
+            <h1 className="font-display font-bold text-[30px] md:text-[34px] leading-tight tracking-tight text-[#1F1F1F] max-w-xl mx-auto">
+              Blinkit Discovery Engine
             </h1>
-            <p className="text-[13.5px] text-[#5F6368] font-medium leading-relaxed max-w-xl mx-auto">
-              Blinkit's growth goal: increase the share of Monthly Active Customers who buy from at least one new category every month. This engine exists to find out what's stopping that today.
+            {/* Single-line supporting subtitle */}
+            <p className="text-[13.5px] text-[#5F6368] font-medium leading-relaxed max-w-md mx-auto">
+              Structured customer feedback analysis for cross-category growth.
             </p>
 
             {/* BLOCK 1: CHIP ROW (4 pill-shaped tags floating freely in a single row) */}
             <div className="flex flex-wrap items-center justify-center gap-2.5 pt-2">
-              <span className="px-3.5 py-1 text-[11.5px] font-semibold text-[#171717] bg-white border border-gray-200 rounded-full shadow-[0_1px_2px_rgba(0,0,0,0.04)]">
+              <span className="px-3.5 py-1 text-[11.5px] font-semibold text-[#1F1F1F] bg-white border border-gray-200 rounded-full shadow-[0_1px_2px_rgba(0,0,0,0.04)]">
                 Trust barriers
               </span>
-              <span className="px-3.5 py-1 text-[11.5px] font-semibold text-[#171717] bg-white border border-gray-200 rounded-full shadow-[0_1px_2px_rgba(0,0,0,0.04)]">
+              <span className="px-3.5 py-1 text-[11.5px] font-semibold text-[#1F1F1F] bg-white border border-gray-200 rounded-full shadow-[0_1px_2px_rgba(0,0,0,0.04)]">
                 Price switching
               </span>
-              <span className="px-3.5 py-1 text-[11.5px] font-semibold text-[#171717] bg-white border border-gray-200 rounded-full shadow-[0_1px_2px_rgba(0,0,0,0.04)]">
+              <span className="px-3.5 py-1 text-[11.5px] font-semibold text-[#1F1F1F] bg-white border border-gray-200 rounded-full shadow-[0_1px_2px_rgba(0,0,0,0.04)]">
                 Segment evidence
               </span>
-              <span className="px-3.5 py-1 text-[11.5px] font-semibold text-[#171717] bg-white border border-gray-200 rounded-full shadow-[0_1px_2px_rgba(0,0,0,0.04)]">
+              <span className="px-3.5 py-1 text-[11.5px] font-semibold text-[#1F1F1F] bg-white border border-gray-200 rounded-full shadow-[0_1px_2px_rgba(0,0,0,0.04)]">
                 Verbatim proof
               </span>
             </div>
           </div>
 
           {/* BLOCK 2: HIGHLIGHTED CALLOUT BOX */}
-          <div className="w-full relative bg-[#FFFDF5] border-l-4 border-l-[#F8CB46] rounded-xl p-6 md:p-7 shadow-[0_1px_3px_rgba(0,0,0,0.06),0_1px_2px_rgba(0,0,0,0.04)] overflow-hidden flex flex-col md:flex-row items-center justify-between gap-6">
+          <div className="w-full relative bg-[#FFFDF5] border-l-4 border-l-[#F8CB45] border-t border-r border-b border-gray-100 rounded-xl p-6 md:p-7 shadow-[0_1px_3px_rgba(0,0,0,0.06),0_1px_2px_rgba(0,0,0,0.04)] overflow-hidden flex flex-col md:flex-row items-center justify-between gap-6">
             {/* Soft decorative bleeding circle in top-right corner */}
-            <div className="absolute -top-10 -right-10 w-36 h-36 bg-[#F8CB46]/20 rounded-full pointer-events-none" />
+            <div className="absolute -top-10 -right-10 w-36 h-36 bg-[#F8CB45]/20 rounded-full pointer-events-none" />
 
             <div className="space-y-3 flex-1 relative z-10 text-left">
               <span className="text-[10px] font-mono font-bold text-[#8A6A0F] uppercase tracking-wider block">
                 ENGINE STATUS
               </span>
-              <p className="text-[15px] font-bold text-[#171717] leading-snug">
+              <p className="text-[15px] font-bold text-[#1F1F1F] leading-snug">
                 189 behavioral signals extracted from 1,176 reviews across 4 sources — ready for structured discovery.
               </p>
               <p className="text-[12px] text-[#5F6368] leading-relaxed">
                 Every signal traces back to a real customer sentence.
               </p>
               <div className="pt-2 flex items-center gap-3">
+                {/* Blinkit Green CTA Button (#54B226) */}
                 <button
                   onClick={() => setCurrentView("workspace")}
-                  className="bg-[#000000] text-[#FFFFFF] font-bold text-[13px] px-5 py-2.5 rounded-[8px] border-2 border-[#000000] flex items-center gap-2 hover:bg-[#171717] transition-all shadow-sm shrink-0"
+                  className="bg-[#54B226] hover:bg-[#479B1F] text-[#FFFFFF] font-bold text-[13px] px-5 py-2.5 rounded-[8px] border-none flex items-center gap-2 transition-all shadow-sm shrink-0"
                 >
                   Open the engine <ArrowRight size={14} />
                 </button>
@@ -453,8 +456,8 @@ export default function EngineDashboard() {
             </div>
 
             {/* Distinct WHITE card floating inside this colored box */}
-            <div className="bg-white shadow-[0_2px_6px_rgba(0,0,0,0.08)] rounded-xl p-5 text-center border border-gray-100 min-w-[140px] shrink-0 relative z-10">
-              <div className="font-display font-[900] text-[40px] text-[#000000] leading-none">
+            <div className="bg-white shadow-[0_2px_6px_rgba(0,0,0,0.06)] rounded-xl p-5 text-center border border-gray-100 min-w-[140px] shrink-0 relative z-10">
+              <div className="font-display font-[900] text-[40px] text-[#1F1F1F] leading-none">
                 189
               </div>
               <span className="text-[10px] font-bold text-[#8C8C8C] uppercase tracking-wider mt-1.5 block">
@@ -471,7 +474,7 @@ export default function EngineDashboard() {
               className="bg-white border border-gray-100 shadow-[0_1px_3px_rgba(0,0,0,0.06)] rounded-xl p-4 cursor-pointer hover:border-gray-300 transition-all duration-200 flex flex-col justify-between space-y-3 group"
             >
               <div>
-                <h4 className="font-bold text-[14px] text-[#171717] group-hover:text-[#000000]">
+                <h4 className="font-bold text-[14px] text-[#1F1F1F] group-hover:text-[#54B226]">
                   How the engine works
                 </h4>
                 <p className="text-[12px] text-[#737373] mt-0.5">
@@ -479,7 +482,7 @@ export default function EngineDashboard() {
                 </p>
               </div>
               <div className="flex justify-end pt-1">
-                <span className="text-[11px] font-bold text-[#000000] group-hover:underline flex items-center gap-1">
+                <span className="text-[11px] font-bold text-[#54B226] group-hover:underline flex items-center gap-1">
                   View →
                 </span>
               </div>
@@ -491,7 +494,7 @@ export default function EngineDashboard() {
               className="bg-white border border-gray-100 shadow-[0_1px_3px_rgba(0,0,0,0.06)] rounded-xl p-4 cursor-pointer hover:border-gray-300 transition-all duration-200 flex flex-col justify-between space-y-3 group"
             >
               <div>
-                <h4 className="font-bold text-[14px] text-[#171717] group-hover:text-[#000000]">
+                <h4 className="font-bold text-[14px] text-[#1F1F1F] group-hover:text-[#54B226]">
                   Evidence Explorer
                 </h4>
                 <p className="text-[12px] text-[#737373] mt-0.5">
@@ -499,7 +502,7 @@ export default function EngineDashboard() {
                 </p>
               </div>
               <div className="flex justify-end pt-1">
-                <span className="text-[11px] font-bold text-[#000000] group-hover:underline flex items-center gap-1">
+                <span className="text-[11px] font-bold text-[#54B226] group-hover:underline flex items-center gap-1">
                   Browse →
                 </span>
               </div>
@@ -511,7 +514,7 @@ export default function EngineDashboard() {
               className="bg-white border border-gray-100 shadow-[0_1px_3px_rgba(0,0,0,0.06)] rounded-xl p-4 cursor-pointer hover:border-gray-300 transition-all duration-200 flex flex-col justify-between space-y-3 group"
             >
               <div>
-                <h4 className="font-bold text-[14px] text-[#171717] group-hover:text-[#000000]">
+                <h4 className="font-bold text-[14px] text-[#1F1F1F] group-hover:text-[#54B226]">
                   Project repository
                 </h4>
                 <p className="text-[12px] text-[#737373] mt-0.5">
@@ -519,7 +522,7 @@ export default function EngineDashboard() {
                 </p>
               </div>
               <div className="flex justify-end pt-1">
-                <span className="text-[11px] font-bold text-[#000000] group-hover:underline flex items-center gap-1">
+                <span className="text-[11px] font-bold text-[#54B226] group-hover:underline flex items-center gap-1">
                   Docs →
                 </span>
               </div>
@@ -535,25 +538,25 @@ export default function EngineDashboard() {
         <div className="space-y-8 max-w-4xl mx-auto">
           
           {/* How the Data Was Collected Section */}
-          <div className="bg-[#FFFFFF] border-2 border-[#000000] rounded-lg p-6 shadow-sm space-y-6">
+          <div className="bg-[#FFFFFF] border border-gray-200 rounded-lg p-6 shadow-2xs space-y-6">
             <div>
               <span className="text-[9.5px] font-bold text-[#737373] uppercase tracking-wider block">Completed Data Ingestion</span>
-              <h2 className="font-display font-extrabold text-[20px] text-[#171717] mt-0.5">Collection Method</h2>
+              <h2 className="font-display font-extrabold text-[20px] text-[#1F1F1F] mt-0.5">Collection Method</h2>
               <p className="text-[13.5px] text-[#5F6368] mt-1 leading-relaxed">
                 This engine analyzed a fixed set of 1,176 customer reviews, collected once across 4 sources. Below is exactly how.
               </p>
-              <p className="text-[12px] font-mono text-[#737373] mt-2.5 bg-[#FFFFFF] px-3 py-1.5 rounded border-2 border-[#000000] inline-block">
+              <p className="text-[12px] font-mono text-[#5F6368] mt-2.5 bg-[#F8F9FA] px-3 py-1.5 rounded border border-gray-200 inline-block">
                 Date Range / Scope: Reviews collected reflect recent customer activity across all 4 sources as of this analysis.
               </p>
             </div>
 
-            {/* Source Data Table */}
+            {/* Source Data Table: Clean 1px Dividers, No 2px Black Wireframe Borders */}
             <div className="space-y-2">
-              <h4 className="text-[13px] font-bold text-[#171717]">Source Breakdown & Sample Distribution</h4>
-              <div className="overflow-x-auto border-2 border-[#000000] rounded">
+              <h4 className="text-[13px] font-bold text-[#1F1F1F]">Source Breakdown & Sample Distribution</h4>
+              <div className="overflow-x-auto border border-gray-200 rounded-lg">
                 <table className="w-full border-collapse text-left text-[12px] bg-white">
                   <thead>
-                    <tr className="bg-[#FFFFFF] border-b-2 border-[#000000] text-[#5F6368]">
+                    <tr className="bg-[#F8F9FA] border-b border-gray-200 text-[#5F6368]">
                       <th className="p-3 font-bold uppercase tracking-wider text-[10px]">Source</th>
                       <th className="p-3 font-bold uppercase tracking-wider text-[10px] text-right font-mono">Reviews Collected</th>
                       <th className="p-3 font-bold uppercase tracking-wider text-[10px] text-right font-mono">Share of Dataset</th>
@@ -561,31 +564,31 @@ export default function EngineDashboard() {
                     </tr>
                   </thead>
                   <tbody>
-                    <tr className="border-b border-[#000000]/20 hover:bg-[#FFFFFF]">
-                      <td className="p-3 font-bold text-[#171717]">Google Play</td>
-                      <td className="p-3 text-right font-mono font-bold text-[#171717]">662</td>
+                    <tr className="border-b border-gray-100 hover:bg-[#F8F9FA]">
+                      <td className="p-3 font-bold text-[#1F1F1F]">Google Play</td>
+                      <td className="p-3 text-right font-mono font-bold text-[#1F1F1F]">662</td>
                       <td className="p-3 text-right font-mono text-[#5F6368]">56.3%</td>
                       <td className="p-3 text-[#5F6368] leading-relaxed">Largest volume; Android reviews on the core shopping app.</td>
                     </tr>
-                    <tr className="border-b border-[#000000]/20 hover:bg-[#FFFFFF]">
-                      <td className="p-3 font-bold text-[#171717]">Reddit</td>
-                      <td className="p-3 text-right font-mono font-bold text-[#171717]">360</td>
+                    <tr className="border-b border-gray-100 hover:bg-[#F8F9FA]">
+                      <td className="p-3 font-bold text-[#1F1F1F]">Reddit</td>
+                      <td className="p-3 text-right font-mono font-bold text-[#1F1F1F]">360</td>
                       <td className="p-3 text-right font-mono text-[#5F6368]">30.6%</td>
                       <td className="p-3 text-[#5F6368] leading-relaxed">Candid discussion and comparison threads — richest reasoning, but mostly post titles rather than full bodies.</td>
                     </tr>
-                    <tr className="border-b border-[#000000]/20 hover:bg-[#FFFFFF]">
-                      <td className="p-3 font-bold text-[#171717]">YouTube comments</td>
-                      <td className="p-3 text-right font-mono font-bold text-[#171717]">144</td>
+                    <tr className="border-b border-gray-100 hover:bg-[#F8F9FA]">
+                      <td className="p-3 font-bold text-[#1F1F1F]">YouTube comments</td>
+                      <td className="p-3 text-right font-mono font-bold text-[#1F1F1F]">144</td>
                       <td className="p-3 text-right font-mono text-[#5F6368]">12.2%</td>
                       <td className="p-3 text-[#5F6368] leading-relaxed">Comment-level reactions on review/unboxing videos.</td>
                     </tr>
-                    <tr className="border-b border-[#000000]/20 hover:bg-[#FFFFFF]">
-                      <td className="p-3 font-bold text-[#171717]">App Store</td>
-                      <td className="p-3 text-right font-mono font-bold text-[#171717]">10</td>
+                    <tr className="border-b border-gray-100 hover:bg-[#F8F9FA]">
+                      <td className="p-3 font-bold text-[#1F1F1F]">App Store</td>
+                      <td className="p-3 text-right font-mono font-bold text-[#1F1F1F]">10</td>
                       <td className="p-3 text-right font-mono text-[#5F6368]">0.9%</td>
                       <td className="p-3 text-[#5F6368] leading-relaxed">iOS reviews — too small a sample for independent conclusions, included for completeness and treated as directional only.</td>
                     </tr>
-                    <tr className="bg-[#FFFFFF] font-bold text-[#171717] border-t-2 border-[#000000]">
+                    <tr className="bg-[#F8F9FA] font-bold text-[#1F1F1F] border-t border-gray-200">
                       <td className="p-3">Total</td>
                       <td className="p-3 text-right font-mono font-bold">1,176</td>
                       <td className="p-3 text-right font-mono">100%</td>
@@ -597,12 +600,12 @@ export default function EngineDashboard() {
             </div>
 
             {/* Signal Extraction Summary */}
-            <div className="bg-[#FFFFFF] border-2 border-[#000000] rounded-md p-4 space-y-3">
-              <h4 className="text-[13px] font-bold text-[#171717]">Signal Extraction Summary</h4>
+            <div className="bg-[#FFFFFF] border border-gray-200 rounded-lg p-5 shadow-2xs space-y-3">
+              <h4 className="text-[13px] font-bold text-[#1F1F1F]">Signal Extraction Summary</h4>
               <p className="text-[13px] text-[#5F6368] leading-relaxed">
                 Of 1,176 reviews collected, 189 (16.1%) contained real behavioral signal — a stated reason, barrier, or specific complaint the engine could extract and verify. The remaining 987 were excluded before analysis: generic ratings with no reasoning ('good app', '5 stars'), off-topic content (delivery-worker labor posts, industry-economics debate unrelated to shopping behavior), and statements too short to support a verifiable extraction.
               </p>
-              <p className="text-[11.5px] text-[#737373] italic font-mono pt-2 border-t-2 border-[#000000]">
+              <p className="text-[11.5px] text-[#737373] italic font-mono pt-2.5 border-t border-gray-200">
                 Note: Per-source signal yield is not separately tracked in this dataset — the 16.1% extraction rate is measured across the full collected set, not broken down by source.
               </p>
             </div>
@@ -894,27 +897,27 @@ export default function EngineDashboard() {
           <div className="space-y-8">
             
             {/* Q1 */}
-            <div id="q1" className="bg-white border-none shadow-[0_1px_3px_rgba(0,0,0,0.08),0_1px_2px_rgba(0,0,0,0.06)] border-l-4 border-l-[#000000] rounded-lg p-5 md:p-6 space-y-4 scroll-mt-20">
+            <div id="q1" className="bg-white border-none shadow-[0_1px_3px_rgba(0,0,0,0.08),0_1px_2px_rgba(0,0,0,0.06)] border-l-4 border-l-[#1F1F1F] rounded-lg p-5 md:p-6 space-y-4 scroll-mt-20">
               {/* Card Header: Eyebrow + Confidence badge */}
               <div className="flex items-center justify-between gap-2 border-b border-gray-100 pb-2.5">
                 <span className="font-mono text-[10px] font-bold text-[#737373] uppercase tracking-wider">
                   WHY CUSTOMERS KEEP BUYING FROM THE SAME CATEGORIES
                 </span>
-                <span className="text-[11px] font-bold text-[#000000] bg-[#F8F9FA] px-2.5 py-0.5 rounded border border-gray-200 shrink-0">
+                <span className="text-[11px] font-bold text-[#1F1F1F] bg-[#F8F9FA] px-2.5 py-0.5 rounded border border-gray-200 shrink-0">
                   Confidence: High (Known from evidence)
                 </span>
               </div>
 
               {/* Main Title Block + Stat Callout + Visual Bar */}
               <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                <h3 className="font-display font-extrabold text-[22px] md:text-[25px] text-[#171717] leading-tight tracking-tight flex-1">
+                <h3 className="font-display font-extrabold text-[22px] md:text-[25px] text-[#1F1F1F] leading-tight tracking-tight flex-1">
                   "Customers aren't loyal. They're cautious."
                 </h3>
                 <AnimatedStat 
                   value="3.7%" 
                   label="of signals show habitual buying" 
-                  colorClass="text-[#000000]" 
-                  barColorBg="bg-[#000000]"
+                  colorClass="text-[#1F1F1F]" 
+                  barColorBg="bg-[#1F1F1F]"
                 />
               </div>
 
@@ -1521,27 +1524,27 @@ export default function EngineDashboard() {
             </div>
 
             {/* Q7 */}
-            <div id="q7" className="bg-white border-none shadow-[0_1px_3px_rgba(0,0,0,0.08),0_1px_2px_rgba(0,0,0,0.06)] border-l-4 border-l-[#000000] rounded-lg p-5 md:p-6 space-y-4 scroll-mt-20">
+            <div id="q7" className="bg-white border-none shadow-[0_1px_3px_rgba(0,0,0,0.08),0_1px_2px_rgba(0,0,0,0.06)] border-l-4 border-l-[#1F1F1F] rounded-lg p-5 md:p-6 space-y-4 scroll-mt-20">
               {/* Card Header: Eyebrow + Confidence badge */}
               <div className="flex items-center justify-between gap-2 border-b border-gray-100 pb-2.5">
                 <span className="font-mono text-[10px] font-bold text-[#737373] uppercase tracking-wider">
                   WHICH CUSTOMERS ARE CLOSEST TO TRYING SOMETHING NEW?
                 </span>
-                <span className="text-[11px] font-bold text-[#000000] bg-[#F8F9FA] px-2.5 py-0.5 rounded border border-gray-200 shrink-0">
+                <span className="text-[11px] font-bold text-[#1F1F1F] bg-[#F8F9FA] px-2.5 py-0.5 rounded border border-gray-200 shrink-0">
                   Confidence: Medium (Inferred from language)
                 </span>
               </div>
 
               {/* Main Title Block + Stat Callout + Visual Bar */}
               <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                <h3 className="font-display font-extrabold text-[22px] md:text-[25px] text-[#171717] leading-tight tracking-tight flex-1">
+                <h3 className="font-display font-extrabold text-[22px] md:text-[25px] text-[#1F1F1F] leading-tight tracking-tight flex-1">
                   "Some customers are closer to trying something new than others."
                 </h3>
                 <AnimatedStat 
                   value="10.1%" 
                   label="show high-frequency usage language (19 signals)" 
-                  colorClass="text-[#000000]" 
-                  barColorBg="bg-[#000000]"
+                  colorClass="text-[#1F1F1F]" 
+                  barColorBg="bg-[#1F1F1F]"
                 />
               </div>
 
@@ -1963,13 +1966,13 @@ export default function EngineDashboard() {
                         key={r.row_number}
                         onClick={() => setSelectedRowId(r.row_number)}
                         className={`p-3.5 cursor-pointer transition-all flex items-start gap-3 text-left ${
-                          isSelected ? "bg-[#000000]/10 border-l-4 border-l-[#000000]" : "hover:bg-[#000000]/5"
+                          isSelected ? "bg-[#1F1F1F]/10 border-l-4 border-l-[#1F1F1F]" : "hover:bg-[#1F1F1F]/5"
                         }`}
                       >
                         <PlatformIcon source={r.source} size={18} />
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center justify-between gap-1 mb-1">
-                            <span className="font-mono text-[10.5px] font-bold text-[#000000]">Row #{r.row_number}</span>
+                            <span className="font-mono text-[10.5px] font-bold text-[#1F1F1F]">Row #{r.row_number}</span>
                             <span className={`w-2.5 h-2.5 rounded-full ${dotColor} shrink-0`} title={`Confidence: ${r.confidence}`} />
                           </div>
                           <p className="text-[12px] text-[#171717] font-medium truncate leading-tight">
@@ -2040,7 +2043,7 @@ export default function EngineDashboard() {
                       </span>
                       <div className="bg-[#F8F9FA] border border-gray-100 rounded-lg p-5">
                         <p className="text-[14.5px] font-medium leading-relaxed text-[#171717]">
-                          <mark className="bg-[#F8CB46] text-[#000000] px-1.5 py-0.5 rounded font-semibold">
+                          <mark className="bg-[#F8CB45] text-[#1F1F1F] px-1.5 py-0.5 rounded font-semibold">
                             "{selectedRecord.quote}"
                           </mark>
                         </p>
@@ -2060,13 +2063,13 @@ export default function EngineDashboard() {
                         Extracted Structure
                       </span>
                       <div className="flex flex-wrap gap-2 text-[11px] font-medium">
-                        <span className="bg-[#F8F9FA] text-[#000000] border border-gray-200 px-2.5 py-1 rounded-md font-mono">
+                        <span className="bg-[#F8F9FA] text-[#1F1F1F] border border-gray-200 px-2.5 py-1 rounded-md font-mono">
                           Reason: <strong className="capitalize">{selectedRecord.reason_type}</strong>
                         </span>
-                        <span className="bg-[#F8F9FA] text-[#171717] border border-gray-200 px-2.5 py-1 rounded-md">
+                        <span className="bg-[#F8F9FA] text-[#1F1F1F] border border-gray-200 px-2.5 py-1 rounded-md">
                           Category: <strong>{selectedRecord.category_mentioned === "none" ? "General Catalog" : selectedRecord.category_mentioned}</strong>
                         </span>
-                        <span className="bg-[#F8F9FA] text-[#171717] border border-gray-200 px-2.5 py-1 rounded-md capitalize">
+                        <span className="bg-[#F8F9FA] text-[#1F1F1F] border border-gray-200 px-2.5 py-1 rounded-md capitalize">
                           Segment: <strong>{selectedRecord.user_segment.replace(/_/g, " ")}</strong>
                         </span>
                         {selectedRecord.info_needed !== "none" && selectedRecord.info_needed !== "not stated" && (
@@ -2094,7 +2097,7 @@ export default function EngineDashboard() {
                               if (el) el.scrollIntoView({ behavior: "smooth" });
                             }, 100);
                           }}
-                          className="text-[13px] font-bold text-[#000000] hover:underline flex items-center gap-1 text-left"
+                          className="text-[13px] font-bold text-[#1F1F1F] hover:underline flex items-center gap-1 text-left"
                         >
                           This supports Question 0{mappedQ.qNum}: "{mappedQ.headline}" →
                         </button>
@@ -2117,15 +2120,15 @@ export default function EngineDashboard() {
           <div className="bg-[#FFFFFF] border-none shadow-[0_1px_3px_rgba(0,0,0,0.08),0_1px_2px_rgba(0,0,0,0.06)] rounded-lg p-6 md:p-7 space-y-5">
             <div className="flex items-center justify-between gap-4 border-b border-gray-100 pb-4">
               <div>
-                <span className="text-[10px] font-bold text-[#000000] uppercase tracking-wider block mb-1">Interactive Deliverable</span>
-                <h2 className="font-display font-extrabold text-[22px] text-[#171717] flex items-center gap-2">
-                  <Lock size={18} className="text-[#000000]" /> Test the Workflow Yourself
+                <span className="text-[10px] font-bold text-[#1F1F1F] uppercase tracking-wider block mb-1">Interactive Deliverable</span>
+                <h2 className="font-display font-extrabold text-[22px] text-[#1F1F1F] flex items-center gap-2">
+                  <Lock size={18} className="text-[#1F1F1F]" /> Test the Workflow Yourself
                 </h2>
                 <p className="text-[13px] text-[#5F6368] mt-1">
                   Enter your Gemini API key and paste a raw customer review to process it live through the extraction schema.
                 </p>
               </div>
-              <span className="bg-[#F8CB46] text-[#000000] text-[11px] font-bold px-3 py-1 rounded shrink-0 uppercase tracking-wider border-2 border-[#000000]">
+              <span className="bg-[#FFF9E6] text-[#1F1F1F] text-[11px] font-bold px-3 py-1 rounded shrink-0 uppercase tracking-wider border border-[#F8CB45]">
                 Live Analyzer
               </span>
             </div>
@@ -2163,7 +2166,7 @@ export default function EngineDashboard() {
               <button
                 onClick={handleAnalyze}
                 disabled={analyzerLoading}
-                className="bg-[#000000] text-[#FFFFFF] font-bold text-[12.5px] px-5 py-2.5 rounded-[8px] border-2 border-[#000000] transition-colors disabled:opacity-60 shadow-sm"
+                className="bg-[#54B226] hover:bg-[#479B1F] text-[#FFFFFF] font-bold text-[12.5px] px-5 py-2.5 rounded-[8px] border-none transition-colors disabled:opacity-60 shadow-sm"
               >
                 {analyzerLoading ? "Processing signal..." : "Analyze review"}
               </button>
@@ -2172,13 +2175,13 @@ export default function EngineDashboard() {
             {/* Loading step indicators */}
             {analyzerLoading && (
               <div className="mt-4 pt-4 border-t border-gray-100 space-y-2">
-                <div className="flex justify-between text-[11px] font-bold text-[#000000] uppercase tracking-wider animate-pulse">
+                <div className="flex justify-between text-[11px] font-bold text-[#1F1F1F] uppercase tracking-wider animate-pulse">
                   <span>{ANALYZER_STEPS[analyzerStep]}</span>
                   <span>{Math.round(((analyzerStep + 1) / ANALYZER_STEPS.length) * 100)}%</span>
                 </div>
                 <div className="w-full h-2 bg-[#F8F9FA] rounded-full overflow-hidden">
                   <div 
-                    className="h-full bg-[#000000] transition-all duration-300 ease-out"
+                    className="h-full bg-[#54B226] transition-all duration-300 ease-out"
                     style={{ width: `${((analyzerStep + 1) / ANALYZER_STEPS.length) * 100}%` }}
                   />
                 </div>
@@ -2195,7 +2198,7 @@ export default function EngineDashboard() {
             {/* Result output */}
             {analyzerResult && (
               <div className="mt-6 pt-5 border-t border-gray-100 space-y-4">
-                <span className="text-[10px] font-bold text-[#000000] bg-[#F8CB46] px-2.5 py-0.5 rounded border border-gray-200 inline-block uppercase tracking-wider">
+                <span className="text-[10px] font-bold text-[#1F1F1F] bg-[#F8CB45] px-2.5 py-0.5 rounded border border-gray-200 inline-block uppercase tracking-wider">
                   Resulting Parameters
                 </span>
 
@@ -2234,9 +2237,9 @@ export default function EngineDashboard() {
           </div>
 
           {/* User Guide Doc Section */}
-          <div className="bg-[#FFFFFF] border-none shadow-[0_1px_3px_rgba(0,0,0,0.08),0_1px_2px_rgba(0,0,0,0.06)] rounded-lg p-6 space-y-4">
-            <h2 className="font-display font-bold text-[18px] text-[#171717] flex items-center gap-2">
-              <BookOpen size={16} className="text-[#000000]" /> User Guide
+          <div className="bg-[#FFFFFF] border border-gray-200 shadow-[0_1px_3px_rgba(0,0,0,0.06)] rounded-lg p-6 space-y-4">
+            <h2 className="font-display font-bold text-[18px] text-[#1F1F1F] flex items-center gap-2">
+              <BookOpen size={16} className="text-[#54B226]" /> User Guide
             </h2>
             <p className="text-[13px] text-[#5F6368] leading-relaxed">
               Use the **Evidence Explorer** tab to search and verify findings. You can input a row number to view its details directly, or select a source, segment, or reason type from the dropdown selectors to recompute the list. The **Discovery Workspace** presents the 8 primary questions, each containing quote-grounded customer sentences. Click any quote block to jump directly to the Explorer and verify the sentence in the table.
@@ -2252,16 +2255,16 @@ export default function EngineDashboard() {
           </div>
 
           {/* Links to engineering methodology */}
-          <div className="bg-[#FFFFFF] border-none shadow-[0_1px_3px_rgba(0,0,0,0.08),0_1px_2px_rgba(0,0,0,0.06)] rounded-lg p-5 flex items-center justify-between">
+          <div className="bg-[#FFFFFF] border border-gray-200 shadow-[0_1px_3px_rgba(0,0,0,0.06)] rounded-lg p-5 flex items-center justify-between">
             <div className="space-y-1">
-              <h4 className="text-[14px] font-bold text-[#171717]">Technical Pipeline Reference</h4>
+              <h4 className="text-[14px] font-bold text-[#1F1F1F]">Technical Pipeline Reference</h4>
               <p className="text-[12px] text-[#5F6368]">
                 Read the details on review noise rejection steps, source biases, and extraction standards.
               </p>
             </div>
             <button
               onClick={() => setCurrentView("methodology")}
-              className="bg-[#000000] text-[#FFFFFF] font-bold text-[11.5px] px-4 py-2 rounded-[8px] border-2 border-[#000000] transition-colors"
+              className="bg-[#54B226] hover:bg-[#479B1F] text-[#FFFFFF] font-bold text-[11.5px] px-4 py-2 rounded-[8px] border-none shadow-2xs transition-colors"
             >
               Open Technical Docs
             </button>
@@ -2273,10 +2276,10 @@ export default function EngineDashboard() {
           PROJECT REPOSITORY CARD (FOOTER)
           ═══════════════════════════════════════════ */}
       <footer className="max-w-4xl mx-auto border-t border-gray-200 pt-8">
-        <div className="bg-[#FFFFFF] border-none shadow-[0_1px_3px_rgba(0,0,0,0.08),0_1px_2px_rgba(0,0,0,0.06)] rounded-lg p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div className="bg-[#FFFFFF] border border-gray-200 shadow-[0_1px_3px_rgba(0,0,0,0.06)] rounded-lg p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="space-y-1">
             <span className="text-[9px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Source Code Repository</span>
-            <h4 className="font-display font-bold text-[14.5px] text-[#171717]">Project Repository</h4>
+            <h4 className="font-display font-bold text-[14.5px] text-[#1F1F1F]">Project Repository</h4>
             <p className="text-[12px] text-[#5F6368]">
               Access the codebase, data mapping pipeline, and static files on GitHub.
             </p>
@@ -2285,7 +2288,7 @@ export default function EngineDashboard() {
             href="https://github.com/Deepali611/AI.blinkit-discovery"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-1 bg-[#000000] text-[#FFFFFF] text-[12px] font-bold px-4 py-2 rounded-[8px] border-2 border-[#000000] shadow-sm transition-all"
+            className="inline-flex items-center gap-1 bg-[#54B226] hover:bg-[#479B1F] text-[#FFFFFF] text-[12px] font-bold px-4 py-2 rounded-[8px] border-none shadow-sm transition-all"
           >
             Open on GitHub <ExternalLink size={13} />
           </a>
