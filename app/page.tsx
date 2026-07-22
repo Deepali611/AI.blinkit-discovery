@@ -540,14 +540,17 @@ export default function EngineDashboard() {
           {/* How the Data Was Collected Section */}
           <div className="bg-[#FFFFFF] border border-gray-200 rounded-lg p-6 shadow-2xs space-y-6">
             <div>
-              <span className="text-[9.5px] font-bold text-[#737373] uppercase tracking-wider block">Completed Data Ingestion</span>
+              <span className="text-[9.5px] font-bold text-[#54B226] uppercase tracking-wider block">Completed Data Ingestion</span>
               <h2 className="font-display font-extrabold text-[20px] text-[#1F1F1F] mt-0.5">Collection Method</h2>
               <p className="text-[13.5px] text-[#5F6368] mt-1 leading-relaxed">
                 This engine analyzed a fixed set of 1,176 customer reviews, collected once across 4 sources. Below is exactly how.
               </p>
-              <p className="text-[12px] font-mono text-[#5F6368] mt-2.5 bg-[#F8F9FA] px-3 py-1.5 rounded border border-gray-200 inline-block">
-                Date Range / Scope: Reviews collected reflect recent customer activity across all 4 sources as of this analysis.
-              </p>
+              <div className="mt-3 pt-3 border-t border-gray-100">
+                <span className="text-[9.5px] font-bold text-[#54B226] uppercase tracking-wider block mb-0.5">SCOPE</span>
+                <p className="text-[12.5px] text-[#5F6368] leading-relaxed">
+                  Reviews collected reflect recent customer activity across all 4 sources as of this analysis.
+                </p>
+              </div>
             </div>
 
             {/* Source Data Table: Clean 1px Dividers, No 2px Black Wireframe Borders */}
@@ -565,33 +568,53 @@ export default function EngineDashboard() {
                   </thead>
                   <tbody>
                     <tr className="border-b border-gray-100 hover:bg-[#F8F9FA]">
-                      <td className="p-3 font-bold text-[#1F1F1F]">Google Play</td>
+                      <td className="p-3 font-bold text-[#1F1F1F]">
+                        <div className="flex items-center gap-2">
+                          <span className="w-2 h-2 rounded-full bg-[#34A853] shrink-0" />
+                          <span>Google Play</span>
+                        </div>
+                      </td>
                       <td className="p-3 text-right font-mono font-bold text-[#1F1F1F]">662</td>
-                      <td className="p-3 text-right font-mono text-[#5F6368]">56.3%</td>
+                      <td className="p-3 text-right font-mono font-bold text-[#54B226]">56.3%</td>
                       <td className="p-3 text-[#5F6368] leading-relaxed">Largest volume; Android reviews on the core shopping app.</td>
                     </tr>
                     <tr className="border-b border-gray-100 hover:bg-[#F8F9FA]">
-                      <td className="p-3 font-bold text-[#1F1F1F]">Reddit</td>
+                      <td className="p-3 font-bold text-[#1F1F1F]">
+                        <div className="flex items-center gap-2">
+                          <span className="w-2 h-2 rounded-full bg-[#FF4500] shrink-0" />
+                          <span>Reddit</span>
+                        </div>
+                      </td>
                       <td className="p-3 text-right font-mono font-bold text-[#1F1F1F]">360</td>
-                      <td className="p-3 text-right font-mono text-[#5F6368]">30.6%</td>
+                      <td className="p-3 text-right font-mono font-bold text-[#54B226]">30.6%</td>
                       <td className="p-3 text-[#5F6368] leading-relaxed">Candid discussion and comparison threads — richest reasoning, but mostly post titles rather than full bodies.</td>
                     </tr>
                     <tr className="border-b border-gray-100 hover:bg-[#F8F9FA]">
-                      <td className="p-3 font-bold text-[#1F1F1F]">YouTube comments</td>
+                      <td className="p-3 font-bold text-[#1F1F1F]">
+                        <div className="flex items-center gap-2">
+                          <span className="w-2 h-2 rounded-full bg-[#FF0000] shrink-0" />
+                          <span>YouTube comments</span>
+                        </div>
+                      </td>
                       <td className="p-3 text-right font-mono font-bold text-[#1F1F1F]">144</td>
-                      <td className="p-3 text-right font-mono text-[#5F6368]">12.2%</td>
+                      <td className="p-3 text-right font-mono font-bold text-[#54B226]">12.2%</td>
                       <td className="p-3 text-[#5F6368] leading-relaxed">Comment-level reactions on review/unboxing videos.</td>
                     </tr>
                     <tr className="border-b border-gray-100 hover:bg-[#F8F9FA]">
-                      <td className="p-3 font-bold text-[#1F1F1F]">App Store</td>
+                      <td className="p-3 font-bold text-[#1F1F1F]">
+                        <div className="flex items-center gap-2">
+                          <span className="w-2 h-2 rounded-full bg-[#8E8E93] shrink-0" />
+                          <span>App Store</span>
+                        </div>
+                      </td>
                       <td className="p-3 text-right font-mono font-bold text-[#1F1F1F]">10</td>
-                      <td className="p-3 text-right font-mono text-[#5F6368]">0.9%</td>
+                      <td className="p-3 text-right font-mono font-bold text-[#54B226]">0.9%</td>
                       <td className="p-3 text-[#5F6368] leading-relaxed">iOS reviews — too small a sample for independent conclusions, included for completeness and treated as directional only.</td>
                     </tr>
                     <tr className="bg-[#F8F9FA] font-bold text-[#1F1F1F] border-t border-gray-200">
                       <td className="p-3">Total</td>
                       <td className="p-3 text-right font-mono font-bold">1,176</td>
-                      <td className="p-3 text-right font-mono">100%</td>
+                      <td className="p-3 text-right font-mono font-bold text-[#54B226]">100%</td>
                       <td className="p-3 text-[#8C8C8C] italic text-[11px] font-normal">All 4 sources combined</td>
                     </tr>
                   </tbody>
@@ -614,8 +637,8 @@ export default function EngineDashboard() {
           {/* Engineering docs block */}
           <div className="bg-[#FFFFFF] border-none shadow-[0_1px_3px_rgba(0,0,0,0.08),0_1px_2px_rgba(0,0,0,0.06)] rounded-lg p-6 space-y-4">
             <div>
-              <span className="text-[9px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Methodology Reference</span>
-              <h2 className="font-display font-bold text-[18px] text-[#171717] mt-0.5">What this engine does, in order:</h2>
+              <span className="text-[9.5px] font-bold text-[#54B226] uppercase tracking-wider block">Methodology Reference</span>
+              <h2 className="font-display font-bold text-[18px] text-[#1F1F1F] mt-0.5">What this engine does, in order:</h2>
             </div>
             
             <div className="space-y-2.5 text-[13.5px] text-[#5F6368] leading-relaxed">
@@ -623,14 +646,14 @@ export default function EngineDashboard() {
               <div className="border border-gray-100 rounded-md p-3.5 bg-white">
                 <button
                   onClick={() => toggleStep(1)}
-                  className="w-full flex items-center justify-between gap-3 text-left font-medium text-[#171717] focus:outline-none"
+                  className="w-full flex items-center justify-between gap-3 text-left font-medium text-[#1F1F1F] focus:outline-none"
                 >
-                  <div className="flex items-center gap-2.5">
-                    <span className="font-mono font-bold text-[#000000] text-[13px]">1.</span>
-                    <strong className="text-[13.5px]">Reads customer feedback</strong>
+                  <div className="flex items-center gap-3">
+                    <span className="w-6 h-6 rounded-full bg-[#54B226] text-white text-[12px] font-bold flex items-center justify-center shrink-0">1</span>
+                    <strong className="text-[13.5px] text-[#1F1F1F]">Reads customer feedback</strong>
                     <span className="text-[12px] text-[#737373] hidden sm:inline">— Ingests 1,176 entries across 4 sources</span>
                   </div>
-                  {expandedSteps[1] ? <ChevronUp size={16} className="text-[#8C8C8C]" /> : <ChevronDown size={16} className="text-[#8C8C8C]" />}
+                  {expandedSteps[1] ? <ChevronUp size={16} className="text-[#54B226]" /> : <ChevronDown size={16} className="text-[#54B226]" />}
                 </button>
                 {expandedSteps[1] && (
                   <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} className="mt-2.5 pt-2.5 border-t border-gray-100 text-[13px] text-[#5F6368]">
@@ -643,14 +666,14 @@ export default function EngineDashboard() {
               <div className="border border-gray-100 rounded-md p-3.5 bg-white">
                 <button
                   onClick={() => toggleStep(2)}
-                  className="w-full flex items-center justify-between gap-3 text-left font-medium text-[#171717] focus:outline-none"
+                  className="w-full flex items-center justify-between gap-3 text-left font-medium text-[#1F1F1F] focus:outline-none"
                 >
-                  <div className="flex items-center gap-2.5">
-                    <span className="font-mono font-bold text-[#000000] text-[13px]">2.</span>
-                    <strong className="text-[13.5px]">Rejects reviews with no behavioral content</strong>
+                  <div className="flex items-center gap-3">
+                    <span className="w-6 h-6 rounded-full bg-[#54B226] text-white text-[12px] font-bold flex items-center justify-center shrink-0">2</span>
+                    <strong className="text-[13.5px] text-[#1F1F1F]">Rejects reviews with no behavioral content</strong>
                     <span className="text-[12px] text-[#737373] hidden sm:inline">— Discards generic ratings (987 rejected)</span>
                   </div>
-                  {expandedSteps[2] ? <ChevronUp size={16} className="text-[#8C8C8C]" /> : <ChevronDown size={16} className="text-[#8C8C8C]" />}
+                  {expandedSteps[2] ? <ChevronUp size={16} className="text-[#54B226]" /> : <ChevronDown size={16} className="text-[#54B226]" />}
                 </button>
                 {expandedSteps[2] && (
                   <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} className="mt-2.5 pt-2.5 border-t border-gray-100 text-[13px] text-[#5F6368]">
@@ -663,14 +686,14 @@ export default function EngineDashboard() {
               <div className="border border-gray-100 rounded-md p-3.5 bg-white">
                 <button
                   onClick={() => toggleStep(3)}
-                  className="w-full flex items-center justify-between gap-3 text-left font-medium text-[#171717] focus:outline-none"
+                  className="w-full flex items-center justify-between gap-3 text-left font-medium text-[#1F1F1F] focus:outline-none"
                 >
-                  <div className="flex items-center gap-2.5">
-                    <span className="font-mono font-bold text-[#000000] text-[13px]">3.</span>
-                    <strong className="text-[13.5px]">Extracts structure</strong>
+                  <div className="flex items-center gap-3">
+                    <span className="w-6 h-6 rounded-full bg-[#54B226] text-white text-[12px] font-bold flex items-center justify-center shrink-0">3</span>
+                    <strong className="text-[13.5px] text-[#1F1F1F]">Extracts structure</strong>
                     <span className="text-[12px] text-[#737373] hidden sm:inline">— Classifies repeat behavior, barrier, segment, & confidence</span>
                   </div>
-                  {expandedSteps[3] ? <ChevronUp size={16} className="text-[#8C8C8C]" /> : <ChevronDown size={16} className="text-[#8C8C8C]" />}
+                  {expandedSteps[3] ? <ChevronUp size={16} className="text-[#54B226]" /> : <ChevronDown size={16} className="text-[#54B226]" />}
                 </button>
                 {expandedSteps[3] && (
                   <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} className="mt-2.5 pt-2.5 border-t border-gray-100 text-[13px] text-[#5F6368]">
@@ -683,14 +706,14 @@ export default function EngineDashboard() {
               <div className="border border-gray-100 rounded-md p-3.5 bg-white">
                 <button
                   onClick={() => toggleStep(4)}
-                  className="w-full flex items-center justify-between gap-3 text-left font-medium text-[#171717] focus:outline-none"
+                  className="w-full flex items-center justify-between gap-3 text-left font-medium text-[#1F1F1F] focus:outline-none"
                 >
-                  <div className="flex items-center gap-2.5">
-                    <span className="font-mono font-bold text-[#000000] text-[13px]">4.</span>
-                    <strong className="text-[13.5px]">Identifies themes from signal convergence</strong>
+                  <div className="flex items-center gap-3">
+                    <span className="w-6 h-6 rounded-full bg-[#54B226] text-white text-[12px] font-bold flex items-center justify-center shrink-0">4</span>
+                    <strong className="text-[13.5px] text-[#1F1F1F]">Identifies themes from signal convergence</strong>
                     <span className="text-[12px] text-[#737373] hidden sm:inline">— Forms themes when signals converge</span>
                   </div>
-                  {expandedSteps[4] ? <ChevronUp size={16} className="text-[#8C8C8C]" /> : <ChevronDown size={16} className="text-[#8C8C8C]" />}
+                  {expandedSteps[4] ? <ChevronUp size={16} className="text-[#54B226]" /> : <ChevronDown size={16} className="text-[#54B226]" />}
                 </button>
                 {expandedSteps[4] && (
                   <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} className="mt-2.5 pt-2.5 border-t border-gray-100 text-[13px] text-[#5F6368]">
@@ -703,14 +726,14 @@ export default function EngineDashboard() {
               <div className="border border-gray-100 rounded-md p-3.5 bg-white">
                 <button
                   onClick={() => toggleStep(5)}
-                  className="w-full flex items-center justify-between gap-3 text-left font-medium text-[#171717] focus:outline-none"
+                  className="w-full flex items-center justify-between gap-3 text-left font-medium text-[#1F1F1F] focus:outline-none"
                 >
-                  <div className="flex items-center gap-2.5">
-                    <span className="font-mono font-bold text-[#000000] text-[13px]">5.</span>
-                    <strong className="text-[13.5px]">Requires quote-grounding</strong>
+                  <div className="flex items-center gap-3">
+                    <span className="w-6 h-6 rounded-full bg-[#54B226] text-white text-[12px] font-bold flex items-center justify-center shrink-0">5</span>
+                    <strong className="text-[13.5px] text-[#1F1F1F]">Requires quote-grounding</strong>
                     <span className="text-[12px] text-[#737373] hidden sm:inline">— Verifies exact verbatim quote matches</span>
                   </div>
-                  {expandedSteps[5] ? <ChevronUp size={16} className="text-[#8C8C8C]" /> : <ChevronDown size={16} className="text-[#8C8C8C]" />}
+                  {expandedSteps[5] ? <ChevronUp size={16} className="text-[#54B226]" /> : <ChevronDown size={16} className="text-[#54B226]" />}
                 </button>
                 {expandedSteps[5] && (
                   <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} className="mt-2.5 pt-2.5 border-t border-gray-100 text-[13px] text-[#5F6368]">
@@ -723,14 +746,14 @@ export default function EngineDashboard() {
               <div className="border border-gray-100 rounded-md p-3.5 bg-white">
                 <button
                   onClick={() => toggleStep(6)}
-                  className="w-full flex items-center justify-between gap-3 text-left font-medium text-[#171717] focus:outline-none"
+                  className="w-full flex items-center justify-between gap-3 text-left font-medium text-[#1F1F1F] focus:outline-none"
                 >
-                  <div className="flex items-center gap-2.5">
-                    <span className="font-mono font-bold text-[#000000] text-[13px]">6.</span>
-                    <strong className="text-[13.5px]">Deduplicates feed</strong>
+                  <div className="flex items-center gap-3">
+                    <span className="w-6 h-6 rounded-full bg-[#54B226] text-white text-[12px] font-bold flex items-center justify-center shrink-0">6</span>
+                    <strong className="text-[13.5px] text-[#1F1F1F]">Deduplicates feed</strong>
                     <span className="text-[12px] text-[#737373] hidden sm:inline">— Flags viral copy-pastes (20% deduplicated)</span>
                   </div>
-                  {expandedSteps[6] ? <ChevronUp size={16} className="text-[#8C8C8C]" /> : <ChevronDown size={16} className="text-[#8C8C8C]" />}
+                  {expandedSteps[6] ? <ChevronUp size={16} className="text-[#54B226]" /> : <ChevronDown size={16} className="text-[#54B226]" />}
                 </button>
                 {expandedSteps[6] && (
                   <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} className="mt-2.5 pt-2.5 border-t border-gray-100 text-[13px] text-[#5F6368]">
@@ -743,20 +766,20 @@ export default function EngineDashboard() {
 
           {/* Dedicated Theme Identification Callout */}
           <div className="bg-[#FFFFFF] border-none shadow-[0_1px_3px_rgba(0,0,0,0.08),0_1px_2px_rgba(0,0,0,0.06)] rounded-lg p-5 space-y-2">
-            <span className="text-[9.5px] font-bold text-[#000000] uppercase tracking-wider block font-mono">
+            <span className="text-[9.5px] font-bold text-[#54B226] uppercase tracking-wider block font-mono">
               Core Methodology: Theme Identification
             </span>
-            <h3 className="font-display font-extrabold text-[15px] text-[#171717]">
+            <h3 className="font-display font-extrabold text-[15px] text-[#1F1F1F]">
               How individual signals become a theme
             </h3>
-            <p className="text-[13px] text-[#171717] leading-relaxed font-medium">
-              A single tagged review is one data point. A theme forms when multiple independently-extracted signals converge on the same <code className="bg-[#F8F9FA] border border-gray-200 px-1 py-0.5 rounded text-[12px] font-mono text-[#000000]">reason_type</code> and category combination — e.g. 105 separate reviews, tagged individually with no knowledge of each other, all landing on 'trust' as the reason and 'electronics' or 'perishables' as the category. That convergence, not any single review, is what promotes a pattern to a named theme in Discovery Workspace. Themes with fewer than 10 supporting signals are labeled Medium or Low confidence rather than High, regardless of how compelling any individual quote sounds.
+            <p className="text-[13px] text-[#1F1F1F] leading-relaxed font-medium">
+              A single tagged review is one data point. A theme forms when multiple independently-extracted signals converge on the same <code className="bg-[#F8F9FA] border border-gray-200 px-1 py-0.5 rounded text-[12px] font-mono text-[#1F1F1F]">reason_type</code> and category combination — e.g. 105 separate reviews, tagged individually with no knowledge of each other, all landing on 'trust' as the reason and 'electronics' or 'perishables' as the category. That convergence, not any single review, is what promotes a pattern to a named theme in Discovery Workspace. Themes with fewer than 10 supporting signals are labeled Medium or Low confidence rather than High, regardless of how compelling any individual quote sounds.
             </p>
           </div>
 
           {/* AI vs Human block */}
           <div className="bg-[#FFFFFF] border-none shadow-[0_1px_3px_rgba(0,0,0,0.08),0_1px_2px_rgba(0,0,0,0.06)] rounded-lg p-6 space-y-3">
-            <h3 className="font-display font-bold text-[15px] text-[#171717]">
+            <h3 className="font-display font-bold text-[15px] text-[#1F1F1F]">
               Why this needed AI, not a person reading 1,176 reviews
             </h3>
             <p className="text-[13px] text-[#5F6368] leading-relaxed">
@@ -766,7 +789,7 @@ export default function EngineDashboard() {
 
           {/* Expanded AI failure-mode analysis */}
           <div className="bg-white border-none shadow-[0_1px_3px_rgba(0,0,0,0.08),0_1px_2px_rgba(0,0,0,0.06)] rounded-lg p-6 space-y-4">
-            <h3 className="font-display font-bold text-[15px] text-[#171717]">
+            <h3 className="font-display font-bold text-[15px] text-[#1F1F1F]">
               Concrete AI Failure Modes & Mitigation Analysis
             </h3>
             
@@ -775,13 +798,13 @@ export default function EngineDashboard() {
               <div className="border border-gray-100 rounded-md p-3.5 bg-white">
                 <button
                   onClick={() => toggleFailure(1)}
-                  className="w-full flex items-center justify-between gap-3 text-left font-medium text-[#171717] focus:outline-none"
+                  className="w-full flex items-center justify-between gap-3 text-left font-medium text-[#1F1F1F] focus:outline-none"
                 >
                   <div className="flex items-center gap-2">
-                    <strong className="text-[13.5px]">1. Incorrect Segment Inference</strong>
+                    <strong className="text-[13.5px] text-[#1F1F1F]">1. Incorrect Segment Inference</strong>
                     <span className="text-[12px] text-[#737373] hidden sm:inline">— Inferred from word choice, not transaction logs</span>
                   </div>
-                  {expandedFailures[1] ? <ChevronUp size={16} className="text-[#8C8C8C]" /> : <ChevronDown size={16} className="text-[#8C8C8C]" />}
+                  {expandedFailures[1] ? <ChevronUp size={16} className="text-[#54B226]" /> : <ChevronDown size={16} className="text-[#54B226]" />}
                 </button>
                 {expandedFailures[1] && (
                   <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} className="mt-2.5 pt-2.5 border-t border-gray-100 text-[13px] space-y-1.5">
@@ -796,13 +819,13 @@ export default function EngineDashboard() {
               <div className="border border-gray-100 rounded-md p-3.5 bg-white">
                 <button
                   onClick={() => toggleFailure(2)}
-                  className="w-full flex items-center justify-between gap-3 text-left font-medium text-[#171717] focus:outline-none"
+                  className="w-full flex items-center justify-between gap-3 text-left font-medium text-[#1F1F1F] focus:outline-none"
                 >
                   <div className="flex items-center gap-2">
-                    <strong className="text-[13.5px]">2. Trust vs. Convenience Misclassification</strong>
+                    <strong className="text-[13.5px] text-[#1F1F1F]">2. Trust vs. Convenience Misclassification</strong>
                     <span className="text-[12px] text-[#737373] hidden sm:inline">— Delivery delay overlap with quality concerns</span>
                   </div>
-                  {expandedFailures[2] ? <ChevronUp size={16} className="text-[#8C8C8C]" /> : <ChevronDown size={16} className="text-[#8C8C8C]" />}
+                  {expandedFailures[2] ? <ChevronUp size={16} className="text-[#54B226]" /> : <ChevronDown size={16} className="text-[#54B226]" />}
                 </button>
                 {expandedFailures[2] && (
                   <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} className="mt-2.5 pt-2.5 border-t border-gray-100 text-[13px] space-y-1.5">
@@ -817,13 +840,13 @@ export default function EngineDashboard() {
               <div className="border border-gray-100 rounded-md p-3.5 bg-white">
                 <button
                   onClick={() => toggleFailure(3)}
-                  className="w-full flex items-center justify-between gap-3 text-left font-medium text-[#171717] focus:outline-none"
+                  className="w-full flex items-center justify-between gap-3 text-left font-medium text-[#1F1F1F] focus:outline-none"
                 >
                   <div className="flex items-center gap-2">
-                    <strong className="text-[13.5px]">3. Hallucinated Extraction</strong>
+                    <strong className="text-[13.5px] text-[#1F1F1F]">3. Hallucinated Extraction</strong>
                     <span className="text-[12px] text-[#737373] hidden sm:inline">— Inventing patterns or modifying source text</span>
                   </div>
-                  {expandedFailures[3] ? <ChevronUp size={16} className="text-[#8C8C8C]" /> : <ChevronDown size={16} className="text-[#8C8C8C]" />}
+                  {expandedFailures[3] ? <ChevronUp size={16} className="text-[#54B226]" /> : <ChevronDown size={16} className="text-[#54B226]" />}
                 </button>
                 {expandedFailures[3] && (
                   <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} className="mt-2.5 pt-2.5 border-t border-gray-100 text-[13px] space-y-1.5">
@@ -838,13 +861,13 @@ export default function EngineDashboard() {
               <div className="border border-gray-100 rounded-md p-3.5 bg-white">
                 <button
                   onClick={() => toggleFailure(4)}
-                  className="w-full flex items-center justify-between gap-3 text-left font-medium text-[#171717] focus:outline-none"
+                  className="w-full flex items-center justify-between gap-3 text-left font-medium text-[#1F1F1F] focus:outline-none"
                 >
                   <div className="flex items-center gap-2">
-                    <strong className="text-[13.5px]">4. Duplicate Complaints Inflating Patterns</strong>
+                    <strong className="text-[13.5px] text-[#1F1F1F]">4. Duplicate Complaints Inflating Patterns</strong>
                     <span className="text-[12px] text-[#737373] hidden sm:inline">— Viral copy-pastes across threads</span>
                   </div>
-                  {expandedFailures[4] ? <ChevronUp size={16} className="text-[#8C8C8C]" /> : <ChevronDown size={16} className="text-[#8C8C8C]" />}
+                  {expandedFailures[4] ? <ChevronUp size={16} className="text-[#54B226]" /> : <ChevronDown size={16} className="text-[#54B226]" />}
                 </button>
                 {expandedFailures[4] && (
                   <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} className="mt-2.5 pt-2.5 border-t border-gray-100 text-[13px] space-y-1.5">
@@ -859,13 +882,13 @@ export default function EngineDashboard() {
               <div className="border border-gray-100 rounded-md p-3.5 bg-white">
                 <button
                   onClick={() => toggleFailure(5)}
-                  className="w-full flex items-center justify-between gap-3 text-left font-medium text-[#171717] focus:outline-none"
+                  className="w-full flex items-center justify-between gap-3 text-left font-medium text-[#1F1F1F] focus:outline-none"
                 >
                   <div className="flex items-center gap-2">
-                    <strong className="text-[13.5px]">5. Sparse Source Bias</strong>
+                    <strong className="text-[13.5px] text-[#1F1F1F]">5. Sparse Source Bias</strong>
                     <span className="text-[12px] text-[#737373] hidden sm:inline">— App Store represents 0.9% vs Google Play's 56.3%</span>
                   </div>
-                  {expandedFailures[5] ? <ChevronUp size={16} className="text-[#8C8C8C]" /> : <ChevronDown size={16} className="text-[#8C8C8C]" />}
+                  {expandedFailures[5] ? <ChevronUp size={16} className="text-[#54B226]" /> : <ChevronDown size={16} className="text-[#54B226]" />}
                 </button>
                 {expandedFailures[5] && (
                   <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} className="mt-2.5 pt-2.5 border-t border-gray-100 text-[13px] space-y-1.5">
@@ -900,7 +923,7 @@ export default function EngineDashboard() {
             <div id="q1" className="bg-white border-none shadow-[0_1px_3px_rgba(0,0,0,0.08),0_1px_2px_rgba(0,0,0,0.06)] border-l-4 border-l-[#1F1F1F] rounded-lg p-5 md:p-6 space-y-4 scroll-mt-20">
               {/* Card Header: Eyebrow + Confidence badge */}
               <div className="flex items-center justify-between gap-2 border-b border-gray-100 pb-2.5">
-                <span className="font-mono text-[10px] font-bold text-[#737373] uppercase tracking-wider">
+                <span className="font-mono text-[10px] font-bold text-[#54B226] uppercase tracking-wider">
                   WHY CUSTOMERS KEEP BUYING FROM THE SAME CATEGORIES
                 </span>
                 <span className="text-[11px] font-bold text-[#1F1F1F] bg-[#F8F9FA] px-2.5 py-0.5 rounded border border-gray-200 shrink-0">
@@ -925,13 +948,13 @@ export default function EngineDashboard() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-3 border-t border-gray-100 items-stretch">
                 {/* Left Column: 2 Evidence Quotes with Dot Bullets & Right-Aligned Monospace Number Column */}
                 <div className="space-y-2">
-                  <span className="text-[9.5px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Evidence</span>
+                  <span className="text-[9.5px] font-bold text-[#54B226] uppercase tracking-wider block">Evidence</span>
                   <div className="space-y-1.5">
                     {getEvidenceForQuestion(1).slice(0, 2).map((r, idx) => (
                       <div 
                         key={r.row_number} 
                         onClick={() => jumpToRow(r.row_number)}
-                        className="bg-[#F8F9FA] hover:bg-[#F3F1EA] border border-gray-100 rounded-md p-2.5 text-[12px] text-[#171717] italic cursor-pointer transition-all duration-200 shadow-sm flex items-center justify-between gap-2"
+                        className="bg-[#F8F9FA] hover:bg-[#F3F1EA] border border-gray-100 rounded-md p-2.5 text-[12px] text-[#1F1F1F] italic cursor-pointer transition-all duration-200 shadow-sm flex items-center justify-between gap-2"
                       >
                         <div className="flex items-center gap-2 overflow-hidden flex-1">
                           <span className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: DOT_PALETTE[idx % 5] }} />
@@ -946,15 +969,15 @@ export default function EngineDashboard() {
                 {/* Right Column: TAKEAWAY SENTENCE CONTAINER */}
                 <div className="bg-[#F3F1EA] rounded-lg p-3.5 flex flex-col justify-between space-y-2 border-none">
                   <div>
-                    <span className="text-[9.5px] font-bold text-[#8C8C8C] uppercase tracking-wider block mb-0.5">Product Implication</span>
-                    <p className="text-[12.5px] text-[#171717] font-semibold leading-snug">Decision supported: Whether to focus roadmap resources on generic personalization algorithms or on category-specific risk-reduction features.</p>
+                    <span className="text-[9.5px] font-bold text-[#54B226] uppercase tracking-wider block mb-0.5">Product Implication</span>
+                    <p className="text-[12.5px] text-[#1F1F1F] font-semibold leading-snug">Decision supported: Whether to focus roadmap resources on generic personalization algorithms or on category-specific risk-reduction features.</p>
                   </div>
 
-                  {/* "WHAT THIS FINDING MEANS" UNDERSTATED PLAIN TEXT LINK TRIGGER */}
+                  {/* "WHAT THIS FINDING MEANS" LINK TRIGGER */}
                   <div>
                     <button
                       onClick={() => toggleQuestion(1)}
-                      className="flex items-center gap-1 text-[12px] font-bold text-[#8A6A0F] hover:underline focus:outline-none py-0.5"
+                      className="flex items-center gap-1 text-[12px] font-bold text-[#54B226] hover:underline focus:outline-none py-0.5"
                     >
                       <span className="font-mono text-[13px]">{expandedQuestions[1] ? "−" : "+"}</span>
                       <span>What this finding means</span>
@@ -974,34 +997,34 @@ export default function EngineDashboard() {
                     <div className="text-[#8C8C8C] line-through font-mono">
                       <strong className="no-underline">ASSUMED:</strong> Customers buy the same things out of habit.
                     </div>
-                    <div className="text-[#171717] font-bold font-mono">
-                      <strong className="text-[#000000]">FOUND:</strong> Only 3.7% show habitual buying — the rest is deliberate risk-avoidance.
+                    <div className="text-[#1F1F1F] font-bold font-mono">
+                      <strong className="text-[#54B226]">FOUND:</strong> Only 3.7% show habitual buying — the rest is deliberate risk-avoidance.
                     </div>
                   </div>
 
                   <div>
-                    <span className="text-[9.5px] font-bold text-[#8C8C8C] uppercase tracking-wider block mb-1">Observed Pattern</span>
-                    <p className="text-[#171717] font-medium italic bg-white p-3 rounded border border-gray-100">
+                    <span className="text-[9.5px] font-bold text-[#54B226] uppercase tracking-wider block mb-1">Observed Pattern</span>
+                    <p className="text-[#1F1F1F] font-medium italic bg-white p-3 rounded border border-gray-100">
                       "This isn't habit. Only 7 of 189 signals (3.7%) describe routine or automatic buying — the weakest pattern in the entire dataset. What actually repeats is caution: customers keep returning to categories where nothing has gone wrong for them yet, and they describe this as a deliberate choice, not a default."
                     </p>
                   </div>
 
                   <div>
-                    <span className="text-[9.5px] font-bold text-[#8C8C8C] uppercase tracking-wider block mb-1">Interpretation</span>
+                    <span className="text-[9.5px] font-bold text-[#54B226] uppercase tracking-wider block mb-1">Interpretation</span>
                     <p className="text-[#5F6368]">
                       Repeat purchasing in quick-commerce is driven by active risk avoidance. Once a customer has a negative experience in a category, they isolate themselves to safe, verified categories, preventing cross-category exploration.
                     </p>
                   </div>
 
                   <div>
-                    <span className="text-[9.5px] font-bold text-[#8C8C8C] uppercase tracking-wider block mb-1">Remaining Uncertainty</span>
+                    <span className="text-[9.5px] font-bold text-[#54B226] uppercase tracking-wider block mb-1">Remaining Uncertainty</span>
                     <p className="text-[#5F6368]">
                       Whether this caution-driven pattern holds outside review-writers, or if non-reviewing customers show higher baseline willingness to try new categories.
                     </p>
                   </div>
 
                   <div className="pt-2 border-t border-gray-200">
-                    <a href="#q2" className="text-[12px] font-bold text-[#000000] hover:underline flex items-center gap-1">
+                    <a href="#q2" className="text-[12px] font-bold text-[#54B226] hover:underline flex items-center gap-1">
                       Related findings: What's stopping customers from trying a new category? →
                     </a>
                   </div>
@@ -1013,17 +1036,17 @@ export default function EngineDashboard() {
             <div id="q2" className="bg-white border-none shadow-[0_1px_3px_rgba(0,0,0,0.08),0_1px_2px_rgba(0,0,0,0.06)] border-l-4 border-l-red-600 rounded-lg p-5 md:p-6 space-y-4 scroll-mt-20">
               {/* Card Header: Eyebrow + Confidence badge */}
               <div className="flex items-center justify-between gap-2 border-b border-gray-100 pb-2.5">
-                <span className="font-mono text-[10px] font-bold text-[#737373] uppercase tracking-wider">
+                <span className="font-mono text-[10px] font-bold text-[#54B226] uppercase tracking-wider">
                   WHAT'S STOPPING CUSTOMERS FROM TRYING A NEW CATEGORY?
                 </span>
-                <span className="text-[11px] font-bold text-[#000000] bg-[#F8F9FA] px-2.5 py-0.5 rounded border border-gray-200 shrink-0">
+                <span className="text-[11px] font-bold text-[#1F1F1F] bg-[#F8F9FA] px-2.5 py-0.5 rounded border border-gray-200 shrink-0">
                   Confidence: High (Known from evidence)
                 </span>
               </div>
 
               {/* Main Title Block + Stat Callout + Visual Bar */}
               <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                <h3 className="font-display font-extrabold text-[22px] md:text-[25px] text-[#171717] leading-tight tracking-tight flex-1">
+                <h3 className="font-display font-extrabold text-[22px] md:text-[25px] text-[#1F1F1F] leading-tight tracking-tight flex-1">
                   "Customers don't avoid new categories. They avoid risk."
                 </h3>
                 <AnimatedStat 
@@ -1037,13 +1060,13 @@ export default function EngineDashboard() {
               {/* TWO-COLUMN CARD GRID: Evidence Quotes (Left) + Takeaway Sentence Container (Right) */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-3 border-t border-gray-100 items-stretch">
                 <div className="space-y-2">
-                  <span className="text-[9.5px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Evidence</span>
+                  <span className="text-[9.5px] font-bold text-[#54B226] uppercase tracking-wider block">Evidence</span>
                   <div className="space-y-1.5">
                     {getEvidenceForQuestion(2).slice(0, 2).map((r, idx) => (
                       <div 
                         key={r.row_number} 
                         onClick={() => jumpToRow(r.row_number)}
-                        className="bg-[#F8F9FA] hover:bg-[#F3F1EA] border border-gray-100 rounded-md p-2.5 text-[12px] text-[#171717] italic cursor-pointer transition-all duration-200 shadow-sm flex items-center justify-between gap-2"
+                        className="bg-[#F8F9FA] hover:bg-[#F3F1EA] border border-gray-100 rounded-md p-2.5 text-[12px] text-[#1F1F1F] italic cursor-pointer transition-all duration-200 shadow-sm flex items-center justify-between gap-2"
                       >
                         <div className="flex items-center gap-2 overflow-hidden flex-1">
                           <span className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: DOT_PALETTE[idx % 5] }} />
@@ -1057,14 +1080,14 @@ export default function EngineDashboard() {
 
                 <div className="bg-[#F3F1EA] rounded-lg p-3.5 flex flex-col justify-between space-y-2 border-none">
                   <div>
-                    <span className="text-[9.5px] font-bold text-[#8C8C8C] uppercase tracking-wider block mb-0.5">Product Implication</span>
-                    <p className="text-[12.5px] text-[#171717] font-semibold leading-snug">Decision supported: Prioritizing physical quality assurance workflows over UI navigation changes.</p>
+                    <span className="text-[9.5px] font-bold text-[#54B226] uppercase tracking-wider block mb-0.5">Product Implication</span>
+                    <p className="text-[12.5px] text-[#1F1F1F] font-semibold leading-snug">Decision supported: Prioritizing physical quality assurance workflows over UI navigation changes.</p>
                   </div>
 
                   <div>
                     <button
                       onClick={() => toggleQuestion(2)}
-                      className="flex items-center gap-1 text-[12px] font-bold text-[#8A6A0F] hover:underline focus:outline-none py-0.5"
+                      className="flex items-center gap-1 text-[12px] font-bold text-[#54B226] hover:underline focus:outline-none py-0.5"
                     >
                       <span className="font-mono text-[13px]">{expandedQuestions[2] ? "−" : "+"}</span>
                       <span>What this finding means</span>
@@ -1081,28 +1104,28 @@ export default function EngineDashboard() {
                   className="space-y-3 pt-3 border-t border-gray-100 text-[13px] leading-relaxed bg-[#F8F9FA]/80 p-4 rounded-md"
                 >
                   <div>
-                    <span className="text-[9.5px] font-bold text-[#8C8C8C] uppercase tracking-wider block mb-1">Observed Pattern</span>
-                    <p className="text-[#171717] font-medium italic bg-white p-3 rounded border border-gray-100">
+                    <span className="text-[9.5px] font-bold text-[#54B226] uppercase tracking-wider block mb-1">Observed Pattern</span>
+                    <p className="text-[#1F1F1F] font-medium italic bg-white p-3 rounded border border-gray-100">
                       "Trust is the blocker, and it's specific, not vague — customers aren't saying 'I don't trust Blinkit,' they're describing concrete failures: a fake product, an expired item, a tampered electronics box. 105 of 189 signals (55.6%) cite this. Price uncertainty is real but secondary (40 signals, 21.2%) — customers comparing prices across apps are a different behavior from customers avoiding a category altogether."
                     </p>
                   </div>
 
                   <div>
-                    <span className="text-[9.5px] font-bold text-[#8C8C8C] uppercase tracking-wider block mb-1">Interpretation</span>
+                    <span className="text-[9.5px] font-bold text-[#54B226] uppercase tracking-wider block mb-1">Interpretation</span>
                     <p className="text-[#5F6368]">
                       The primary friction to category expansion is quality risk. Customers are comfortable ordering low-risk items (like snacks) but hesitate to buy high-ticket or fresh items due to visible platform failures.
                     </p>
                   </div>
 
                   <div>
-                    <span className="text-[9.5px] font-bold text-[#8C8C8C] uppercase tracking-wider block mb-1">Remaining Uncertainty</span>
+                    <span className="text-[9.5px] font-bold text-[#54B226] uppercase tracking-wider block mb-1">Remaining Uncertainty</span>
                     <p className="text-[#5F6368]">
                       Whether the proportion of trust-related complaints differs by geographic location or warehouse-specific operations.
                     </p>
                   </div>
 
                   <div className="pt-2 border-t border-gray-200">
-                    <a href="#q5" className="text-[12px] font-bold text-[#000000] hover:underline flex items-center gap-1">
+                    <a href="#q5" className="text-[12px] font-bold text-[#54B226] hover:underline flex items-center gap-1">
                       Related findings: What would make a customer trust a category? →
                     </a>
                   </div>
@@ -1114,17 +1137,17 @@ export default function EngineDashboard() {
             <div id="q3" className="bg-white border-none shadow-[0_1px_3px_rgba(0,0,0,0.08),0_1px_2px_rgba(0,0,0,0.06)] border-l-4 border-l-purple-600 rounded-lg p-5 md:p-6 space-y-4 scroll-mt-20">
               {/* Card Header: Eyebrow + Confidence badge */}
               <div className="flex items-center justify-between gap-2 border-b border-gray-100 pb-2.5">
-                <span className="font-mono text-[10px] font-bold text-[#737373] uppercase tracking-wider">
+                <span className="font-mono text-[10px] font-bold text-[#54B226] uppercase tracking-wider">
                   HOW DO CUSTOMERS FIND PRODUCTS TODAY?
                 </span>
-                <span className="text-[11px] font-bold text-[#000000] bg-[#F8F9FA] px-2.5 py-0.5 rounded border border-gray-200 shrink-0">
+                <span className="text-[11px] font-bold text-[#1F1F1F] bg-[#F8F9FA] px-2.5 py-0.5 rounded border border-gray-200 shrink-0">
                   Confidence: Medium (Inferred from language)
                 </span>
               </div>
 
               {/* Main Title Block + Stat Callout + Visual Bar */}
               <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                <h3 className="font-display font-extrabold text-[22px] md:text-[25px] text-[#171717] leading-tight tracking-tight flex-1">
+                <h3 className="font-display font-extrabold text-[22px] md:text-[25px] text-[#1F1F1F] leading-tight tracking-tight flex-1">
                   "Discovery isn't failing on trust — it's failing on visibility."
                 </h3>
                 <AnimatedStat 
@@ -1138,13 +1161,13 @@ export default function EngineDashboard() {
               {/* TWO-COLUMN CARD GRID: Evidence Quotes (Left) + Takeaway Sentence Container (Right) */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-3 border-t border-gray-100 items-stretch">
                 <div className="space-y-2">
-                  <span className="text-[9.5px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Evidence</span>
+                  <span className="text-[9.5px] font-bold text-[#54B226] uppercase tracking-wider block">Evidence</span>
                   <div className="space-y-1.5">
                     {getEvidenceForQuestion(3).slice(0, 2).map((r, idx) => (
                       <div 
                         key={r.row_number} 
                         onClick={() => jumpToRow(r.row_number)}
-                        className="bg-[#F8F9FA] hover:bg-[#F3F1EA] border border-gray-100 rounded-md p-2.5 text-[12px] text-[#171717] italic cursor-pointer transition-all duration-200 shadow-sm flex items-center justify-between gap-2"
+                        className="bg-[#F8F9FA] hover:bg-[#F3F1EA] border border-gray-100 rounded-md p-2.5 text-[12px] text-[#1F1F1F] italic cursor-pointer transition-all duration-200 shadow-sm flex items-center justify-between gap-2"
                       >
                         <div className="flex items-center gap-2 overflow-hidden flex-1">
                           <span className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: DOT_PALETTE[idx % 5] }} />
@@ -1158,14 +1181,14 @@ export default function EngineDashboard() {
 
                 <div className="bg-[#F3F1EA] rounded-lg p-3.5 flex flex-col justify-between space-y-2 border-none">
                   <div>
-                    <span className="text-[9.5px] font-bold text-[#8C8C8C] uppercase tracking-wider block mb-0.5">Product Implication</span>
-                    <p className="text-[12.5px] text-[#171717] font-semibold leading-snug">Decision supported: Investing in semantic search quality vs. generic banner advertisements.</p>
+                    <span className="text-[9.5px] font-bold text-[#54B226] uppercase tracking-wider block mb-0.5">Product Implication</span>
+                    <p className="text-[12.5px] text-[#1F1F1F] font-semibold leading-snug">Decision supported: Investing in semantic search quality vs. generic banner advertisements.</p>
                   </div>
 
                   <div>
                     <button
                       onClick={() => toggleQuestion(3)}
-                      className="flex items-center gap-1 text-[12px] font-bold text-[#8A6A0F] hover:underline focus:outline-none py-0.5"
+                      className="flex items-center gap-1 text-[12px] font-bold text-[#54B226] hover:underline focus:outline-none py-0.5"
                     >
                       <span className="font-mono text-[13px]">{expandedQuestions[3] ? "−" : "+"}</span>
                       <span>What this finding means</span>
@@ -1182,28 +1205,28 @@ export default function EngineDashboard() {
                   className="space-y-3 pt-3 border-t border-gray-100 text-[13px] leading-relaxed bg-[#F8F9FA]/80 p-4 rounded-md"
                 >
                   <div>
-                    <span className="text-[9.5px] font-bold text-[#8C8C8C] uppercase tracking-wider block mb-1">Observed Pattern</span>
-                    <p className="text-[#171717] font-medium italic bg-white p-3 rounded border border-gray-100">
+                    <span className="text-[9.5px] font-bold text-[#54B226] uppercase tracking-wider block mb-1">Observed Pattern</span>
+                    <p className="text-[#1F1F1F] font-medium italic bg-white p-3 rounded border border-gray-100">
                       "Weakly, and mostly by accident. The smallest but most telling pattern (9 signals, 4.8%) shows customers leaving for a competitor not because they distrust Blinkit, but because a specific product they wanted — a cat food variant, a collectible — wasn't visible or in stock. Discovery isn't failing on trust here, it's failing on basic inventory visibility."
                     </p>
                   </div>
 
                   <div>
-                    <span className="text-[9.5px] font-bold text-[#8C8C8C] uppercase tracking-wider block mb-1">Interpretation</span>
+                    <span className="text-[9.5px] font-bold text-[#54B226] uppercase tracking-wider block mb-1">Interpretation</span>
                     <p className="text-[#5F6368]">
                       Discovery fails when customers cannot easily locate niche or regional stock. Silent churn occurs when product search algorithms return irrelevant items or fail to show accurate stock levels.
                     </p>
                   </div>
 
                   <div>
-                    <span className="text-[9.5px] font-bold text-[#8C8C8C] uppercase tracking-wider block mb-1">Remaining Uncertainty</span>
+                    <span className="text-[9.5px] font-bold text-[#54B226] uppercase tracking-wider block mb-1">Remaining Uncertainty</span>
                     <p className="text-[#5F6368]">
                       Whether these inventory discovery issues exist outside review writers who take the time to post complaints online.
                     </p>
                   </div>
 
                   <div className="pt-2 border-t border-gray-200">
-                    <a href="#q8" className="text-[12px] font-bold text-[#000000] hover:underline flex items-center gap-1">
+                    <a href="#q8" className="text-[12px] font-bold text-[#54B226] hover:underline flex items-center gap-1">
                       Related findings: What do customers consistently say is missing? →
                     </a>
                   </div>
@@ -1215,17 +1238,17 @@ export default function EngineDashboard() {
             <div id="q4" className="bg-white border-none shadow-[0_1px_3px_rgba(0,0,0,0.08),0_1px_2px_rgba(0,0,0,0.06)] border-l-4 border-l-blue-600 rounded-lg p-5 md:p-6 space-y-4 scroll-mt-20">
               {/* Card Header: Eyebrow + Confidence badge */}
               <div className="flex items-center justify-between gap-2 border-b border-gray-100 pb-2.5">
-                <span className="font-mono text-[10px] font-bold text-[#737373] uppercase tracking-wider">
+                <span className="font-mono text-[10px] font-bold text-[#54B226] uppercase tracking-wider">
                   WHAT ROLE DOES HABIT ACTUALLY PLAY?
                 </span>
-                <span className="text-[11px] font-bold text-[#000000] bg-[#F8F9FA] px-2.5 py-0.5 rounded border border-gray-200 shrink-0">
+                <span className="text-[11px] font-bold text-[#1F1F1F] bg-[#F8F9FA] px-2.5 py-0.5 rounded border border-gray-200 shrink-0">
                   Confidence: High (Known from evidence)
                 </span>
               </div>
 
               {/* Main Title Block + Stat Callout + Visual Bar */}
               <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                <h3 className="font-display font-extrabold text-[22px] md:text-[25px] text-[#171717] leading-tight tracking-tight flex-1">
+                <h3 className="font-display font-extrabold text-[22px] md:text-[25px] text-[#1F1F1F] leading-tight tracking-tight flex-1">
                   "The customer isn't passive. They're constantly comparing."
                 </h3>
                 <AnimatedStat 
@@ -1239,13 +1262,13 @@ export default function EngineDashboard() {
               {/* TWO-COLUMN CARD GRID: Evidence Quotes (Left) + Takeaway Sentence Container (Right) */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-3 border-t border-gray-100 items-stretch">
                 <div className="space-y-2">
-                  <span className="text-[9.5px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Evidence</span>
+                  <span className="text-[9.5px] font-bold text-[#54B226] uppercase tracking-wider block">Evidence</span>
                   <div className="space-y-1.5">
                     {getEvidenceForQuestion(4).slice(0, 2).map((r, idx) => (
                       <div 
                         key={r.row_number} 
                         onClick={() => jumpToRow(r.row_number)}
-                        className="bg-[#F8F9FA] hover:bg-[#F3F1EA] border border-gray-100 rounded-md p-2.5 text-[12px] text-[#171717] italic cursor-pointer transition-all duration-200 shadow-sm flex items-center justify-between gap-2"
+                        className="bg-[#F8F9FA] hover:bg-[#F3F1EA] border border-gray-100 rounded-md p-2.5 text-[12px] text-[#1F1F1F] italic cursor-pointer transition-all duration-200 shadow-sm flex items-center justify-between gap-2"
                       >
                         <div className="flex items-center gap-2 overflow-hidden flex-1">
                           <span className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: DOT_PALETTE[idx % 5] }} />
@@ -1259,14 +1282,14 @@ export default function EngineDashboard() {
 
                 <div className="bg-[#F3F1EA] rounded-lg p-3.5 flex flex-col justify-between space-y-2 border-none">
                   <div>
-                    <span className="text-[9.5px] font-bold text-[#8C8C8C] uppercase tracking-wider block mb-0.5">Product Implication</span>
-                    <p className="text-[12.5px] text-[#171717] font-semibold leading-snug">Decision supported: Launching dynamic cross-category loyalty rewards versus flat membership plans.</p>
+                    <span className="text-[9.5px] font-bold text-[#54B226] uppercase tracking-wider block mb-0.5">Product Implication</span>
+                    <p className="text-[12.5px] text-[#1F1F1F] font-semibold leading-snug">Decision supported: Launching dynamic cross-category loyalty rewards versus flat membership plans.</p>
                   </div>
 
                   <div>
                     <button
                       onClick={() => toggleQuestion(4)}
-                      className="flex items-center gap-1 text-[12px] font-bold text-[#8A6A0F] hover:underline focus:outline-none py-0.5"
+                      className="flex items-center gap-1 text-[12px] font-bold text-[#54B226] hover:underline focus:outline-none py-0.5"
                     >
                       <span className="font-mono text-[13px]">{expandedQuestions[4] ? "−" : "+"}</span>
                       <span>What this finding means</span>
@@ -1286,34 +1309,34 @@ export default function EngineDashboard() {
                     <div className="text-[#8C8C8C] line-through font-mono">
                       <strong className="no-underline">ASSUMED:</strong> Customers passively return out of app loyalty.
                     </div>
-                    <div className="text-[#171717] font-bold font-mono">
+                    <div className="text-[#1F1F1F] font-bold font-mono">
                       <strong className="text-blue-600">FOUND:</strong> 21.2% actively price-shop across Blinkit, Zepto, and Instamart in the same session.
                     </div>
                   </div>
 
                   <div>
-                    <span className="text-[9.5px] font-bold text-[#8C8C8C] uppercase tracking-wider block mb-1">Observed Pattern</span>
-                    <p className="text-[#171717] font-medium italic bg-white p-3 rounded border border-gray-100">
+                    <span className="text-[9.5px] font-bold text-[#54B226] uppercase tracking-wider block mb-1">Observed Pattern</span>
+                    <p className="text-[#1F1F1F] font-medium italic bg-white p-3 rounded border border-gray-100">
                       "Less than assumed. 7 signals (3.7%) describe habitual buying, while 40 signals (21.2%) describe customers actively price-shopping across Blinkit, Zepto, and Instamart in the same shopping session. Customers are not passively loyal — they're evaluating, constantly, and that means engagement mechanics have room to work if the underlying trust problem is addressed first."
                     </p>
                   </div>
 
                   <div>
-                    <span className="text-[9.5px] font-bold text-[#8C8C8C] uppercase tracking-wider block mb-1">Interpretation</span>
+                    <span className="text-[9.5px] font-bold text-[#54B226] uppercase tracking-wider block mb-1">Interpretation</span>
                     <p className="text-[#5F6368]">
                       Loyalty is transactional, not habitual. Customers compare prices in real-time, meaning cross-category exploration is highly vulnerable to competitive pricing.
                     </p>
                   </div>
 
                   <div>
-                    <span className="text-[9.5px] font-bold text-[#8C8C8C] uppercase tracking-wider block mb-1">Remaining Uncertainty</span>
+                    <span className="text-[9.5px] font-bold text-[#54B226] uppercase tracking-wider block mb-1">Remaining Uncertainty</span>
                     <p className="text-[#5F6368]">
                       Whether this price-sensitive app-switching behavior leads to long-term churn or simply short-term order fragmentation.
                     </p>
                   </div>
 
                   <div className="pt-2 border-t border-gray-200">
-                    <a href="#q2" className="text-[12px] font-bold text-[#000000] hover:underline flex items-center gap-1">
+                    <a href="#q2" className="text-[12px] font-bold text-[#54B226] hover:underline flex items-center gap-1">
                       Related findings: What's stopping customers from trying a new category? →
                     </a>
                   </div>
@@ -1325,17 +1348,17 @@ export default function EngineDashboard() {
             <div id="q5" className="bg-white border-none shadow-[0_1px_3px_rgba(0,0,0,0.08),0_1px_2px_rgba(0,0,0,0.06)] border-l-4 border-l-amber-500 rounded-lg p-5 md:p-6 space-y-4 scroll-mt-20">
               {/* Card Header: Eyebrow + Confidence badge */}
               <div className="flex items-center justify-between gap-2 border-b border-gray-100 pb-2.5">
-                <span className="font-mono text-[10px] font-bold text-[#737373] uppercase tracking-wider">
+                <span className="font-mono text-[10px] font-bold text-[#54B226] uppercase tracking-wider">
                   WHAT WOULD MAKE A CUSTOMER TRUST A CATEGORY ENOUGH TO TRY IT?
                 </span>
-                <span className="text-[11px] font-bold text-[#000000] bg-[#F8F9FA] px-2.5 py-0.5 rounded border border-gray-200 shrink-0">
+                <span className="text-[11px] font-bold text-[#1F1F1F] bg-[#F8F9FA] px-2.5 py-0.5 rounded border border-gray-200 shrink-0">
                   Confidence: High (Known from evidence)
                 </span>
               </div>
 
               {/* Main Title Block + Stat Callout + Visual Bar */}
               <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                <h3 className="font-display font-extrabold text-[22px] md:text-[25px] text-[#171717] leading-tight tracking-tight flex-1">
+                <h3 className="font-display font-extrabold text-[22px] md:text-[25px] text-[#1F1F1F] leading-tight tracking-tight flex-1">
                   "Customers already told us what would change their mind."
                 </h3>
                 <AnimatedStat 
@@ -1349,13 +1372,13 @@ export default function EngineDashboard() {
               {/* TWO-COLUMN CARD GRID: Evidence Quotes (Left) + Takeaway Sentence Container (Right) */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-3 border-t border-gray-100 items-stretch">
                 <div className="space-y-2">
-                  <span className="text-[9.5px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Evidence</span>
+                  <span className="text-[9.5px] font-bold text-[#54B226] uppercase tracking-wider block">Evidence</span>
                   <div className="space-y-1.5">
                     {getEvidenceForQuestion(5).slice(0, 2).map((r, idx) => (
                       <div 
                         key={r.row_number} 
                         onClick={() => jumpToRow(r.row_number)}
-                        className="bg-[#F8F9FA] hover:bg-[#F3F1EA] border border-gray-100 rounded-md p-2.5 text-[12px] text-[#171717] italic cursor-pointer transition-all duration-200 shadow-sm flex items-center justify-between gap-2"
+                        className="bg-[#F8F9FA] hover:bg-[#F3F1EA] border border-gray-100 rounded-md p-2.5 text-[12px] text-[#1F1F1F] italic cursor-pointer transition-all duration-200 shadow-sm flex items-center justify-between gap-2"
                       >
                         <div className="flex items-center gap-2 overflow-hidden flex-1">
                           <span className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: DOT_PALETTE[idx % 5] }} />
@@ -1369,14 +1392,14 @@ export default function EngineDashboard() {
 
                 <div className="bg-[#F3F1EA] rounded-lg p-3.5 flex flex-col justify-between space-y-2 border-none">
                   <div>
-                    <span className="text-[9.5px] font-bold text-[#8C8C8C] uppercase tracking-wider block mb-0.5">Product Implication</span>
-                    <p className="text-[12.5px] text-[#171717] font-semibold leading-snug">Decision supported: Whether to build generalized customer support tools or specific checkout security badges.</p>
+                    <span className="text-[9.5px] font-bold text-[#54B226] uppercase tracking-wider block mb-0.5">Product Implication</span>
+                    <p className="text-[12.5px] text-[#1F1F1F] font-semibold leading-snug">Decision supported: Whether to build generalized customer support tools or specific checkout security badges.</p>
                   </div>
 
                   <div>
                     <button
                       onClick={() => toggleQuestion(5)}
-                      className="flex items-center gap-1 text-[12px] font-bold text-[#8A6A0F] hover:underline focus:outline-none py-0.5"
+                      className="flex items-center gap-1 text-[12px] font-bold text-[#54B226] hover:underline focus:outline-none py-0.5"
                     >
                       <span className="font-mono text-[13px]">{expandedQuestions[5] ? "−" : "+"}</span>
                       <span>What this finding means</span>
@@ -1393,28 +1416,28 @@ export default function EngineDashboard() {
                   className="space-y-3 pt-3 border-t border-gray-100 text-[13px] leading-relaxed bg-[#F8F9FA]/80 p-4 rounded-md"
                 >
                   <div>
-                    <span className="text-[9.5px] font-bold text-[#8C8C8C] uppercase tracking-wider block mb-1">Observed Pattern</span>
-                    <p className="text-[#171717] font-medium italic bg-white p-3 rounded border border-gray-100">
+                    <span className="text-[9.5px] font-bold text-[#54B226] uppercase tracking-wider block mb-1">Observed Pattern</span>
+                    <p className="text-[#1F1F1F] font-medium italic bg-white p-3 rounded border border-gray-100">
                       "Nearly half of all signal (86 of 189, 45.5%) answers this directly and specifically — not 'better service' but concrete asks: visible authenticity checks, tamper-evident packaging, expiry dates shown before checkout, a working return process, accurate stock counts. This is the most actionable finding in the dataset because customers described the fix, not just the problem."
                     </p>
                   </div>
 
                   <div>
-                    <span className="text-[9.5px] font-bold text-[#8C8C8C] uppercase tracking-wider block mb-1">Interpretation</span>
+                    <span className="text-[9.5px] font-bold text-[#54B226] uppercase tracking-wider block mb-1">Interpretation</span>
                     <p className="text-[#5F6368]">
                       Customers are willing to try new categories if the platform explicitly surfaces verification assurances.
                     </p>
                   </div>
 
                   <div>
-                    <span className="text-[9.5px] font-bold text-[#8C8C8C] uppercase tracking-wider block mb-1">Remaining Uncertainty</span>
+                    <span className="text-[9.5px] font-bold text-[#54B226] uppercase tracking-wider block mb-1">Remaining Uncertainty</span>
                     <p className="text-[#5F6368]">
                       Whether customer-stated trust fixes reflect actual conversion barriers or post-hoc justifications for non-purchase.
                     </p>
                   </div>
 
                   <div className="pt-2 border-t border-gray-200">
-                    <a href="#q6" className="text-[12px] font-bold text-[#000000] hover:underline flex items-center gap-1">
+                    <a href="#q6" className="text-[12px] font-bold text-[#54B226] hover:underline flex items-center gap-1">
                       Related findings: What frustrates customers repeatedly? →
                     </a>
                   </div>
@@ -1426,17 +1449,17 @@ export default function EngineDashboard() {
             <div id="q6" className="bg-white border-none shadow-[0_1px_3px_rgba(0,0,0,0.08),0_1px_2px_rgba(0,0,0,0.06)] border-l-4 border-l-red-600 rounded-lg p-5 md:p-6 space-y-4 scroll-mt-20">
               {/* Card Header: Eyebrow + Confidence badge */}
               <div className="flex items-center justify-between gap-2 border-b border-gray-100 pb-2.5">
-                <span className="font-mono text-[10px] font-bold text-[#737373] uppercase tracking-wider">
+                <span className="font-mono text-[10px] font-bold text-[#54B226] uppercase tracking-wider">
                   WHAT FRUSTRATES CUSTOMERS REPEATEDLY?
                 </span>
-                <span className="text-[11px] font-bold text-[#000000] bg-[#F8F9FA] px-2.5 py-0.5 rounded border border-gray-200 shrink-0">
+                <span className="text-[11px] font-bold text-[#1F1F1F] bg-[#F8F9FA] px-2.5 py-0.5 rounded border border-gray-200 shrink-0">
                   Confidence: High (Known from evidence)
                 </span>
               </div>
 
               {/* Main Title Block + Stat Callout + Visual Bar */}
               <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                <h3 className="font-display font-extrabold text-[22px] md:text-[25px] text-[#171717] leading-tight tracking-tight flex-1">
+                <h3 className="font-display font-extrabold text-[22px] md:text-[25px] text-[#1F1F1F] leading-tight tracking-tight flex-1">
                   "Five failures repeat across every category."
                 </h3>
                 <AnimatedStat 
@@ -1450,13 +1473,13 @@ export default function EngineDashboard() {
               {/* TWO-COLUMN CARD GRID: Evidence Quotes (Left) + Takeaway Sentence Container (Right) */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-3 border-t border-gray-100 items-stretch">
                 <div className="space-y-2">
-                  <span className="text-[9.5px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Evidence</span>
+                  <span className="text-[9.5px] font-bold text-[#54B226] uppercase tracking-wider block">Evidence</span>
                   <div className="space-y-1.5">
                     {getEvidenceForQuestion(6).slice(0, 2).map((r, idx) => (
                       <div 
                         key={r.row_number} 
                         onClick={() => jumpToRow(r.row_number)}
-                        className="bg-[#F8F9FA] hover:bg-[#F3F1EA] border border-gray-100 rounded-md p-2.5 text-[12px] text-[#171717] italic cursor-pointer transition-all duration-200 shadow-sm flex items-center justify-between gap-2"
+                        className="bg-[#F8F9FA] hover:bg-[#F3F1EA] border border-gray-100 rounded-md p-2.5 text-[12px] text-[#1F1F1F] italic cursor-pointer transition-all duration-200 shadow-sm flex items-center justify-between gap-2"
                       >
                         <div className="flex items-center gap-2 overflow-hidden flex-1">
                           <span className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: DOT_PALETTE[idx % 5] }} />
@@ -1470,14 +1493,14 @@ export default function EngineDashboard() {
 
                 <div className="bg-[#F3F1EA] rounded-lg p-3.5 flex flex-col justify-between space-y-2 border-none">
                   <div>
-                    <span className="text-[9.5px] font-bold text-[#8C8C8C] uppercase tracking-wider block mb-0.5">Product Implication</span>
-                    <p className="text-[12.5px] text-[#171717] font-semibold leading-snug">Decision supported: Aligning roadmap goals with supply chain fulfillment accuracy metrics rather than top-funnel marketing.</p>
+                    <span className="text-[9.5px] font-bold text-[#54B226] uppercase tracking-wider block mb-0.5">Product Implication</span>
+                    <p className="text-[12.5px] text-[#1F1F1F] font-semibold leading-snug">Decision supported: Aligning roadmap goals with supply chain fulfillment accuracy metrics rather than top-funnel marketing.</p>
                   </div>
 
                   <div>
                     <button
                       onClick={() => toggleQuestion(6)}
-                      className="flex items-center gap-1 text-[12px] font-bold text-[#8A6A0F] hover:underline focus:outline-none py-0.5"
+                      className="flex items-center gap-1 text-[12px] font-bold text-[#54B226] hover:underline focus:outline-none py-0.5"
                     >
                       <span className="font-mono text-[13px]">{expandedQuestions[6] ? "−" : "+"}</span>
                       <span>What this finding means</span>
@@ -1494,28 +1517,28 @@ export default function EngineDashboard() {
                   className="space-y-3 pt-3 border-t border-gray-100 text-[13px] leading-relaxed bg-[#F8F9FA]/80 p-4 rounded-md"
                 >
                   <div>
-                    <span className="text-[9.5px] font-bold text-[#8C8C8C] uppercase tracking-wider block mb-1">Observed Pattern</span>
-                    <p className="text-[#171717] font-medium italic bg-white p-3 rounded border border-gray-100">
+                    <span className="text-[9.5px] font-bold text-[#54B226] uppercase tracking-wider block mb-1">Observed Pattern</span>
+                    <p className="text-[#1F1F1F] font-medium italic bg-white p-3 rounded border border-gray-100">
                       "The same five failures recur across unrelated categories: counterfeit goods, expired perishables, refund promises that don't get honored, substitutions made without asking, and promo codes that don't work at checkout. These aren't category-specific complaints — they're platform-trust failures that happen to surface most often in electronics and perishables because that's where the cost of being wrong is highest for the customer."
                     </p>
                   </div>
 
                   <div>
-                    <span className="text-[9.5px] font-bold text-[#8C8C8C] uppercase tracking-wider block mb-1">Interpretation</span>
+                    <span className="text-[9.5px] font-bold text-[#54B226] uppercase tracking-wider block mb-1">Interpretation</span>
                     <p className="text-[#5F6368]">
                       Core operational errors (expired stock, forced replacements) destroy trust globally, making category discovery initiatives useless if core fulfillment is broken.
                     </p>
                   </div>
 
                   <div>
-                    <span className="text-[9.5px] font-bold text-[#8C8C8C] uppercase tracking-wider block mb-1">Remaining Uncertainty</span>
+                    <span className="text-[9.5px] font-bold text-[#54B226] uppercase tracking-wider block mb-1">Remaining Uncertainty</span>
                     <p className="text-[#5F6368]">
                       Whether these platform-trust failures are concentrated in specific courier networks or are evenly distributed across the entire catalog.
                     </p>
                   </div>
 
                   <div className="pt-2 border-t border-gray-200">
-                    <a href="#q7" className="text-[12px] font-bold text-[#000000] hover:underline flex items-center gap-1">
+                    <a href="#q7" className="text-[12px] font-bold text-[#54B226] hover:underline flex items-center gap-1">
                       Related findings: Which customers are closest to trying something new? →
                     </a>
                   </div>
@@ -1527,7 +1550,7 @@ export default function EngineDashboard() {
             <div id="q7" className="bg-white border-none shadow-[0_1px_3px_rgba(0,0,0,0.08),0_1px_2px_rgba(0,0,0,0.06)] border-l-4 border-l-[#1F1F1F] rounded-lg p-5 md:p-6 space-y-4 scroll-mt-20">
               {/* Card Header: Eyebrow + Confidence badge */}
               <div className="flex items-center justify-between gap-2 border-b border-gray-100 pb-2.5">
-                <span className="font-mono text-[10px] font-bold text-[#737373] uppercase tracking-wider">
+                <span className="font-mono text-[10px] font-bold text-[#54B226] uppercase tracking-wider">
                   WHICH CUSTOMERS ARE CLOSEST TO TRYING SOMETHING NEW?
                 </span>
                 <span className="text-[11px] font-bold text-[#1F1F1F] bg-[#F8F9FA] px-2.5 py-0.5 rounded border border-gray-200 shrink-0">
@@ -1551,13 +1574,13 @@ export default function EngineDashboard() {
               {/* TWO-COLUMN CARD GRID: Evidence Quotes (Left) + Takeaway Sentence Container (Right) */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-3 border-t border-gray-100 items-stretch">
                 <div className="space-y-2">
-                  <span className="text-[9.5px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Evidence</span>
+                  <span className="text-[9.5px] font-bold text-[#54B226] uppercase tracking-wider block">Evidence</span>
                   <div className="space-y-1.5">
                     {getEvidenceForQuestion(7).slice(0, 2).map((r, idx) => (
                       <div 
                         key={r.row_number} 
                         onClick={() => jumpToRow(r.row_number)}
-                        className="bg-[#F8F9FA] hover:bg-[#F3F1EA] border border-gray-100 rounded-md p-2.5 text-[12px] text-[#171717] italic cursor-pointer transition-all duration-200 shadow-sm flex items-center justify-between gap-2"
+                        className="bg-[#F8F9FA] hover:bg-[#F3F1EA] border border-gray-100 rounded-md p-2.5 text-[12px] text-[#1F1F1F] italic cursor-pointer transition-all duration-200 shadow-sm flex items-center justify-between gap-2"
                       >
                         <div className="flex items-center gap-2 overflow-hidden flex-1">
                           <span className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: DOT_PALETTE[idx % 5] }} />
@@ -1571,14 +1594,14 @@ export default function EngineDashboard() {
 
                 <div className="bg-[#F3F1EA] rounded-lg p-3.5 flex flex-col justify-between space-y-2 border-none">
                   <div>
-                    <span className="text-[9.5px] font-bold text-[#8C8C8C] uppercase tracking-wider block mb-0.5">Product Implication</span>
-                    <p className="text-[12.5px] text-[#171717] font-semibold leading-snug">Decision supported: Targeting new feature pilots to the "heavy_user" segment rather than mass-market launches.</p>
+                    <span className="text-[9.5px] font-bold text-[#54B226] uppercase tracking-wider block mb-0.5">Product Implication</span>
+                    <p className="text-[12.5px] text-[#1F1F1F] font-semibold leading-snug">Decision supported: Targeting new feature pilots to the "heavy_user" segment rather than mass-market launches.</p>
                   </div>
 
                   <div>
                     <button
                       onClick={() => toggleQuestion(7)}
-                      className="flex items-center gap-1 text-[12px] font-bold text-[#8A6A0F] hover:underline focus:outline-none py-0.5"
+                      className="flex items-center gap-1 text-[12px] font-bold text-[#54B226] hover:underline focus:outline-none py-0.5"
                     >
                       <span className="font-mono text-[13px]">{expandedQuestions[7] ? "−" : "+"}</span>
                       <span>What this finding means & matrix</span>
@@ -1589,10 +1612,10 @@ export default function EngineDashboard() {
               <div className="pt-2 border-t border-gray-100 flex items-center justify-between">
                 <button
                   onClick={() => toggleQuestion(7)}
-                  className="flex items-center gap-1.5 text-[12px] font-bold text-[#5F6368] hover:text-[#000000] transition-colors py-1 focus:outline-none"
+                  className="flex items-center gap-1.5 text-[12px] font-bold text-[#54B226] hover:underline transition-colors py-1 focus:outline-none"
                 >
                   <span>Full analysis & supporting matrix</span>
-                  {expandedQuestions[7] ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
+                  {expandedQuestions[7] ? <ChevronUp size={14} className="text-[#54B226]" /> : <ChevronDown size={14} className="text-[#54B226]" />}
                 </button>
               </div>
 
@@ -1607,34 +1630,34 @@ export default function EngineDashboard() {
                     <div className="text-[#8C8C8C] line-through font-mono">
                       <strong className="no-underline">ASSUMED:</strong> Non-buyers across categories have blanket distrust of the platform.
                     </div>
-                    <div className="text-[#171717] font-bold font-mono">
-                      <strong className="text-[#000000]">FOUND:</strong> 10.1% of high-frequency users express fixable transactional barriers, ready for trial.
+                    <div className="text-[#1F1F1F] font-bold font-mono">
+                      <strong className="text-[#54B226]">FOUND:</strong> 10.1% of high-frequency users express fixable transactional barriers, ready for trial.
                     </div>
                   </div>
 
                   <div>
-                    <span className="text-[9.5px] font-bold text-[#8C8C8C] uppercase tracking-wider block mb-1">Observed Pattern</span>
-                    <p className="text-[#171717] font-medium italic bg-white p-3 rounded border border-gray-100">
+                    <span className="text-[9.5px] font-bold text-[#54B226] uppercase tracking-wider block mb-1">Observed Pattern</span>
+                    <p className="text-[#1F1F1F] font-medium italic bg-white p-3 rounded border border-gray-100">
                       "Customers whose language suggests frequent, ongoing use (19 signals, 10.1%) describe specific, fixable complaints rather than blanket distrust — that distinction matters. A customer who says 'I won't buy electronics here because of X' is different from a customer who says 'I'll never use this app again.' The first is telling you what to fix. Treat this as a supposition about where to test first, not a confirmed customer list — segment inference here comes from language, not verified purchase history."
                     </p>
                   </div>
 
                   <div>
-                    <span className="text-[9.5px] font-bold text-[#8C8C8C] uppercase tracking-wider block mb-1">Interpretation</span>
+                    <span className="text-[9.5px] font-bold text-[#54B226] uppercase tracking-wider block mb-1">Interpretation</span>
                     <p className="text-[#5F6368]">
                       High-frequency users represent the highest conversion potential because their barriers are transactional friction, not complete platform distrust.
                     </p>
                   </div>
 
                   <div>
-                    <span className="text-[9.5px] font-bold text-[#8C8C8C] uppercase tracking-wider block mb-1">Remaining Uncertainty</span>
+                    <span className="text-[9.5px] font-bold text-[#54B226] uppercase tracking-wider block mb-1">Remaining Uncertainty</span>
                     <p className="text-[#5F6368]">
                       Whether the language-inferred segments align with actual historical purchase frequencies and spending profiles.
                     </p>
                   </div>
 
                   <div className="pt-2 border-t border-gray-200">
-                    <a href="#q8" className="text-[12px] font-bold text-[#000000] hover:underline flex items-center gap-1">
+                    <a href="#q8" className="text-[12px] font-bold text-[#54B226] hover:underline flex items-center gap-1">
                       Related findings: What do customers consistently say is missing? →
                     </a>
                   </div>
@@ -1827,7 +1850,7 @@ export default function EngineDashboard() {
           {/* Explorer Filters Contained Panel */}
           <div className="bg-[#FFFFFF] border border-gray-200 rounded-xl p-5 shadow-sm space-y-3">
             <div className="flex items-center justify-between border-b border-gray-100 pb-2">
-              <span className="text-[10px] font-mono font-bold text-[#8C8C8C] uppercase tracking-wider">
+              <span className="text-[10px] font-mono font-bold text-[#54B226] uppercase tracking-wider">
                 FILTER PANEL
               </span>
               {(explorerSearch || explorerSource !== "all" || explorerSegment !== "all" || explorerReason !== "all" || explorerConfidence !== "all") && (
@@ -1849,19 +1872,19 @@ export default function EngineDashboard() {
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-4 items-end">
               {/* Search input */}
               <div className="space-y-1">
-                <label className="text-[9.5px] font-mono font-bold text-[#8C8C8C] uppercase tracking-wider block">SEARCH QUOTE / ROW</label>
+                <label className="text-[9.5px] font-mono font-bold text-[#54B226] uppercase tracking-wider block">SEARCH QUOTE / ROW</label>
                 <div className="relative">
                   <input
                     type="text"
                     placeholder="e.g. 22 or 'spoiled'"
                     value={explorerSearch}
                     onChange={(e) => setExplorerSearch(e.target.value)}
-                    className="w-full bg-[#FFFFFF] border border-gray-200 rounded px-3 py-1.5 text-[12px] focus:outline-none text-[#171717] font-medium"
+                    className="w-full bg-[#FFFFFF] border border-gray-200 rounded px-3 py-1.5 text-[12px] focus:outline-none text-[#1F1F1F] font-medium"
                   />
                   {explorerSearch && (
                     <button 
                       onClick={() => setExplorerSearch("")}
-                      className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[10px] font-bold text-[#8C8C8C] hover:text-[#171717]"
+                      className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[10px] font-bold text-[#8C8C8C] hover:text-[#1F1F1F]"
                     >
                       ×
                     </button>
@@ -1871,11 +1894,11 @@ export default function EngineDashboard() {
 
               {/* Source dropdown */}
               <div className="space-y-1">
-                <label className="text-[9.5px] font-mono font-bold text-[#8C8C8C] uppercase tracking-wider block">SOURCES</label>
+                <label className="text-[9.5px] font-mono font-bold text-[#54B226] uppercase tracking-wider block">SOURCES</label>
                 <select
                   value={explorerSource}
                   onChange={(e) => setExplorerSource(e.target.value)}
-                  className="w-full bg-[#FFFFFF] border border-gray-200 rounded px-2.5 py-1.5 text-[12px] focus:outline-none text-[#171717] font-medium"
+                  className="w-full bg-[#FFFFFF] border border-gray-200 rounded px-2.5 py-1.5 text-[12px] focus:outline-none text-[#1F1F1F] font-medium"
                 >
                   <option value="all">All Sources</option>
                   {SOURCES.map(s => <option key={s} value={s}>{s}</option>)}
@@ -1884,11 +1907,11 @@ export default function EngineDashboard() {
 
               {/* Segment dropdown */}
               <div className="space-y-1">
-                <label className="text-[9.5px] font-mono font-bold text-[#8C8C8C] uppercase tracking-wider block">SEGMENTS</label>
+                <label className="text-[9.5px] font-mono font-bold text-[#54B226] uppercase tracking-wider block">SEGMENTS</label>
                 <select
                   value={explorerSegment}
                   onChange={(e) => setExplorerSegment(e.target.value)}
-                  className="w-full bg-[#FFFFFF] border border-gray-200 rounded px-2.5 py-1.5 text-[12px] focus:outline-none text-[#171717] font-medium capitalize"
+                  className="w-full bg-[#FFFFFF] border border-gray-200 rounded px-2.5 py-1.5 text-[12px] focus:outline-none text-[#1F1F1F] font-medium capitalize"
                 >
                   <option value="all">All Segments</option>
                   {SEGMENTS.map(s => <option key={s} value={s}>{s.replace(/_/g, " ")}</option>)}
@@ -1897,11 +1920,11 @@ export default function EngineDashboard() {
 
               {/* Reason dropdown */}
               <div className="space-y-1">
-                <label className="text-[9.5px] font-mono font-bold text-[#8C8C8C] uppercase tracking-wider block">REASONS</label>
+                <label className="text-[9.5px] font-mono font-bold text-[#54B226] uppercase tracking-wider block">REASONS</label>
                 <select
                   value={explorerReason}
                   onChange={(e) => setExplorerReason(e.target.value)}
-                  className="w-full bg-[#FFFFFF] border border-gray-200 rounded px-2.5 py-1.5 text-[12px] focus:outline-none text-[#171717] font-medium capitalize"
+                  className="w-full bg-[#FFFFFF] border border-gray-200 rounded px-2.5 py-1.5 text-[12px] focus:outline-none text-[#1F1F1F] font-medium capitalize"
                 >
                   <option value="all">All Reasons</option>
                   {REASONS.map(r => <option key={r} value={r}>{r}</option>)}
@@ -1910,11 +1933,11 @@ export default function EngineDashboard() {
 
               {/* Confidence dropdown */}
               <div className="space-y-1">
-                <label className="text-[9.5px] font-mono font-bold text-[#8C8C8C] uppercase tracking-wider block">CONFIDENCE</label>
+                <label className="text-[9.5px] font-mono font-bold text-[#54B226] uppercase tracking-wider block">CONFIDENCE</label>
                 <select
                   value={explorerConfidence}
                   onChange={(e) => setExplorerConfidence(e.target.value)}
-                  className="w-full bg-[#FFFFFF] border border-gray-200 rounded px-2.5 py-1.5 text-[12px] focus:outline-none text-[#171717] font-medium capitalize"
+                  className="w-full bg-[#FFFFFF] border border-gray-200 rounded px-2.5 py-1.5 text-[12px] focus:outline-none text-[#1F1F1F] font-medium capitalize"
                 >
                   <option value="all">All Confidence</option>
                   <option value="high">High</option>
@@ -1936,7 +1959,7 @@ export default function EngineDashboard() {
                   setExplorerReason("all");
                   setExplorerConfidence("all");
                 }}
-                className="text-[11px] font-bold text-[#000000] hover:underline"
+                className="text-[11px] font-bold text-[#54B226] hover:underline"
               >
                 Clear all filters
               </button>
@@ -1947,7 +1970,7 @@ export default function EngineDashboard() {
           <div className="flex flex-col md:flex-row items-start gap-6">
             {/* LEFT PANEL — compact evidence list */}
             <div className="w-full md:w-[360px] shrink-0 bg-[#FFFFFF] border-none shadow-[0_1px_3px_rgba(0,0,0,0.08),0_1px_2px_rgba(0,0,0,0.06)] rounded-lg overflow-hidden flex flex-col h-[560px]">
-              <div className="p-3 bg-[#F8F9FA] border-b border-gray-100 flex justify-between items-center text-[10px] font-mono font-bold text-[#000000] uppercase tracking-wider">
+              <div className="p-3 bg-[#F8F9FA] border-b border-gray-100 flex justify-between items-center text-[10px] font-mono font-bold text-[#54B226] uppercase tracking-wider">
                 <span>RECORDS ({filteredExplorerReviews.length})</span>
                 <span>CONFIDENCE</span>
               </div>
@@ -1966,7 +1989,7 @@ export default function EngineDashboard() {
                         key={r.row_number}
                         onClick={() => setSelectedRowId(r.row_number)}
                         className={`p-3.5 cursor-pointer transition-all flex items-start gap-3 text-left ${
-                          isSelected ? "bg-[#1F1F1F]/10 border-l-4 border-l-[#1F1F1F]" : "hover:bg-[#1F1F1F]/5"
+                          isSelected ? "bg-[#54B226]/10 border-l-4 border-l-[#54B226]" : "hover:bg-[#54B226]/5"
                         }`}
                       >
                         <PlatformIcon source={r.source} size={18} />
@@ -1975,7 +1998,7 @@ export default function EngineDashboard() {
                             <span className="font-mono text-[10.5px] font-bold text-[#1F1F1F]">Row #{r.row_number}</span>
                             <span className={`w-2.5 h-2.5 rounded-full ${dotColor} shrink-0`} title={`Confidence: ${r.confidence}`} />
                           </div>
-                          <p className="text-[12px] text-[#171717] font-medium truncate leading-tight">
+                          <p className="text-[12px] text-[#1F1F1F] font-medium truncate leading-tight">
                             "{r.quote}"
                           </p>
                           <div className="flex items-center gap-2 mt-1.5 text-[10.5px] text-[#737373]">
@@ -1998,10 +2021,10 @@ export default function EngineDashboard() {
             <div className="w-full flex-1 min-h-[560px]">
               {!selectedRecord ? (
                 <div className="bg-[#FFFFFF] border-none shadow-[0_1px_3px_rgba(0,0,0,0.08),0_1px_2px_rgba(0,0,0,0.06)] rounded-lg p-8 flex flex-col items-center justify-center text-center h-[560px]">
-                  <div className="w-12 h-12 rounded-full bg-[#F8F9FA] text-[#000000] flex items-center justify-center mb-3">
+                  <div className="w-12 h-12 rounded-full bg-[#F8F9FA] text-[#54B226] flex items-center justify-center mb-3">
                     <Search size={20} />
                   </div>
-                  <h3 className="font-display font-bold text-[16px] text-[#171717]">No Record Selected</h3>
+                  <h3 className="font-display font-bold text-[16px] text-[#1F1F1F]">No Record Selected</h3>
                   <p className="text-[13px] text-[#737373] mt-1 max-w-xs leading-relaxed">
                     Select any record to inspect the full evidence and AI reasoning behind it.
                   </p>
@@ -2014,10 +2037,10 @@ export default function EngineDashboard() {
                       <div className="flex items-center gap-3">
                         <PlatformIcon source={selectedRecord.source} size={24} />
                         <div>
-                          <span className="font-display font-extrabold text-[16px] text-[#171717] block">
+                          <span className="font-display font-extrabold text-[16px] text-[#1F1F1F] block">
                             {selectedRecord.source}
                           </span>
-                          <span className="font-mono text-[11px] font-bold text-[#000000]">
+                          <span className="font-mono text-[11px] font-bold text-[#54B226]">
                             Row #{selectedRecord.row_number}
                           </span>
                         </div>
@@ -2038,11 +2061,11 @@ export default function EngineDashboard() {
 
                     {/* AI-Verified Source Text with Yellow Marker Highlight */}
                     <div className="space-y-2">
-                      <span className="text-[10px] font-bold text-[#8C8C8C] uppercase tracking-wider block">
+                      <span className="text-[10px] font-bold text-[#54B226] uppercase tracking-wider block">
                         AI-Verified Source Text
                       </span>
                       <div className="bg-[#F8F9FA] border border-gray-100 rounded-lg p-5">
-                        <p className="text-[14.5px] font-medium leading-relaxed text-[#171717]">
+                        <p className="text-[14.5px] font-medium leading-relaxed text-[#1F1F1F]">
                           <mark className="bg-[#F8CB45] text-[#1F1F1F] px-1.5 py-0.5 rounded font-semibold">
                             "{selectedRecord.quote}"
                           </mark>
@@ -2059,7 +2082,7 @@ export default function EngineDashboard() {
 
                     {/* Extracted Structure Pill Tags */}
                     <div className="space-y-2 pt-2 border-t border-gray-100">
-                      <span className="text-[10px] font-bold text-[#8C8C8C] uppercase tracking-wider block">
+                      <span className="text-[10px] font-bold text-[#54B226] uppercase tracking-wider block">
                         Extracted Structure
                       </span>
                       <div className="flex flex-wrap gap-2 text-[11px] font-medium">
@@ -2086,7 +2109,7 @@ export default function EngineDashboard() {
                     const mappedQ = REASON_TO_QUESTION[selectedRecord.reason_type] || REASON_TO_QUESTION.trust;
                     return (
                       <div className="pt-4 border-t border-gray-100">
-                        <span className="text-[10px] font-bold text-[#8C8C8C] uppercase tracking-wider block mb-1">
+                        <span className="text-[10px] font-bold text-[#54B226] uppercase tracking-wider block mb-1">
                           Supported Finding
                         </span>
                         <button
@@ -2097,7 +2120,7 @@ export default function EngineDashboard() {
                               if (el) el.scrollIntoView({ behavior: "smooth" });
                             }, 100);
                           }}
-                          className="text-[13px] font-bold text-[#1F1F1F] hover:underline flex items-center gap-1 text-left"
+                          className="text-[13px] font-bold text-[#54B226] hover:underline flex items-center gap-1 text-left"
                         >
                           This supports Question 0{mappedQ.qNum}: "{mappedQ.headline}" →
                         </button>
@@ -2120,9 +2143,9 @@ export default function EngineDashboard() {
           <div className="bg-[#FFFFFF] border-none shadow-[0_1px_3px_rgba(0,0,0,0.08),0_1px_2px_rgba(0,0,0,0.06)] rounded-lg p-6 md:p-7 space-y-5">
             <div className="flex items-center justify-between gap-4 border-b border-gray-100 pb-4">
               <div>
-                <span className="text-[10px] font-bold text-[#1F1F1F] uppercase tracking-wider block mb-1">Interactive Deliverable</span>
+                <span className="text-[10px] font-bold text-[#54B226] uppercase tracking-wider block mb-1">Interactive Deliverable</span>
                 <h2 className="font-display font-extrabold text-[22px] text-[#1F1F1F] flex items-center gap-2">
-                  <Lock size={18} className="text-[#1F1F1F]" /> Test the Workflow Yourself
+                  <Lock size={18} className="text-[#54B226]" /> Test the Workflow Yourself
                 </h2>
                 <p className="text-[13px] text-[#5F6368] mt-1">
                   Enter your Gemini API key and paste a raw customer review to process it live through the extraction schema.
@@ -2136,7 +2159,7 @@ export default function EngineDashboard() {
             <div className="space-y-4">
               {/* API Key */}
               <div>
-                <label className="text-[10px] font-bold text-[#8C8C8C] uppercase tracking-wider block mb-1.5">
+                <label className="text-[10px] font-bold text-[#54B226] uppercase tracking-wider block mb-1.5">
                   Gemini API Key
                 </label>
                 <input
@@ -2144,13 +2167,13 @@ export default function EngineDashboard() {
                   placeholder="AIzaSy..."
                   value={apiKey}
                   onChange={(e) => setApiKey(e.target.value)}
-                  className="w-full bg-[#FFFFFF] border border-gray-200 rounded px-3 py-2 text-[12px] focus:outline-none text-[#171717] font-medium"
+                  className="w-full bg-[#FFFFFF] border border-gray-200 rounded px-3 py-2 text-[12px] focus:outline-none text-[#1F1F1F] font-medium"
                 />
               </div>
 
               {/* Text Area */}
               <div>
-                <label className="text-[10px] font-bold text-[#8C8C8C] uppercase tracking-wider block mb-1.5">
+                <label className="text-[10px] font-bold text-[#54B226] uppercase tracking-wider block mb-1.5">
                   Raw Review Text
                 </label>
                 <textarea
@@ -2158,7 +2181,7 @@ export default function EngineDashboard() {
                   placeholder="e.g. Received a fake charging cable from the delivery person today. Quality control is highly disappointing, I will stick to buying electronics offline."
                   value={reviewInput}
                   onChange={(e) => setReviewInput(e.target.value)}
-                  className="w-full bg-[#FFFFFF] border border-gray-200 rounded px-3 py-2 text-[12px] focus:outline-none text-[#171717] font-medium leading-relaxed"
+                  className="w-full bg-[#FFFFFF] border border-gray-200 rounded px-3 py-2 text-[12px] focus:outline-none text-[#1F1F1F] font-medium leading-relaxed"
                 />
               </div>
 
@@ -2202,33 +2225,33 @@ export default function EngineDashboard() {
                   Resulting Parameters
                 </span>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-[12px] bg-[#F8F9FA] p-4 rounded border border-gray-100 leading-relaxed text-[#171717]">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-[12px] bg-[#F8F9FA] p-4 rounded border border-gray-100 leading-relaxed text-[#1F1F1F]">
                   <div>
-                    <span className="text-[9px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Has Signal</span>
+                    <span className="text-[9px] font-bold text-[#54B226] uppercase tracking-wider block">Has Signal</span>
                     <span className="font-semibold">{String(analyzerResult.has_signal)}</span>
                   </div>
                   <div>
-                    <span className="text-[9px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Category</span>
+                    <span className="text-[9px] font-bold text-[#54B226] uppercase tracking-wider block">Category</span>
                     <span className="font-semibold capitalize">{analyzerResult.category_mentioned || "none"}</span>
                   </div>
                   <div>
-                    <span className="text-[9px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Stated Barrier</span>
+                    <span className="text-[9px] font-bold text-[#54B226] uppercase tracking-wider block">Stated Barrier</span>
                     <span className="font-semibold">{analyzerResult.barrier_to_new_category || "none"}</span>
                   </div>
                   <div>
-                    <span className="text-[9px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Reason Type</span>
+                    <span className="text-[9px] font-bold text-[#54B226] uppercase tracking-wider block">Reason Type</span>
                     <span className="font-semibold capitalize">{analyzerResult.reason_type || "none"}</span>
                   </div>
                   <div>
-                    <span className="text-[9px] font-bold text-[#8C8C8C] uppercase tracking-wider block">User Segment</span>
+                    <span className="text-[9px] font-bold text-[#54B226] uppercase tracking-wider block">User Segment</span>
                     <span className="font-semibold capitalize">{(analyzerResult.user_segment_signal || "unclear").replace(/_/g, " ")}</span>
                   </div>
                   <div>
-                    <span className="text-[9px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Confidence</span>
+                    <span className="text-[9px] font-bold text-[#54B226] uppercase tracking-wider block">Confidence</span>
                     <span className="font-semibold capitalize">{analyzerResult.confidence || "low"}</span>
                   </div>
                   <div className="md:col-span-2 border-t border-gray-100 pt-2.5">
-                    <span className="text-[9px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Verbatim Sentence Match</span>
+                    <span className="text-[9px] font-bold text-[#54B226] uppercase tracking-wider block">Verbatim Sentence Match</span>
                     <span className="font-semibold italic text-[#5F6368]">"{analyzerResult.quote || "none"}"</span>
                   </div>
                 </div>
