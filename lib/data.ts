@@ -42,6 +42,20 @@ export const SEGMENT_COLORS: Record<string, string> = {
   unclear: "#E4E8E1",
 };
 
+export const SEGMENT_LABELS: Record<string, string> = {
+  heavy_user: "language-inferred frequent user",
+  quality_focused: "language-inferred quality-focused",
+  price_sensitive: "language-inferred price-comparer",
+  one_time_complainer: "language-inferred one-time complainer",
+  light_new_user: "language-inferred new user",
+  senior_citizen: "language-inferred senior citizen",
+  unclear: "unclassified",
+};
+
+export function formatSegmentLabel(segment: string): string {
+  return SEGMENT_LABELS[segment] || `language-inferred ${segment.replace(/_/g, " ")}`;
+}
+
 function countBy<T extends string>(arr: ReviewRow[], key: keyof ReviewRow): Record<string, number> {
   const out: Record<string, number> = {};
   for (const r of arr) {

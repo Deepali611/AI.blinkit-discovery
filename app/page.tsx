@@ -8,13 +8,15 @@ import {
   ReviewRow, 
   TOTAL_REVIEWS_SCANNED, 
   REASON_COLORS, 
-  SEGMENT_COLORS 
+  SEGMENT_COLORS,
+  formatSegmentLabel
 } from "@/lib/data";
 import { 
   SlidersHorizontal, 
   Database,
   Search,
   ArrowRight,
+  ArrowDown,
   Check,
   ExternalLink,
   BookOpen,
@@ -922,12 +924,12 @@ export default function EngineDashboard() {
             {/* Q1 */}
             <div id="q1" className="bg-white border-none shadow-[0_1px_3px_rgba(0,0,0,0.08),0_1px_2px_rgba(0,0,0,0.06)] border-l-4 border-l-[#1F1F1F] rounded-lg p-5 md:p-6 space-y-4 scroll-mt-20">
               {/* Card Header: Eyebrow + Confidence badge */}
-              <div className="flex items-center justify-between gap-2 border-b border-gray-100 pb-2.5">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-gray-100 pb-2.5">
                 <span className="font-mono text-[10px] font-bold text-[#54B226] uppercase tracking-wider">
                   WHY CUSTOMERS KEEP BUYING FROM THE SAME CATEGORIES
                 </span>
-                <span className="text-[11px] font-bold text-[#1F1F1F] bg-[#F8F9FA] px-2.5 py-0.5 rounded border border-gray-200 shrink-0">
-                  Confidence: High (Known from evidence)
+                <span className="text-[11px] font-medium text-[#1F1F1F] bg-[#F8F9FA] px-2.5 py-1 rounded border border-gray-200 shrink-0">
+                  Confidence: High — based on 105 signals (largest pattern in dataset), consistent across 3 of 4 sources, 100% quote-grounded, low interpretive distance between evidence and finding.
                 </span>
               </div>
 
@@ -973,53 +975,79 @@ export default function EngineDashboard() {
                     <p className="text-[12.5px] text-[#1F1F1F] font-semibold leading-snug">Decision supported: Whether to focus roadmap resources on generic personalization algorithms or on category-specific risk-reduction features.</p>
                   </div>
 
-                  {/* "WHAT THIS FINDING MEANS" LINK TRIGGER */}
+                  {/* LINK TRIGGER */}
                   <div>
                     <button
                       onClick={() => toggleQuestion(1)}
                       className="flex items-center gap-1 text-[12px] font-bold text-[#54B226] hover:underline focus:outline-none py-0.5"
                     >
                       <span className="font-mono text-[13px]">{expandedQuestions[1] ? "−" : "+"}</span>
-                      <span>What this finding means</span>
+                      <span>What this finding means & 7-layer analysis</span>
                     </button>
                   </div>
                 </div>
               </div>
 
-              {/* EXPANDED CONTENT (Closed by default) */}
+              {/* EXPANDED CONTENT — 7-LAYER INSIGHT STRUCTURE */}
               {expandedQuestions[1] && (
                 <motion.div 
                   initial={{ opacity: 0, height: 0 }}
                   animate={{ opacity: 1, height: "auto" }}
-                  className="space-y-3 pt-3 border-t border-gray-100 text-[13px] leading-relaxed bg-[#F8F9FA]/80 p-4 rounded-md"
+                  className="space-y-4 pt-3 border-t border-gray-100 text-[13px] leading-relaxed bg-[#F8F9FA]/80 p-4 rounded-md"
                 >
-                  <div className="bg-white border border-gray-100 rounded-md p-3 text-[12px] space-y-1">
-                    <div className="text-[#8C8C8C] line-through font-mono">
-                      <strong className="no-underline">ASSUMED:</strong> Customers buy the same things out of habit.
-                    </div>
-                    <div className="text-[#1F1F1F] font-bold font-mono">
-                      <strong className="text-[#54B226]">FOUND:</strong> Only 3.7% show habitual buying — the rest is deliberate risk-avoidance.
-                    </div>
+                  {/* Layer 1: Evidence */}
+                  <div>
+                    <span className="text-[9.5px] font-bold text-[#54B226] uppercase tracking-wider block mb-1">Evidence</span>
+                    <p className="text-[#5F6368] font-medium">
+                      7 of 189 signals (3.7%) explicitly describe routine/automatic purchasing (e.g. "Only buy daily milk out of routine. I prefer Amazon or DMart for everything else."). By contrast, 105 signals (55.6%) describe a specific negative experience as the reason for staying within trusted categories.
+                    </p>
                   </div>
 
+                  {/* Layer 2: Observed Pattern */}
                   <div>
                     <span className="text-[9.5px] font-bold text-[#54B226] uppercase tracking-wider block mb-1">Observed Pattern</span>
                     <p className="text-[#1F1F1F] font-medium italic bg-white p-3 rounded border border-gray-100">
-                      "This isn't habit. Only 7 of 189 signals (3.7%) describe routine or automatic buying — the weakest pattern in the entire dataset. What actually repeats is caution: customers keep returning to categories where nothing has gone wrong for them yet, and they describe this as a deliberate choice, not a default."
+                      "Habit-language is rare; risk-avoidance language is dominant and specific to a named failure (fake item, expired product, damaged package)."
                     </p>
                   </div>
 
+                  {/* Layer 3: Behavioral Mechanism */}
+                  <div>
+                    <span className="text-[9.5px] font-bold text-[#54B226] uppercase tracking-wider block mb-1">Behavioral Mechanism</span>
+                    <p className="text-[#5F6368]">
+                      Repeat purchasing in categories with no prior negative experience may function as a loss-avoidance strategy rather than a default behavior — customers may be actively choosing familiar categories because the downside of a bad outcome (wasted money, unusable product) outweighs the upside of trying something new, not because switching requires effort they're unwilling to spend.
+                    </p>
+                  </div>
+
+                  {/* Layer 4: Interpretation */}
                   <div>
                     <span className="text-[9.5px] font-bold text-[#54B226] uppercase tracking-wider block mb-1">Interpretation</span>
                     <p className="text-[#5F6368]">
-                      Repeat purchasing in quick-commerce is driven by active risk avoidance. Once a customer has a negative experience in a category, they isolate themselves to safe, verified categories, preventing cross-category exploration.
+                      The evidence suggests repeat purchasing is more strongly associated with perceived safety than with stated habitual behavior. One possible explanation is that "habit" is a post-hoc label customers apply to what is actually a risk-management pattern.
                     </p>
                   </div>
 
+                  {/* Layer 5: Business Meaning */}
+                  <div>
+                    <span className="text-[9.5px] font-bold text-[#54B226] uppercase tracking-wider block mb-1">Business Meaning</span>
+                    <p className="text-[#5F6368]">
+                      This raises a prioritization question: should Blinkit invest in reducing perceived category-entry risk before investing in generic engagement or personalization mechanics? The data suggests risk reduction addresses a larger share of the behavior (55.6%) than habit-breaking mechanics would (3.7%).
+                    </p>
+                  </div>
+
+                  {/* Layer 6: Remaining Uncertainty */}
                   <div>
                     <span className="text-[9.5px] font-bold text-[#54B226] uppercase tracking-wider block mb-1">Remaining Uncertainty</span>
                     <p className="text-[#5F6368]">
-                      Whether this caution-driven pattern holds outside review-writers, or if non-reviewing customers show higher baseline willingness to try new categories.
+                      Review mining cannot establish whether non-reviewing customers show the same pattern, or whether some customers who describe "habit" language are minimizing a risk-based decision for social reasons (e.g., not wanting to sound overly cautious).
+                    </p>
+                  </div>
+
+                  {/* Layer 7: Interview Hypothesis */}
+                  <div className="bg-[#FFF9E6] border border-[#F8CB45]/50 p-3 rounded-md">
+                    <span className="text-[9.5px] font-bold text-[#1F1F1F] uppercase tracking-wider block mb-1">Interview Hypothesis</span>
+                    <p className="text-[#1F1F1F] font-semibold">
+                      Ask customers directly: "Think about the last time you didn't try a new category on Blinkit — was there a specific reason, or did you just not think about it?" This should surface whether the stated pattern (deliberate risk avoidance vs. true default behavior) holds in a live conversation.
                     </p>
                   </div>
 
@@ -1035,12 +1063,12 @@ export default function EngineDashboard() {
             {/* Q2 */}
             <div id="q2" className="bg-white border-none shadow-[0_1px_3px_rgba(0,0,0,0.08),0_1px_2px_rgba(0,0,0,0.06)] border-l-4 border-l-red-600 rounded-lg p-5 md:p-6 space-y-4 scroll-mt-20">
               {/* Card Header: Eyebrow + Confidence badge */}
-              <div className="flex items-center justify-between gap-2 border-b border-gray-100 pb-2.5">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-gray-100 pb-2.5">
                 <span className="font-mono text-[10px] font-bold text-[#54B226] uppercase tracking-wider">
                   WHAT'S STOPPING CUSTOMERS FROM TRYING A NEW CATEGORY?
                 </span>
-                <span className="text-[11px] font-bold text-[#1F1F1F] bg-[#F8F9FA] px-2.5 py-0.5 rounded border border-gray-200 shrink-0">
-                  Confidence: High (Known from evidence)
+                <span className="text-[11px] font-medium text-[#1F1F1F] bg-[#F8F9FA] px-2.5 py-1 rounded border border-gray-200 shrink-0">
+                  Confidence: High — based on 105 signals (55.6% of dataset), concrete failure modes named across Google Play, Reddit, and YouTube.
                 </span>
               </div>
 
@@ -1090,37 +1118,72 @@ export default function EngineDashboard() {
                       className="flex items-center gap-1 text-[12px] font-bold text-[#54B226] hover:underline focus:outline-none py-0.5"
                     >
                       <span className="font-mono text-[13px]">{expandedQuestions[2] ? "−" : "+"}</span>
-                      <span>What this finding means</span>
+                      <span>What this finding means & 7-layer analysis</span>
                     </button>
                   </div>
                 </div>
               </div>
 
-              {/* EXPANDED CONTENT (Closed by default) */}
+              {/* EXPANDED CONTENT — 7-LAYER INSIGHT STRUCTURE */}
               {expandedQuestions[2] && (
                 <motion.div 
                   initial={{ opacity: 0, height: 0 }}
                   animate={{ opacity: 1, height: "auto" }}
-                  className="space-y-3 pt-3 border-t border-gray-100 text-[13px] leading-relaxed bg-[#F8F9FA]/80 p-4 rounded-md"
+                  className="space-y-4 pt-3 border-t border-gray-100 text-[13px] leading-relaxed bg-[#F8F9FA]/80 p-4 rounded-md"
                 >
+                  {/* Layer 1: Evidence */}
+                  <div>
+                    <span className="text-[9.5px] font-bold text-[#54B226] uppercase tracking-wider block mb-1">Evidence</span>
+                    <p className="text-[#5F6368] font-medium">
+                      105 of 189 signals (55.6%) cite a specific trust failure (counterfeit item, expired product, damaged goods). 40 signals (21.2%) cite price uncertainty. 9 signals (4.8%) cite inventory/visibility issues.
+                    </p>
+                  </div>
+
+                  {/* Layer 2: Observed Pattern */}
                   <div>
                     <span className="text-[9.5px] font-bold text-[#54B226] uppercase tracking-wider block mb-1">Observed Pattern</span>
                     <p className="text-[#1F1F1F] font-medium italic bg-white p-3 rounded border border-gray-100">
-                      "Trust is the blocker, and it's specific, not vague — customers aren't saying 'I don't trust Blinkit,' they're describing concrete failures: a fake product, an expired item, a tampered electronics box. 105 of 189 signals (55.6%) cite this. Price uncertainty is real but secondary (40 signals, 21.2%) — customers comparing prices across apps are a different behavior from customers avoiding a category altogether."
+                      "Trust-related language is concrete, not diffuse — customers name a specific failure mode rather than expressing general distrust of the platform."
                     </p>
                   </div>
 
+                  {/* Layer 3: Behavioral Mechanism */}
+                  <div>
+                    <span className="text-[9.5px] font-bold text-[#54B226] uppercase tracking-wider block mb-1">Behavioral Mechanism</span>
+                    <p className="text-[#5F6368]">
+                      A single negative experience in an unfamiliar category may generalize into a durable heuristic ("categories I haven't tried are risky") because the customer has no counter-evidence to update that belief — unlike trusted categories, where repeated successful transactions have built a track record.
+                    </p>
+                  </div>
+
+                  {/* Layer 4: Interpretation */}
                   <div>
                     <span className="text-[9.5px] font-bold text-[#54B226] uppercase tracking-wider block mb-1">Interpretation</span>
                     <p className="text-[#5F6368]">
-                      The primary friction to category expansion is quality risk. Customers are comfortable ordering low-risk items (like snacks) but hesitate to buy high-ticket or fresh items due to visible platform failures.
+                      The evidence suggests category-level trust is not evenly distributed — it appears to be built (or broken) per category based on direct or adjacent experience, rather than existing as a single platform-wide trust score. This is an interpretation, not a confirmed mechanism, since the dataset cannot observe whether trust actually transfers between similar categories (e.g., does a bad experience in electronics affect willingness to try appliances?).
                     </p>
                   </div>
 
+                  {/* Layer 5: Business Meaning */}
+                  <div>
+                    <span className="text-[9.5px] font-bold text-[#54B226] uppercase tracking-wider block mb-1">Business Meaning</span>
+                    <p className="text-[#5F6368]">
+                      This informs a prioritization decision: should trust-repair investment be category-specific (targeting electronics and perishables, where failures concentrate) rather than platform-wide? The evidence does not yet support a platform-wide trust campaign as the most efficient response.
+                    </p>
+                  </div>
+
+                  {/* Layer 6: Remaining Uncertainty */}
                   <div>
                     <span className="text-[9.5px] font-bold text-[#54B226] uppercase tracking-wider block mb-1">Remaining Uncertainty</span>
                     <p className="text-[#5F6368]">
-                      Whether the proportion of trust-related complaints differs by geographic location or warehouse-specific operations.
+                      Whether trust failures are concentrated in specific fulfillment centers, courier networks, or supplier relationships cannot be determined from review text alone.
+                    </p>
+                  </div>
+
+                  {/* Layer 7: Interview Hypothesis */}
+                  <div className="bg-[#FFF9E6] border border-[#F8CB45]/50 p-3 rounded-md">
+                    <span className="text-[9.5px] font-bold text-[#1F1F1F] uppercase tracking-wider block mb-1">Interview Hypothesis</span>
+                    <p className="text-[#1F1F1F] font-semibold">
+                      Ask: "If you had a bad experience with [category A], does that change how you feel about trying [category B] you've never used?" This tests whether trust is category-siloed or generalizes.
                     </p>
                   </div>
 
@@ -1136,12 +1199,12 @@ export default function EngineDashboard() {
             {/* Q3 */}
             <div id="q3" className="bg-white border-none shadow-[0_1px_3px_rgba(0,0,0,0.08),0_1px_2px_rgba(0,0,0,0.06)] border-l-4 border-l-purple-600 rounded-lg p-5 md:p-6 space-y-4 scroll-mt-20">
               {/* Card Header: Eyebrow + Confidence badge */}
-              <div className="flex items-center justify-between gap-2 border-b border-gray-100 pb-2.5">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-gray-100 pb-2.5">
                 <span className="font-mono text-[10px] font-bold text-[#54B226] uppercase tracking-wider">
                   HOW DO CUSTOMERS FIND PRODUCTS TODAY?
                 </span>
-                <span className="text-[11px] font-bold text-[#1F1F1F] bg-[#F8F9FA] px-2.5 py-0.5 rounded border border-gray-200 shrink-0">
-                  Confidence: Medium (Inferred from language)
+                <span className="text-[11px] font-medium text-[#1F1F1F] bg-[#F8F9FA] px-2.5 py-1 rounded border border-gray-200 shrink-0">
+                  Confidence: Medium — based on 9 signals (smallest pattern), single interpretation required to connect language to behavior, cross-source consistency not independently verified.
                 </span>
               </div>
 
@@ -1191,37 +1254,72 @@ export default function EngineDashboard() {
                       className="flex items-center gap-1 text-[12px] font-bold text-[#54B226] hover:underline focus:outline-none py-0.5"
                     >
                       <span className="font-mono text-[13px]">{expandedQuestions[3] ? "−" : "+"}</span>
-                      <span>What this finding means</span>
+                      <span>What this finding means & 7-layer analysis</span>
                     </button>
                   </div>
                 </div>
               </div>
 
-              {/* EXPANDED CONTENT (Closed by default) */}
+              {/* EXPANDED CONTENT — 7-LAYER INSIGHT STRUCTURE */}
               {expandedQuestions[3] && (
                 <motion.div 
                   initial={{ opacity: 0, height: 0 }}
                   animate={{ opacity: 1, height: "auto" }}
-                  className="space-y-3 pt-3 border-t border-gray-100 text-[13px] leading-relaxed bg-[#F8F9FA]/80 p-4 rounded-md"
+                  className="space-y-4 pt-3 border-t border-gray-100 text-[13px] leading-relaxed bg-[#F8F9FA]/80 p-4 rounded-md"
                 >
+                  {/* Layer 1: Evidence */}
+                  <div>
+                    <span className="text-[9.5px] font-bold text-[#54B226] uppercase tracking-wider block mb-1">Evidence</span>
+                    <p className="text-[#5F6368] font-medium">
+                      9 of 189 signals (4.8%) — the smallest reason category — describe leaving for a competitor because a specific product wasn't visible or in stock, not because of distrust.
+                    </p>
+                  </div>
+
+                  {/* Layer 2: Observed Pattern */}
                   <div>
                     <span className="text-[9.5px] font-bold text-[#54B226] uppercase tracking-wider block mb-1">Observed Pattern</span>
                     <p className="text-[#1F1F1F] font-medium italic bg-white p-3 rounded border border-gray-100">
-                      "Weakly, and mostly by accident. The smallest but most telling pattern (9 signals, 4.8%) shows customers leaving for a competitor not because they distrust Blinkit, but because a specific product they wanted — a cat food variant, a collectible — wasn't visible or in stock. Discovery isn't failing on trust here, it's failing on basic inventory visibility."
+                      "Where discovery failures appear, they are inventory/visibility failures, not algorithmic or navigational complaints."
                     </p>
                   </div>
 
+                  {/* Layer 3: Behavioral Mechanism */}
+                  <div>
+                    <span className="text-[9.5px] font-bold text-[#54B226] uppercase tracking-wider block mb-1">Behavioral Mechanism</span>
+                    <p className="text-[#5F6368]">
+                      A customer with a specific product in mind who cannot find it may not interpret this as "Blinkit doesn't have good discovery" — they may simply conclude the product isn't available and act on that belief immediately (switching apps) rather than exploring further within Blinkit.
+                    </p>
+                  </div>
+
+                  {/* Layer 4: Interpretation */}
                   <div>
                     <span className="text-[9.5px] font-bold text-[#54B226] uppercase tracking-wider block mb-1">Interpretation</span>
                     <p className="text-[#5F6368]">
-                      Discovery fails when customers cannot easily locate niche or regional stock. Silent churn occurs when product search algorithms return irrelevant items or fail to show accurate stock levels.
+                      One possible explanation is that discovery friction in this dataset manifests as silent, immediate churn rather than visible complaint — which would mean this 4.8% likely understates the true scale of the problem, since most silent churn never becomes a written review.
                     </p>
                   </div>
 
+                  {/* Layer 5: Business Meaning */}
+                  <div>
+                    <span className="text-[9.5px] font-bold text-[#54B226] uppercase tracking-wider block mb-1">Business Meaning</span>
+                    <p className="text-[#5F6368]">
+                      This raises the question of whether "improve discovery" should be reframed as "improve inventory visibility and search accuracy for niche/regional items" — a narrower, more testable prioritization than a general discovery overhaul.
+                    </p>
+                  </div>
+
+                  {/* Layer 6: Remaining Uncertainty */}
                   <div>
                     <span className="text-[9.5px] font-bold text-[#54B226] uppercase tracking-wider block mb-1">Remaining Uncertainty</span>
                     <p className="text-[#5F6368]">
-                      Whether these inventory discovery issues exist outside review writers who take the time to post complaints online.
+                      Review mining structurally cannot measure silent churn — customers who leave without complaining are invisible to this method entirely. This is a known blind spot, not a finding.
+                    </p>
+                  </div>
+
+                  {/* Layer 7: Interview Hypothesis */}
+                  <div className="bg-[#FFF9E6] border border-[#F8CB45]/50 p-3 rounded-md">
+                    <span className="text-[9.5px] font-bold text-[#1F1F1F] uppercase tracking-wider block mb-1">Interview Hypothesis</span>
+                    <p className="text-[#1F1F1F] font-semibold">
+                      Ask: "Have you ever looked for something specific on Blinkit, not found it, and gone somewhere else without saying anything?" This directly probes the silent-churn gap review data cannot see.
                     </p>
                   </div>
 
@@ -1237,12 +1335,12 @@ export default function EngineDashboard() {
             {/* Q4 */}
             <div id="q4" className="bg-white border-none shadow-[0_1px_3px_rgba(0,0,0,0.08),0_1px_2px_rgba(0,0,0,0.06)] border-l-4 border-l-blue-600 rounded-lg p-5 md:p-6 space-y-4 scroll-mt-20">
               {/* Card Header: Eyebrow + Confidence badge */}
-              <div className="flex items-center justify-between gap-2 border-b border-gray-100 pb-2.5">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-gray-100 pb-2.5">
                 <span className="font-mono text-[10px] font-bold text-[#54B226] uppercase tracking-wider">
                   WHAT ROLE DOES HABIT ACTUALLY PLAY?
                 </span>
-                <span className="text-[11px] font-bold text-[#1F1F1F] bg-[#F8F9FA] px-2.5 py-0.5 rounded border border-gray-200 shrink-0">
-                  Confidence: High (Known from evidence)
+                <span className="text-[11px] font-medium text-[#1F1F1F] bg-[#F8F9FA] px-2.5 py-1 rounded border border-gray-200 shrink-0">
+                  Confidence: High — based on 40 signals (21.2% price-shopping), consistent multi-app comparison phrasing.
                 </span>
               </div>
 
@@ -1292,46 +1390,72 @@ export default function EngineDashboard() {
                       className="flex items-center gap-1 text-[12px] font-bold text-[#54B226] hover:underline focus:outline-none py-0.5"
                     >
                       <span className="font-mono text-[13px]">{expandedQuestions[4] ? "−" : "+"}</span>
-                      <span>What this finding means</span>
+                      <span>What this finding means & 7-layer analysis</span>
                     </button>
                   </div>
                 </div>
               </div>
 
-              {/* EXPANDED CONTENT (Closed by default) */}
+              {/* EXPANDED CONTENT — 7-LAYER INSIGHT STRUCTURE */}
               {expandedQuestions[4] && (
                 <motion.div 
                   initial={{ opacity: 0, height: 0 }}
                   animate={{ opacity: 1, height: "auto" }}
-                  className="space-y-3 pt-3 border-t border-gray-100 text-[13px] leading-relaxed bg-[#F8F9FA]/80 p-4 rounded-md"
+                  className="space-y-4 pt-3 border-t border-gray-100 text-[13px] leading-relaxed bg-[#F8F9FA]/80 p-4 rounded-md"
                 >
-                  <div className="bg-white border border-gray-100 rounded-md p-3 text-[12px] space-y-1">
-                    <div className="text-[#8C8C8C] line-through font-mono">
-                      <strong className="no-underline">ASSUMED:</strong> Customers passively return out of app loyalty.
-                    </div>
-                    <div className="text-[#1F1F1F] font-bold font-mono">
-                      <strong className="text-blue-600">FOUND:</strong> 21.2% actively price-shop across Blinkit, Zepto, and Instamart in the same session.
-                    </div>
+                  {/* Layer 1: Evidence */}
+                  <div>
+                    <span className="text-[9.5px] font-bold text-[#54B226] uppercase tracking-wider block mb-1">Evidence</span>
+                    <p className="text-[#5F6368] font-medium">
+                      7 signals (3.7%) show habit language. 40 signals (21.2%) show customers actively comparing prices across Blinkit, Zepto, and Instamart within the same shopping session.
+                    </p>
                   </div>
 
+                  {/* Layer 2: Observed Pattern */}
                   <div>
                     <span className="text-[9.5px] font-bold text-[#54B226] uppercase tracking-wider block mb-1">Observed Pattern</span>
                     <p className="text-[#1F1F1F] font-medium italic bg-white p-3 rounded border border-gray-100">
-                      "Less than assumed. 7 signals (3.7%) describe habitual buying, while 40 signals (21.2%) describe customers actively price-shopping across Blinkit, Zepto, and Instamart in the same shopping session. Customers are not passively loyal — they're evaluating, constantly, and that means engagement mechanics have room to work if the underlying trust problem is addressed first."
+                      "Price-comparison language outnumbers habit language by roughly 5-to-1."
                     </p>
                   </div>
 
+                  {/* Layer 3: Behavioral Mechanism */}
+                  <div>
+                    <span className="text-[9.5px] font-bold text-[#54B226] uppercase tracking-wider block mb-1">Behavioral Mechanism</span>
+                    <p className="text-[#5F6368]">
+                      Frequent app-switching behavior suggests customers may hold weak platform loyalty and treat quick-commerce apps as substitutable — evaluating each purchase independently rather than defaulting to one app out of routine.
+                    </p>
+                  </div>
+
+                  {/* Layer 4: Interpretation */}
                   <div>
                     <span className="text-[9.5px] font-bold text-[#54B226] uppercase tracking-wider block mb-1">Interpretation</span>
                     <p className="text-[#5F6368]">
-                      Loyalty is transactional, not habitual. Customers compare prices in real-time, meaning cross-category exploration is highly vulnerable to competitive pricing.
+                      The evidence suggests repeat engagement with Blinkit specifically is more transactional than habitual — customers appear to re-evaluate the decision each time rather than defaulting automatically. This is an inference from language patterns, not a measured behavioral fact.
                     </p>
                   </div>
 
+                  {/* Layer 5: Business Meaning */}
+                  <div>
+                    <span className="text-[9.5px] font-bold text-[#54B226] uppercase tracking-wider block mb-1">Business Meaning</span>
+                    <p className="text-[#5F6368]">
+                      This informs whether engagement investment should target loyalty/retention mechanics (assuming habitual behavior) or competitive positioning mechanics (assuming active, ongoing evaluation) — the evidence leans toward the latter being the more accurate model of current behavior.
+                    </p>
+                  </div>
+
+                  {/* Layer 6: Remaining Uncertainty */}
                   <div>
                     <span className="text-[9.5px] font-bold text-[#54B226] uppercase tracking-wider block mb-1">Remaining Uncertainty</span>
                     <p className="text-[#5F6368]">
-                      Whether this price-sensitive app-switching behavior leads to long-term churn or simply short-term order fragmentation.
+                      Whether this price-comparison behavior is stable over time or specific to the review-writing population (who may be more price-conscious than average) cannot be determined here.
+                    </p>
+                  </div>
+
+                  {/* Layer 7: Interview Hypothesis */}
+                  <div className="bg-[#FFF9E6] border border-[#F8CB45]/50 p-3 rounded-md">
+                    <span className="text-[9.5px] font-bold text-[#1F1F1F] uppercase tracking-wider block mb-1">Interview Hypothesis</span>
+                    <p className="text-[#1F1F1F] font-semibold">
+                      Ask: "Last time you compared Blinkit to another app before buying something — walk me through what you were thinking." This surfaces the actual decision process behind the language pattern.
                     </p>
                   </div>
 
@@ -1347,12 +1471,12 @@ export default function EngineDashboard() {
             {/* Q5 */}
             <div id="q5" className="bg-white border-none shadow-[0_1px_3px_rgba(0,0,0,0.08),0_1px_2px_rgba(0,0,0,0.06)] border-l-4 border-l-amber-500 rounded-lg p-5 md:p-6 space-y-4 scroll-mt-20">
               {/* Card Header: Eyebrow + Confidence badge */}
-              <div className="flex items-center justify-between gap-2 border-b border-gray-100 pb-2.5">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-gray-100 pb-2.5">
                 <span className="font-mono text-[10px] font-bold text-[#54B226] uppercase tracking-wider">
-                  WHAT WOULD MAKE A CUSTOMER TRUST A CATEGORY ENOUGH TO TRY IT?
+                  WHAT INFORMATION DO CUSTOMERS NEED BEFORE TRYING A NEW CATEGORY?
                 </span>
-                <span className="text-[11px] font-bold text-[#1F1F1F] bg-[#F8F9FA] px-2.5 py-0.5 rounded border border-gray-200 shrink-0">
-                  Confidence: High (Known from evidence)
+                <span className="text-[11px] font-medium text-[#1F1F1F] bg-[#F8F9FA] px-2.5 py-1 rounded border border-gray-200 shrink-0">
+                  Confidence: High — based on 86 signals (45.5% of dataset), customer-stated actionable fixes.
                 </span>
               </div>
 
@@ -1402,37 +1526,72 @@ export default function EngineDashboard() {
                       className="flex items-center gap-1 text-[12px] font-bold text-[#54B226] hover:underline focus:outline-none py-0.5"
                     >
                       <span className="font-mono text-[13px]">{expandedQuestions[5] ? "−" : "+"}</span>
-                      <span>What this finding means</span>
+                      <span>What this finding means & 7-layer analysis</span>
                     </button>
                   </div>
                 </div>
               </div>
 
-              {/* EXPANDED CONTENT (Closed by default) */}
+              {/* EXPANDED CONTENT — 7-LAYER INSIGHT STRUCTURE */}
               {expandedQuestions[5] && (
                 <motion.div 
                   initial={{ opacity: 0, height: 0 }}
                   animate={{ opacity: 1, height: "auto" }}
-                  className="space-y-3 pt-3 border-t border-gray-100 text-[13px] leading-relaxed bg-[#F8F9FA]/80 p-4 rounded-md"
+                  className="space-y-4 pt-3 border-t border-gray-100 text-[13px] leading-relaxed bg-[#F8F9FA]/80 p-4 rounded-md"
                 >
+                  {/* Layer 1: Evidence */}
+                  <div>
+                    <span className="text-[9.5px] font-bold text-[#54B226] uppercase tracking-wider block mb-1">Evidence</span>
+                    <p className="text-[#5F6368] font-medium">
+                      86 of 189 signals (45.5%) — the largest single pattern in the dataset — state a specific, concrete requirement: visible authenticity checks, tamper-evident packaging, expiry visibility, working returns, accurate stock.
+                    </p>
+                  </div>
+
+                  {/* Layer 2: Observed Pattern */}
                   <div>
                     <span className="text-[9.5px] font-bold text-[#54B226] uppercase tracking-wider block mb-1">Observed Pattern</span>
                     <p className="text-[#1F1F1F] font-medium italic bg-white p-3 rounded border border-gray-100">
-                      "Nearly half of all signal (86 of 189, 45.5%) answers this directly and specifically — not 'better service' but concrete asks: visible authenticity checks, tamper-evident packaging, expiry dates shown before checkout, a working return process, accurate stock counts. This is the most actionable finding in the dataset because customers described the fix, not just the problem."
+                      "Unlike most findings, this pattern consists of stated solutions from the customer's own language, not inferred barriers."
                     </p>
                   </div>
 
+                  {/* Layer 3: Behavioral Mechanism */}
+                  <div>
+                    <span className="text-[9.5px] font-bold text-[#54B226] uppercase tracking-wider block mb-1">Behavioral Mechanism</span>
+                    <p className="text-[#5F6368]">
+                      Customers who articulate a specific fix (rather than a vague complaint) may represent a segment closer to conversion — the specificity itself may indicate the barrier is well-understood and addressable, rather than a deep, diffuse trust problem.
+                    </p>
+                  </div>
+
+                  {/* Layer 4: Interpretation */}
                   <div>
                     <span className="text-[9.5px] font-bold text-[#54B226] uppercase tracking-wider block mb-1">Interpretation</span>
                     <p className="text-[#5F6368]">
-                      Customers are willing to try new categories if the platform explicitly surfaces verification assurances.
+                      A plausible interpretation is that this 45.5% represents the most tractable segment of the trust problem — customers who can name their own solution are arguably easier to convert than customers expressing generalized distrust. This remains an interpretation; the dataset cannot confirm that meeting a stated requirement actually changes purchase behavior.
                     </p>
                   </div>
 
+                  {/* Layer 5: Business Meaning */}
+                  <div>
+                    <span className="text-[9.5px] font-bold text-[#54B226] uppercase tracking-wider block mb-1">Business Meaning</span>
+                    <p className="text-[#5F6368]">
+                      This raises a sequencing question: should product validation start with this segment specifically, since their stated need is both common and concrete, before addressing more diffuse trust concerns?
+                    </p>
+                  </div>
+
+                  {/* Layer 6: Remaining Uncertainty */}
                   <div>
                     <span className="text-[9.5px] font-bold text-[#54B226] uppercase tracking-wider block mb-1">Remaining Uncertainty</span>
                     <p className="text-[#5F6368]">
-                      Whether customer-stated trust fixes reflect actual conversion barriers or post-hoc justifications for non-purchase.
+                      Whether customers who state a specific fix would actually convert if that fix were implemented, or whether stated requirements are post-hoc rationalizations for a decision already made, cannot be resolved from review text.
+                    </p>
+                  </div>
+
+                  {/* Layer 7: Interview Hypothesis */}
+                  <div className="bg-[#FFF9E6] border border-[#F8CB45]/50 p-3 rounded-md">
+                    <span className="text-[9.5px] font-bold text-[#1F1F1F] uppercase tracking-wider block mb-1">Interview Hypothesis</span>
+                    <p className="text-[#1F1F1F] font-semibold">
+                      Present customers with a mocked authenticity/return-guarantee treatment and ask: "Would this actually change what you buy, or does the hesitation go deeper than this?" This tests whether the stated fix is causally sufficient or only necessary.
                     </p>
                   </div>
 
@@ -1448,12 +1607,12 @@ export default function EngineDashboard() {
             {/* Q6 */}
             <div id="q6" className="bg-white border-none shadow-[0_1px_3px_rgba(0,0,0,0.08),0_1px_2px_rgba(0,0,0,0.06)] border-l-4 border-l-red-600 rounded-lg p-5 md:p-6 space-y-4 scroll-mt-20">
               {/* Card Header: Eyebrow + Confidence badge */}
-              <div className="flex items-center justify-between gap-2 border-b border-gray-100 pb-2.5">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-gray-100 pb-2.5">
                 <span className="font-mono text-[10px] font-bold text-[#54B226] uppercase tracking-wider">
-                  WHAT FRUSTRATES CUSTOMERS REPEATEDLY?
+                  WHAT FRUSTRATIONS EMERGE REPEATEDLY?
                 </span>
-                <span className="text-[11px] font-bold text-[#1F1F1F] bg-[#F8F9FA] px-2.5 py-0.5 rounded border border-gray-200 shrink-0">
-                  Confidence: High (Known from evidence)
+                <span className="text-[11px] font-medium text-[#1F1F1F] bg-[#F8F9FA] px-2.5 py-1 rounded border border-gray-200 shrink-0">
+                  Confidence: High — based on 5 recurring platform operational failure types across all sources.
                 </span>
               </div>
 
@@ -1503,43 +1662,78 @@ export default function EngineDashboard() {
                       className="flex items-center gap-1 text-[12px] font-bold text-[#54B226] hover:underline focus:outline-none py-0.5"
                     >
                       <span className="font-mono text-[13px]">{expandedQuestions[6] ? "−" : "+"}</span>
-                      <span>What this finding means</span>
+                      <span>What this finding means & 7-layer analysis</span>
                     </button>
                   </div>
                 </div>
               </div>
 
-              {/* EXPANDED CONTENT (Closed by default) */}
+              {/* EXPANDED CONTENT — 7-LAYER INSIGHT STRUCTURE */}
               {expandedQuestions[6] && (
                 <motion.div 
                   initial={{ opacity: 0, height: 0 }}
                   animate={{ opacity: 1, height: "auto" }}
-                  className="space-y-3 pt-3 border-t border-gray-100 text-[13px] leading-relaxed bg-[#F8F9FA]/80 p-4 rounded-md"
+                  className="space-y-4 pt-3 border-t border-gray-100 text-[13px] leading-relaxed bg-[#F8F9FA]/80 p-4 rounded-md"
                 >
+                  {/* Layer 1: Evidence */}
+                  <div>
+                    <span className="text-[9.5px] font-bold text-[#54B226] uppercase tracking-wider block mb-1">Evidence</span>
+                    <p className="text-[#5F6368] font-medium">
+                      Five failure types recur across otherwise unrelated categories: counterfeit goods, expired perishables, unhonored refund promises, unconsented substitutions, non-functional promo codes.
+                    </p>
+                  </div>
+
+                  {/* Layer 2: Observed Pattern */}
                   <div>
                     <span className="text-[9.5px] font-bold text-[#54B226] uppercase tracking-wider block mb-1">Observed Pattern</span>
                     <p className="text-[#1F1F1F] font-medium italic bg-white p-3 rounded border border-gray-100">
-                      "The same five failures recur across unrelated categories: counterfeit goods, expired perishables, refund promises that don't get honored, substitutions made without asking, and promo codes that don't work at checkout. These aren't category-specific complaints — they're platform-trust failures that happen to surface most often in electronics and perishables because that's where the cost of being wrong is highest for the customer."
+                      "These failures span operational areas (fulfillment, customer service, catalog management, promotions) rather than clustering in one system."
                     </p>
                   </div>
 
+                  {/* Layer 3: Behavioral Mechanism */}
+                  <div>
+                    <span className="text-[9.5px] font-bold text-[#54B226] uppercase tracking-wider block mb-1">Behavioral Mechanism</span>
+                    <p className="text-[#5F6368]">
+                      Because these failures are operationally distinct but experientially similar (all represent "the platform didn't deliver what was promised"), customers may be forming a single unified trust judgment from multiple unrelated backend failures — meaning fixing one issue in isolation may not measurably shift trust if the others persist.
+                    </p>
+                  </div>
+
+                  {/* Layer 4: Interpretation */}
                   <div>
                     <span className="text-[9.5px] font-bold text-[#54B226] uppercase tracking-wider block mb-1">Interpretation</span>
                     <p className="text-[#5F6368]">
-                      Core operational errors (expired stock, forced replacements) destroy trust globally, making category discovery initiatives useless if core fulfillment is broken.
+                      The evidence suggests customer trust may function as an aggregate signal across operational domains rather than being domain-specific — though this contradicts, or at least complicates, the category-specific trust interpretation from Q2, and that tension itself is worth noting rather than resolving prematurely.
                     </p>
                   </div>
 
+                  {/* Layer 5: Business Meaning */}
+                  <div>
+                    <span className="text-[9.5px] font-bold text-[#54B226] uppercase tracking-wider block mb-1">Business Meaning</span>
+                    <p className="text-[#5F6368]">
+                      This informs whether trust-repair should be pursued as a single coordinated cross-functional initiative (fulfillment + support + catalog + promotions together) rather than addressed piecemeal by separate teams.
+                    </p>
+                  </div>
+
+                  {/* Layer 6: Remaining Uncertainty */}
                   <div>
                     <span className="text-[9.5px] font-bold text-[#54B226] uppercase tracking-wider block mb-1">Remaining Uncertainty</span>
                     <p className="text-[#5F6368]">
-                      Whether these platform-trust failures are concentrated in specific courier networks or are evenly distributed across the entire catalog.
+                      Whether fixing all five simultaneously produces a larger trust improvement than the sum of fixing each individually cannot be tested with review data — this requires a controlled before/after comparison.
+                    </p>
+                  </div>
+
+                  {/* Layer 7: Interview Hypothesis */}
+                  <div className="bg-[#FFF9E6] border border-[#F8CB45]/50 p-3 rounded-md">
+                    <span className="text-[9.5px] font-bold text-[#1F1F1F] uppercase tracking-wider block mb-1">Interview Hypothesis</span>
+                    <p className="text-[#1F1F1F] font-semibold">
+                      Ask customers who've had one of these five experiences: "Did this one experience change how you think about Blinkit generally, or just about that specific type of order?" This directly tests the generalization-vs-domain-specific tension noted above.
                     </p>
                   </div>
 
                   <div className="pt-2 border-t border-gray-200">
                     <a href="#q7" className="text-[12px] font-bold text-[#54B226] hover:underline flex items-center gap-1">
-                      Related findings: Which customers are closest to trying something new? →
+                      Related findings: Which customer segments are more likely to experiment? →
                     </a>
                   </div>
                 </motion.div>
@@ -1549,12 +1743,12 @@ export default function EngineDashboard() {
             {/* Q7 */}
             <div id="q7" className="bg-white border-none shadow-[0_1px_3px_rgba(0,0,0,0.08),0_1px_2px_rgba(0,0,0,0.06)] border-l-4 border-l-[#1F1F1F] rounded-lg p-5 md:p-6 space-y-4 scroll-mt-20">
               {/* Card Header: Eyebrow + Confidence badge */}
-              <div className="flex items-center justify-between gap-2 border-b border-gray-100 pb-2.5">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-gray-100 pb-2.5">
                 <span className="font-mono text-[10px] font-bold text-[#54B226] uppercase tracking-wider">
-                  WHICH CUSTOMERS ARE CLOSEST TO TRYING SOMETHING NEW?
+                  WHICH CUSTOMER SEGMENTS ARE MORE LIKELY TO EXPERIMENT?
                 </span>
-                <span className="text-[11px] font-bold text-[#1F1F1F] bg-[#F8F9FA] px-2.5 py-0.5 rounded border border-gray-200 shrink-0">
-                  Confidence: Medium (Inferred from language)
+                <span className="text-[11px] font-medium text-[#1F1F1F] bg-[#F8F9FA] px-2.5 py-1 rounded border border-gray-200 shrink-0">
+                  Confidence: Medium — based on 19 signals (10.1%), language-inferred frequency cues.
                 </span>
               </div>
 
@@ -1595,7 +1789,7 @@ export default function EngineDashboard() {
                 <div className="bg-[#F3F1EA] rounded-lg p-3.5 flex flex-col justify-between space-y-2 border-none">
                   <div>
                     <span className="text-[9.5px] font-bold text-[#54B226] uppercase tracking-wider block mb-0.5">Product Implication</span>
-                    <p className="text-[12.5px] text-[#1F1F1F] font-semibold leading-snug">Decision supported: Targeting new feature pilots to the "heavy_user" segment rather than mass-market launches.</p>
+                    <p className="text-[12.5px] text-[#1F1F1F] font-semibold leading-snug">Decision supported: Targeting new feature pilots to the "language-inferred frequent user" segment rather than mass-market launches.</p>
                   </div>
 
                   <div>
@@ -1604,7 +1798,7 @@ export default function EngineDashboard() {
                       className="flex items-center gap-1 text-[12px] font-bold text-[#54B226] hover:underline focus:outline-none py-0.5"
                     >
                       <span className="font-mono text-[13px]">{expandedQuestions[7] ? "−" : "+"}</span>
-                      <span>What this finding means & matrix</span>
+                      <span>What this finding means & 7-layer analysis</span>
                     </button>
                   </div>
                 </div>
@@ -1619,53 +1813,79 @@ export default function EngineDashboard() {
                 </button>
               </div>
 
-              {/* EXPANDED CONTENT (Closed by default) */}
+              {/* EXPANDED CONTENT — 7-LAYER INSIGHT STRUCTURE */}
               {expandedQuestions[7] && (
                 <motion.div 
                   initial={{ opacity: 0, height: 0 }}
                   animate={{ opacity: 1, height: "auto" }}
-                  className="space-y-3 pt-3 border-t border-gray-100 text-[13px] leading-relaxed bg-[#F8F9FA]/80 p-4 rounded-md"
+                  className="space-y-4 pt-3 border-t border-gray-100 text-[13px] leading-relaxed bg-[#F8F9FA]/80 p-4 rounded-md"
                 >
-                  <div className="bg-white border border-gray-100 rounded-md p-3 text-[12px] space-y-1">
-                    <div className="text-[#8C8C8C] line-through font-mono">
-                      <strong className="no-underline">ASSUMED:</strong> Non-buyers across categories have blanket distrust of the platform.
-                    </div>
-                    <div className="text-[#1F1F1F] font-bold font-mono">
-                      <strong className="text-[#54B226]">FOUND:</strong> 10.1% of high-frequency users express fixable transactional barriers, ready for trial.
-                    </div>
+                  {/* Layer 1: Evidence */}
+                  <div>
+                    <span className="text-[9.5px] font-bold text-[#54B226] uppercase tracking-wider block mb-1">Evidence</span>
+                    <p className="text-[#5F6368] font-medium">
+                      19 of 189 signals (10.1%) use language suggesting frequent, ongoing platform use, and these signals describe specific fixable complaints rather than blanket rejection language.
+                    </p>
                   </div>
 
+                  {/* Layer 2: Observed Pattern */}
                   <div>
                     <span className="text-[9.5px] font-bold text-[#54B226] uppercase tracking-wider block mb-1">Observed Pattern</span>
                     <p className="text-[#1F1F1F] font-medium italic bg-white p-3 rounded border border-gray-100">
-                      "Customers whose language suggests frequent, ongoing use (19 signals, 10.1%) describe specific, fixable complaints rather than blanket distrust — that distinction matters. A customer who says 'I won't buy electronics here because of X' is different from a customer who says 'I'll never use this app again.' The first is telling you what to fix. Treat this as a supposition about where to test first, not a confirmed customer list — segment inference here comes from language, not verified purchase history."
+                      "Language-inferred frequent users describe narrower, more specific objections than language-inferred one-time complainers (56 signals, 29.6%), who more often use absolute language ('never again')."
                     </p>
                   </div>
 
+                  {/* Layer 3: Behavioral Mechanism */}
+                  <div>
+                    <span className="text-[9.5px] font-bold text-[#54B226] uppercase tracking-wider block mb-1">Behavioral Mechanism</span>
+                    <p className="text-[#5F6368]">
+                      Customers with an established relationship to the platform may have more invested in that relationship continuing, making them more likely to frame a bad experience as a specific, fixable problem rather than grounds for platform abandonment.
+                    </p>
+                  </div>
+
+                  {/* Layer 4: Interpretation */}
                   <div>
                     <span className="text-[9.5px] font-bold text-[#54B226] uppercase tracking-wider block mb-1">Interpretation</span>
                     <p className="text-[#5F6368]">
-                      High-frequency users represent the highest conversion potential because their barriers are transactional friction, not complete platform distrust.
+                      One possible explanation is that relationship tenure moderates how customers interpret a negative experience — but this segment label is entirely language-inferred, not verified against actual purchase history, and should be treated as a hypothesis about segment behavior, not a confirmed customer list.
                     </p>
                   </div>
 
+                  {/* Layer 5: Business Meaning */}
+                  <div>
+                    <span className="text-[9.5px] font-bold text-[#54B226] uppercase tracking-wider block mb-1">Business Meaning</span>
+                    <p className="text-[#5F6368]">
+                      This informs a targeting decision: should early product validation prioritize language-inferred frequent users as the first test group, given their apparently narrower and more specific objections — while treating this as a testable assumption, not a settled fact?
+                    </p>
+                  </div>
+
+                  {/* Layer 6: Remaining Uncertainty */}
                   <div>
                     <span className="text-[9.5px] font-bold text-[#54B226] uppercase tracking-wider block mb-1">Remaining Uncertainty</span>
                     <p className="text-[#5F6368]">
-                      Whether the language-inferred segments align with actual historical purchase frequencies and spending profiles.
+                      Whether language-inferred frequency correlates with actual transaction frequency is unverified and unverifiable from this dataset alone.
+                    </p>
+                  </div>
+
+                  {/* Layer 7: Interview Hypothesis */}
+                  <div className="bg-[#FFF9E6] border border-[#F8CB45]/50 p-3 rounded-md">
+                    <span className="text-[9.5px] font-bold text-[#1F1F1F] uppercase tracking-wider block mb-1">Interview Hypothesis</span>
+                    <p className="text-[#1F1F1F] font-semibold">
+                      Recruit customers by actual purchase-history frequency (not language inference) and ask the same objection-framing question to both frequent and infrequent customers, to test whether the specific-vs-absolute language pattern actually tracks real usage frequency or was a language artifact.
                     </p>
                   </div>
 
                   <div className="pt-2 border-t border-gray-200">
                     <a href="#q8" className="text-[12px] font-bold text-[#54B226] hover:underline flex items-center gap-1">
-                      Related findings: What do customers consistently say is missing? →
+                      Related findings: What unmet needs emerge consistently? →
                     </a>
                   </div>
 
                   {/* Dynamic Intensity Heatmap Matrix */}
                   <div className="bg-white border border-gray-100 rounded-lg p-4 space-y-3 mt-3">
                     <div>
-                      <h4 className="text-[13px] font-bold text-[#171717]">Supporting Matrix: Segments × Reason-Types (Intensity Heatmap)</h4>
+                      <h4 className="text-[13px] font-bold text-[#1F1F1F]">Supporting Matrix: Segments × Reason-Types (Intensity Heatmap)</h4>
                       <p className="text-[11.5px] text-[#5F6368] mt-0.5 leading-relaxed">
                         Cells scale smoothly in background saturation based on real signal counts. Click any cell to inspect filtered rows in the Evidence Explorer.
                       </p>
@@ -1684,7 +1904,7 @@ export default function EngineDashboard() {
                         <tbody>
                           {SEGMENTS.map(seg => (
                             <tr key={seg} className="border-b border-gray-100 hover:bg-[#F8F9FA]">
-                              <td className="p-2 font-bold text-[#171717] capitalize">{seg.replace(/_/g, " ")}</td>
+                              <td className="p-2 font-bold text-[#1F1F1F] capitalize">{formatSegmentLabel(seg)}</td>
                               {REASONS.map(reason => {
                                 const count = reviews.filter(r => r.user_segment === seg && r.reason_type === reason).length;
                                 const totalSegmentReviews = reviews.filter(r => r.user_segment === seg).length || 1;
@@ -1710,7 +1930,7 @@ export default function EngineDashboard() {
                                   >
                                     {count > 0 ? (
                                       <div className="space-y-0.5">
-                                        <div className="font-bold text-[11px] text-[#171717]">{count}</div>
+                                        <div className="font-bold text-[11px] text-[#1F1F1F]">{count}</div>
                                         <div className="text-[8.5px] text-[#5F6368]">{pctOfSegment}%</div>
                                         <div className="text-[7.5px] text-[#8C8C8C] font-mono">c={avgConf.toFixed(1)}</div>
                                       </div>
@@ -1733,18 +1953,18 @@ export default function EngineDashboard() {
             {/* Q8 */}
             <div id="q8" className="bg-white border-none shadow-[0_1px_3px_rgba(0,0,0,0.08),0_1px_2px_rgba(0,0,0,0.06)] border-l-4 border-l-purple-600 rounded-lg p-5 md:p-6 space-y-4 scroll-mt-20">
               {/* Card Header: Eyebrow + Confidence badge */}
-              <div className="flex items-center justify-between gap-2 border-b border-gray-100 pb-2.5">
-                <span className="font-mono text-[10px] font-bold text-[#737373] uppercase tracking-wider">
-                  WHAT DO CUSTOMERS CONSISTENTLY SAY IS MISSING?
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-gray-100 pb-2.5">
+                <span className="font-mono text-[10px] font-bold text-[#54B226] uppercase tracking-wider">
+                  WHAT UNMET NEEDS EMERGE CONSISTENTLY?
                 </span>
-                <span className="text-[11px] font-bold text-[#000000] bg-[#F8F9FA] px-2.5 py-0.5 rounded border border-gray-200 shrink-0">
-                  Confidence: Medium (Inferred from language)
+                <span className="text-[11px] font-medium text-[#1F1F1F] bg-[#F8F9FA] px-2.5 py-1 rounded border border-gray-200 shrink-0">
+                  Confidence: Medium — based on 5 recurring needs, including n=1 qualitative accessibility cue.
                 </span>
               </div>
 
               {/* Main Title Block + Stat Callout + Visual Bar */}
               <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                <h3 className="font-display font-extrabold text-[22px] md:text-[25px] text-[#171717] leading-tight tracking-tight flex-1">
+                <h3 className="font-display font-extrabold text-[22px] md:text-[25px] text-[#1F1F1F] leading-tight tracking-tight flex-1">
                   "Customers didn't just complain — they specified the fix."
                 </h3>
                 <AnimatedStat 
@@ -1758,13 +1978,13 @@ export default function EngineDashboard() {
               {/* TWO-COLUMN CARD GRID: Evidence Quotes (Left) + Takeaway Sentence Container (Right) */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-3 border-t border-gray-100 items-stretch">
                 <div className="space-y-2">
-                  <span className="text-[9.5px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Evidence</span>
+                  <span className="text-[9.5px] font-bold text-[#54B226] uppercase tracking-wider block">Evidence</span>
                   <div className="space-y-1.5">
                     {getEvidenceForQuestion(8).slice(0, 2).map((r, idx) => (
                       <div 
                         key={r.row_number} 
                         onClick={() => jumpToRow(r.row_number)}
-                        className="bg-[#F8F9FA] hover:bg-[#F3F1EA] border border-gray-100 rounded-md p-2.5 text-[12px] text-[#171717] italic cursor-pointer transition-all duration-200 shadow-sm flex items-center justify-between gap-2"
+                        className="bg-[#F8F9FA] hover:bg-[#F3F1EA] border border-gray-100 rounded-md p-2.5 text-[12px] text-[#1F1F1F] italic cursor-pointer transition-all duration-200 shadow-sm flex items-center justify-between gap-2"
                       >
                         <div className="flex items-center gap-2 overflow-hidden flex-1">
                           <span className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: DOT_PALETTE[idx % 5] }} />
@@ -1778,57 +1998,187 @@ export default function EngineDashboard() {
 
                 <div className="bg-[#F3F1EA] rounded-lg p-3.5 flex flex-col justify-between space-y-2 border-none">
                   <div>
-                    <span className="text-[9.5px] font-bold text-[#8C8C8C] uppercase tracking-wider block mb-0.5">Product Implication</span>
-                    <p className="text-[12.5px] text-[#171717] font-semibold leading-snug">Decision supported: Running dedicated qualitative validation studies for accessibility features.</p>
+                    <span className="text-[9.5px] font-bold text-[#54B226] uppercase tracking-wider block mb-0.5">Product Implication</span>
+                    <p className="text-[12.5px] text-[#1F1F1F] font-semibold leading-snug">Decision supported: Running dedicated qualitative validation studies for accessibility features.</p>
                   </div>
 
                   <div>
                     <button
                       onClick={() => toggleQuestion(8)}
-                      className="flex items-center gap-1 text-[12px] font-bold text-[#8A6A0F] hover:underline focus:outline-none py-0.5"
+                      className="flex items-center gap-1 text-[12px] font-bold text-[#54B226] hover:underline focus:outline-none py-0.5"
                     >
                       <span className="font-mono text-[13px]">{expandedQuestions[8] ? "−" : "+"}</span>
-                      <span>What this finding means</span>
+                      <span>What this finding means & 7-layer analysis</span>
                     </button>
                   </div>
                 </div>
               </div>
 
-              {/* EXPANDED CONTENT (Closed by default) */}
+              {/* EXPANDED CONTENT — 7-LAYER INSIGHT STRUCTURE */}
               {expandedQuestions[8] && (
                 <motion.div 
                   initial={{ opacity: 0, height: 0 }}
                   animate={{ opacity: 1, height: "auto" }}
-                  className="space-y-3 pt-3 border-t border-gray-100 text-[13px] leading-relaxed bg-[#F8F9FA]/80 p-4 rounded-md"
+                  className="space-y-4 pt-3 border-t border-gray-100 text-[13px] leading-relaxed bg-[#F8F9FA]/80 p-4 rounded-md"
                 >
+                  {/* Layer 1: Evidence */}
                   <div>
-                    <span className="text-[9.5px] font-bold text-[#8C8C8C] uppercase tracking-wider block mb-1">Observed Pattern</span>
-                    <p className="text-[#171717] font-medium italic bg-white p-3 rounded border border-gray-100">
-                      "Five needs repeat across otherwise unrelated complaints: proof a product is genuine, clear pricing without surprise fees, a return process that actually works, accurate stock information for less-common items, and — mentioned by only one customer but worth flagging rather than discarding — a simpler interface for a non-technical user. Small signal isn't nothing; it's a prompt for direct research, not a proven segment need."
+                    <span className="text-[9.5px] font-bold text-[#54B226] uppercase tracking-wider block mb-1">Evidence</span>
+                    <p className="text-[#5F6368] font-medium">
+                      Five needs recur: authenticity proof, transparent pricing, working returns, accurate niche/regional stock information, and — from a single signal — a simpler interface for a non-technical user.
                     </p>
                   </div>
 
+                  {/* Layer 2: Observed Pattern */}
                   <div>
-                    <span className="text-[9.5px] font-bold text-[#8C8C8C] uppercase tracking-wider block mb-1">Interpretation</span>
-                    <p className="text-[#5F6368]">
-                      Customer needs concentrate around catalog integrity and transparency, with occasional accessibility signals (e.g., senior citizen segment usability) representing critical qualitative cues.
+                    <span className="text-[9.5px] font-bold text-[#54B226] uppercase tracking-wider block mb-1">Observed Pattern</span>
+                    <p className="text-[#1F1F1F] font-medium italic bg-white p-3 rounded border border-gray-100">
+                      "Four of five needs are corroborated across double-digit signal counts; the accessibility need has n=1."
                     </p>
                   </div>
 
+                  {/* Layer 3: Behavioral Mechanism */}
                   <div>
-                    <span className="text-[9.5px] font-bold text-[#8C8C8C] uppercase tracking-wider block mb-1">Remaining Uncertainty</span>
+                    <span className="text-[9.5px] font-bold text-[#54B226] uppercase tracking-wider block mb-1">Behavioral Mechanism</span>
                     <p className="text-[#5F6368]">
-                      Whether the accessibility need represents a broad, unserved cohort or is isolated to a few vocal outliers.
+                      Low-frequency signals may still indicate a real need if the underlying population (e.g., elderly or non-technical users) is systematically underrepresented in review-writing — meaning n=1 here is not necessarily a weak signal, but potentially a rare glimpse into an otherwise invisible population.
+                    </p>
+                  </div>
+
+                  {/* Layer 4: Interpretation */}
+                  <div>
+                    <span className="text-[9.5px] font-bold text-[#54B226] uppercase tracking-wider block mb-1">Interpretation</span>
+                    <p className="text-[#5F6368]">
+                      A plausible interpretation is that this n=1 signal warrants direct investigation rather than dismissal, precisely because the review-mining method is structurally biased toward customers comfortable writing detailed English-language complaints — a population that likely excludes the accessibility-need segment being described.
+                    </p>
+                  </div>
+
+                  {/* Layer 5: Business Meaning */}
+                  <div>
+                    <span className="text-[9.5px] font-bold text-[#54B226] uppercase tracking-wider block mb-1">Business Meaning</span>
+                    <p className="text-[#5F6368]">
+                      This raises the question of whether a lightweight, low-cost qualitative study (not a product build) should be commissioned specifically to test whether this accessibility need represents a broader unserved population before any resourcing decision is made.
+                    </p>
+                  </div>
+
+                  {/* Layer 6: Remaining Uncertainty */}
+                  <div>
+                    <span className="text-[9.5px] font-bold text-[#54B226] uppercase tracking-wider block mb-1">Remaining Uncertainty</span>
+                    <p className="text-[#5F6368]">
+                      Whether this is one vocal outlier or an indicator of a systematically unheard segment is precisely the kind of question review mining cannot answer and interviews exist to resolve.
+                    </p>
+                  </div>
+
+                  {/* Layer 7: Interview Hypothesis */}
+                  <div className="bg-[#FFF9E6] border border-[#F8CB45]/50 p-3 rounded-md">
+                    <span className="text-[9.5px] font-bold text-[#1F1F1F] uppercase tracking-wider block mb-1">Interview Hypothesis</span>
+                    <p className="text-[#1F1F1F] font-semibold">
+                      Actively recruit for interview participants outside the typical review-writing profile (older, less tech-fluent) specifically to test whether this n=1 signal generalizes.
                     </p>
                   </div>
 
                   <div className="pt-2 border-t border-gray-200">
-                    <a href="#q1" className="text-[12px] font-bold text-[#000000] hover:underline flex items-center gap-1">
+                    <a href="#q1" className="text-[12px] font-bold text-[#54B226] hover:underline flex items-center gap-1">
                       Related findings: Why do customers keep buying from the same categories? →
                     </a>
                   </div>
                 </motion.div>
               )}
+            </div>
+
+            {/* ═══════════════════════════════════════════
+                CROSS-QUESTION CAUSAL CHAIN DIAGRAM
+                ═══════════════════════════════════════════ */}
+            <div className="bg-white border-none shadow-[0_1px_3px_rgba(0,0,0,0.08),0_1px_2px_rgba(0,0,0,0.06)] rounded-lg p-6 space-y-5 border-l-4 border-l-[#54B226]">
+              <div>
+                <span className="text-[10px] font-bold text-[#54B226] uppercase tracking-wider block font-mono">
+                  BEHAVIORAL SYNTHESIS
+                </span>
+                <h3 className="font-display font-extrabold text-[20px] text-[#1F1F1F] mt-0.5">
+                  Cross-Question Causal Chain Hypothesis
+                </h3>
+              </div>
+
+              <div className="space-y-3 pt-2">
+                {/* Node 1 */}
+                <div className="bg-[#F8F9FA] border border-gray-200 rounded-lg p-3.5 flex items-start gap-3">
+                  <div className="w-7 h-7 rounded-full bg-[#54B226] text-white text-[12px] font-bold flex items-center justify-center shrink-0">1</div>
+                  <div>
+                    <span className="text-[10.5px] font-bold text-[#54B226] uppercase tracking-wider block">Specific Trust Failures (Q2)</span>
+                    <p className="text-[13px] text-[#1F1F1F] font-medium mt-0.5">
+                      Trust failures in specific categories (Q2, 55.6%)
+                    </p>
+                  </div>
+                </div>
+
+                {/* Down Arrow */}
+                <div className="flex justify-center text-[#54B226]">
+                  <ArrowDown size={18} />
+                </div>
+
+                {/* Node 2 */}
+                <div className="bg-[#F8F9FA] border border-gray-200 rounded-lg p-3.5 flex items-start gap-3">
+                  <div className="w-7 h-7 rounded-full bg-[#54B226] text-white text-[12px] font-bold flex items-center justify-center shrink-0">2</div>
+                  <div>
+                    <span className="text-[10.5px] font-bold text-[#54B226] uppercase tracking-wider block">Category-Level Risk Generalization (Q2 Mechanism)</span>
+                    <p className="text-[13px] text-[#1F1F1F] font-medium mt-0.5">
+                      Customers generalize a specific failure into category-level risk (Q2 mechanism)
+                    </p>
+                  </div>
+                </div>
+
+                {/* Down Arrow */}
+                <div className="flex justify-center text-[#54B226]">
+                  <ArrowDown size={18} />
+                </div>
+
+                {/* Node 3 */}
+                <div className="bg-[#F8F9FA] border border-gray-200 rounded-lg p-3.5 flex items-start gap-3">
+                  <div className="w-7 h-7 rounded-full bg-[#54B226] text-white text-[12px] font-bold flex items-center justify-center shrink-0">3</div>
+                  <div>
+                    <span className="text-[10.5px] font-bold text-[#54B226] uppercase tracking-wider block">Risk-Avoidance Repetition (Q1)</span>
+                    <p className="text-[13px] text-[#1F1F1F] font-medium mt-0.5">
+                      Repeat purchasing concentrates in "proven safe" categories (Q1, habit only 3.7%)
+                    </p>
+                  </div>
+                </div>
+
+                {/* Down Arrow */}
+                <div className="flex justify-center text-[#54B226]">
+                  <ArrowDown size={18} />
+                </div>
+
+                {/* Node 4 */}
+                <div className="bg-[#F8F9FA] border border-gray-200 rounded-lg p-3.5 flex items-start gap-3">
+                  <div className="w-7 h-7 rounded-full bg-[#54B226] text-white text-[12px] font-bold flex items-center justify-center shrink-0">4</div>
+                  <div>
+                    <span className="text-[10.5px] font-bold text-[#54B226] uppercase tracking-wider block">Active Transactional Re-evaluation (Q4)</span>
+                    <p className="text-[13px] text-[#1F1F1F] font-medium mt-0.5">
+                      Customers actively re-evaluate each purchase rather than defaulting by habit (Q4, 21.2% price-comparing)
+                    </p>
+                  </div>
+                </div>
+
+                {/* Down Arrow */}
+                <div className="flex justify-center text-[#54B226]">
+                  <ArrowDown size={18} />
+                </div>
+
+                {/* Node 5 */}
+                <div className="bg-[#F8F9FA] border border-gray-200 rounded-lg p-3.5 flex items-start gap-3">
+                  <div className="w-7 h-7 rounded-full bg-[#54B226] text-white text-[12px] font-bold flex items-center justify-center shrink-0">5</div>
+                  <div>
+                    <span className="text-[10.5px] font-bold text-[#54B226] uppercase tracking-wider block">Persistent Cross-Category Hesitation (Q7)</span>
+                    <p className="text-[13px] text-[#1F1F1F] font-medium mt-0.5">
+                      Cross-category hesitation persists even among engaged, frequent users (Q7, 10.1%)
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <p className="text-[11.5px] text-[#737373] italic border-t border-gray-100 pt-3">
+                Caption: "This is an inferred causal chain connecting independently-measured findings — it is a hypothesis for interview validation, not a proven behavioral sequence."
+              </p>
             </div>
           </div>
         </div>
