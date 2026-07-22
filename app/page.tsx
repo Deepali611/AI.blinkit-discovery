@@ -24,6 +24,9 @@ import {
   ChevronUp
 } from "lucide-react";
 
+// Repeating decorative 5-color palette for list dot bullets
+const DOT_PALETTE = ["#F8CB46", "#7C5CBF", "#9A9488", "#3B5BDB", "#D93025"];
+
 // Count-up Stat Callout component using Framer Motion with two-segment visual progress bar
 function AnimatedStat({ 
   value, 
@@ -809,38 +812,46 @@ export default function EngineDashboard() {
                 />
               </div>
 
-              {/* ALWAYS VISIBLE: 2 Evidence Quotes */}
-              <div className="space-y-1.5 pt-2 border-t border-gray-100">
-                <span className="text-[9.5px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Evidence</span>
-                <div className="space-y-1.5">
-                  {getEvidenceForQuestion(1).slice(0, 2).map((r) => (
-                    <div 
-                      key={r.row_number} 
-                      onClick={() => jumpToRow(r.row_number)}
-                      className="bg-[#F4F3EE] border border-gray-100 rounded-md p-2.5 text-[12px] text-[#171717] italic cursor-pointer hover:bg-[#EDEBE3] transition-all duration-200 shadow-sm flex justify-between items-center"
-                    >
-                      <span className="truncate">"{r.quote}"</span>
-                      <span className="font-mono text-[10px] text-[#8C8C8C] not-italic shrink-0 ml-2">Row #{r.row_number}</span>
-                    </div>
-                  ))}
+              {/* TWO-COLUMN CARD GRID: Evidence Quotes (Left) + Takeaway Sentence Container (Right) */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-3 border-t border-gray-100 items-stretch">
+                {/* Left Column: 2 Evidence Quotes with Dot Bullets & Right-Aligned Monospace Number Column */}
+                <div className="space-y-2">
+                  <span className="text-[9.5px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Evidence</span>
+                  <div className="space-y-1.5">
+                    {getEvidenceForQuestion(1).slice(0, 2).map((r, idx) => (
+                      <div 
+                        key={r.row_number} 
+                        onClick={() => jumpToRow(r.row_number)}
+                        className="bg-[#F8F9FA] hover:bg-[#F3F1EA] border border-gray-100 rounded-md p-2.5 text-[12px] text-[#171717] italic cursor-pointer transition-all duration-200 shadow-sm flex items-center justify-between gap-2"
+                      >
+                        <div className="flex items-center gap-2 overflow-hidden flex-1">
+                          <span className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: DOT_PALETTE[idx % 5] }} />
+                          <span className="truncate">"{r.quote}"</span>
+                        </div>
+                        <span className="font-mono text-[10px] text-[#8C8C8C] not-italic shrink-0 ml-auto w-16 text-right tabular-nums">Row #{r.row_number}</span>
+                      </div>
+                    ))}
+                  </div>
                 </div>
-              </div>
 
-              {/* ALWAYS VISIBLE: Product Implication */}
-              <div className="pt-1">
-                <span className="text-[9.5px] font-bold text-[#8C8C8C] uppercase tracking-wider block mb-0.5">Product Implication</span>
-                <p className="text-[12.5px] text-[#171717] font-semibold">Decision supported: Whether to focus roadmap resources on generic personalization algorithms or on category-specific risk-reduction features.</p>
-              </div>
+                {/* Right Column: TAKEAWAY SENTENCE CONTAINER */}
+                <div className="bg-[#F3F1EA] rounded-lg p-3.5 flex flex-col justify-between space-y-2 border-none">
+                  <div>
+                    <span className="text-[9.5px] font-bold text-[#8C8C8C] uppercase tracking-wider block mb-0.5">Product Implication</span>
+                    <p className="text-[12.5px] text-[#171717] font-semibold leading-snug">Decision supported: Whether to focus roadmap resources on generic personalization algorithms or on category-specific risk-reduction features.</p>
+                  </div>
 
-              {/* COLLAPSED EXPANDER TOGGLE */}
-              <div className="pt-2 border-t border-gray-100 flex items-center justify-between">
-                <button
-                  onClick={() => toggleQuestion(1)}
-                  className="flex items-center gap-1.5 text-[12px] font-bold text-[#5F6368] hover:text-[#000000] transition-colors py-1 focus:outline-none"
-                >
-                  <span>Full analysis</span>
-                  {expandedQuestions[1] ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
-                </button>
+                  {/* "WHAT THIS FINDING MEANS" UNDERSTATED PLAIN TEXT LINK TRIGGER */}
+                  <div>
+                    <button
+                      onClick={() => toggleQuestion(1)}
+                      className="flex items-center gap-1 text-[12px] font-bold text-[#8A6A0F] hover:underline focus:outline-none py-0.5"
+                    >
+                      <span className="font-mono text-[13px]">{expandedQuestions[1] ? "−" : "+"}</span>
+                      <span>What this finding means</span>
+                    </button>
+                  </div>
+                </div>
               </div>
 
               {/* EXPANDED CONTENT (Closed by default) */}
@@ -914,38 +925,43 @@ export default function EngineDashboard() {
                 />
               </div>
 
-              {/* ALWAYS VISIBLE: 2 Evidence Quotes */}
-              <div className="space-y-1.5 pt-2 border-t border-gray-100">
-                <span className="text-[9.5px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Evidence</span>
-                <div className="space-y-1.5">
-                  {getEvidenceForQuestion(2).slice(0, 2).map((r) => (
-                    <div 
-                      key={r.row_number} 
-                      onClick={() => jumpToRow(r.row_number)}
-                      className="bg-[#F4F3EE] border border-gray-100 rounded-md p-2.5 text-[12px] text-[#171717] italic cursor-pointer hover:bg-[#EDEBE3] transition-all duration-200 shadow-sm flex justify-between items-center"
-                    >
-                      <span className="truncate">"{r.quote}"</span>
-                      <span className="font-mono text-[10px] text-[#8C8C8C] not-italic shrink-0 ml-2">Row #{r.row_number}</span>
-                    </div>
-                  ))}
+              {/* TWO-COLUMN CARD GRID: Evidence Quotes (Left) + Takeaway Sentence Container (Right) */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-3 border-t border-gray-100 items-stretch">
+                <div className="space-y-2">
+                  <span className="text-[9.5px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Evidence</span>
+                  <div className="space-y-1.5">
+                    {getEvidenceForQuestion(2).slice(0, 2).map((r, idx) => (
+                      <div 
+                        key={r.row_number} 
+                        onClick={() => jumpToRow(r.row_number)}
+                        className="bg-[#F8F9FA] hover:bg-[#F3F1EA] border border-gray-100 rounded-md p-2.5 text-[12px] text-[#171717] italic cursor-pointer transition-all duration-200 shadow-sm flex items-center justify-between gap-2"
+                      >
+                        <div className="flex items-center gap-2 overflow-hidden flex-1">
+                          <span className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: DOT_PALETTE[idx % 5] }} />
+                          <span className="truncate">"{r.quote}"</span>
+                        </div>
+                        <span className="font-mono text-[10px] text-[#8C8C8C] not-italic shrink-0 ml-auto w-16 text-right tabular-nums">Row #{r.row_number}</span>
+                      </div>
+                    ))}
+                  </div>
                 </div>
-              </div>
 
-              {/* ALWAYS VISIBLE: Product Implication */}
-              <div className="pt-1">
-                <span className="text-[9.5px] font-bold text-[#8C8C8C] uppercase tracking-wider block mb-0.5">Product Implication</span>
-                <p className="text-[12.5px] text-[#171717] font-semibold">Decision supported: Prioritizing physical quality assurance workflows over UI navigation changes.</p>
-              </div>
+                <div className="bg-[#F3F1EA] rounded-lg p-3.5 flex flex-col justify-between space-y-2 border-none">
+                  <div>
+                    <span className="text-[9.5px] font-bold text-[#8C8C8C] uppercase tracking-wider block mb-0.5">Product Implication</span>
+                    <p className="text-[12.5px] text-[#171717] font-semibold leading-snug">Decision supported: Prioritizing physical quality assurance workflows over UI navigation changes.</p>
+                  </div>
 
-              {/* COLLAPSED EXPANDER TOGGLE */}
-              <div className="pt-2 border-t border-gray-100 flex items-center justify-between">
-                <button
-                  onClick={() => toggleQuestion(2)}
-                  className="flex items-center gap-1.5 text-[12px] font-bold text-[#5F6368] hover:text-[#000000] transition-colors py-1 focus:outline-none"
-                >
-                  <span>Full analysis</span>
-                  {expandedQuestions[2] ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
-                </button>
+                  <div>
+                    <button
+                      onClick={() => toggleQuestion(2)}
+                      className="flex items-center gap-1 text-[12px] font-bold text-[#8A6A0F] hover:underline focus:outline-none py-0.5"
+                    >
+                      <span className="font-mono text-[13px]">{expandedQuestions[2] ? "−" : "+"}</span>
+                      <span>What this finding means</span>
+                    </button>
+                  </div>
+                </div>
               </div>
 
               {/* EXPANDED CONTENT (Closed by default) */}
@@ -1010,38 +1026,43 @@ export default function EngineDashboard() {
                 />
               </div>
 
-              {/* ALWAYS VISIBLE: 2 Evidence Quotes */}
-              <div className="space-y-1.5 pt-2 border-t border-gray-100">
-                <span className="text-[9.5px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Evidence</span>
-                <div className="space-y-1.5">
-                  {getEvidenceForQuestion(3).slice(0, 2).map((r) => (
-                    <div 
-                      key={r.row_number} 
-                      onClick={() => jumpToRow(r.row_number)}
-                      className="bg-[#F4F3EE] border border-gray-100 rounded-md p-2.5 text-[12px] text-[#171717] italic cursor-pointer hover:bg-[#EDEBE3] transition-all duration-200 shadow-sm flex justify-between items-center"
-                    >
-                      <span className="truncate">"{r.quote}"</span>
-                      <span className="font-mono text-[10px] text-[#8C8C8C] not-italic shrink-0 ml-2">Row #{r.row_number}</span>
-                    </div>
-                  ))}
+              {/* TWO-COLUMN CARD GRID: Evidence Quotes (Left) + Takeaway Sentence Container (Right) */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-3 border-t border-gray-100 items-stretch">
+                <div className="space-y-2">
+                  <span className="text-[9.5px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Evidence</span>
+                  <div className="space-y-1.5">
+                    {getEvidenceForQuestion(3).slice(0, 2).map((r, idx) => (
+                      <div 
+                        key={r.row_number} 
+                        onClick={() => jumpToRow(r.row_number)}
+                        className="bg-[#F8F9FA] hover:bg-[#F3F1EA] border border-gray-100 rounded-md p-2.5 text-[12px] text-[#171717] italic cursor-pointer transition-all duration-200 shadow-sm flex items-center justify-between gap-2"
+                      >
+                        <div className="flex items-center gap-2 overflow-hidden flex-1">
+                          <span className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: DOT_PALETTE[idx % 5] }} />
+                          <span className="truncate">"{r.quote}"</span>
+                        </div>
+                        <span className="font-mono text-[10px] text-[#8C8C8C] not-italic shrink-0 ml-auto w-16 text-right tabular-nums">Row #{r.row_number}</span>
+                      </div>
+                    ))}
+                  </div>
                 </div>
-              </div>
 
-              {/* ALWAYS VISIBLE: Product Implication */}
-              <div className="pt-1">
-                <span className="text-[9.5px] font-bold text-[#8C8C8C] uppercase tracking-wider block mb-0.5">Product Implication</span>
-                <p className="text-[12.5px] text-[#171717] font-semibold">Decision supported: Investing in semantic search quality vs. generic banner advertisements.</p>
-              </div>
+                <div className="bg-[#F3F1EA] rounded-lg p-3.5 flex flex-col justify-between space-y-2 border-none">
+                  <div>
+                    <span className="text-[9.5px] font-bold text-[#8C8C8C] uppercase tracking-wider block mb-0.5">Product Implication</span>
+                    <p className="text-[12.5px] text-[#171717] font-semibold leading-snug">Decision supported: Investing in semantic search quality vs. generic banner advertisements.</p>
+                  </div>
 
-              {/* COLLAPSED EXPANDER TOGGLE */}
-              <div className="pt-2 border-t border-gray-100 flex items-center justify-between">
-                <button
-                  onClick={() => toggleQuestion(3)}
-                  className="flex items-center gap-1.5 text-[12px] font-bold text-[#5F6368] hover:text-[#000000] transition-colors py-1 focus:outline-none"
-                >
-                  <span>Full analysis</span>
-                  {expandedQuestions[3] ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
-                </button>
+                  <div>
+                    <button
+                      onClick={() => toggleQuestion(3)}
+                      className="flex items-center gap-1 text-[12px] font-bold text-[#8A6A0F] hover:underline focus:outline-none py-0.5"
+                    >
+                      <span className="font-mono text-[13px]">{expandedQuestions[3] ? "−" : "+"}</span>
+                      <span>What this finding means</span>
+                    </button>
+                  </div>
+                </div>
               </div>
 
               {/* EXPANDED CONTENT (Closed by default) */}
@@ -1106,38 +1127,43 @@ export default function EngineDashboard() {
                 />
               </div>
 
-              {/* ALWAYS VISIBLE: 2 Evidence Quotes */}
-              <div className="space-y-1.5 pt-2 border-t border-gray-100">
-                <span className="text-[9.5px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Evidence</span>
-                <div className="space-y-1.5">
-                  {getEvidenceForQuestion(4).slice(0, 2).map((r) => (
-                    <div 
-                      key={r.row_number} 
-                      onClick={() => jumpToRow(r.row_number)}
-                      className="bg-[#F4F3EE] border border-gray-100 rounded-md p-2.5 text-[12px] text-[#171717] italic cursor-pointer hover:bg-[#EDEBE3] transition-all duration-200 shadow-sm flex justify-between items-center"
-                    >
-                      <span className="truncate">"{r.quote}"</span>
-                      <span className="font-mono text-[10px] text-[#8C8C8C] not-italic shrink-0 ml-2">Row #{r.row_number}</span>
-                    </div>
-                  ))}
+              {/* TWO-COLUMN CARD GRID: Evidence Quotes (Left) + Takeaway Sentence Container (Right) */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-3 border-t border-gray-100 items-stretch">
+                <div className="space-y-2">
+                  <span className="text-[9.5px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Evidence</span>
+                  <div className="space-y-1.5">
+                    {getEvidenceForQuestion(4).slice(0, 2).map((r, idx) => (
+                      <div 
+                        key={r.row_number} 
+                        onClick={() => jumpToRow(r.row_number)}
+                        className="bg-[#F8F9FA] hover:bg-[#F3F1EA] border border-gray-100 rounded-md p-2.5 text-[12px] text-[#171717] italic cursor-pointer transition-all duration-200 shadow-sm flex items-center justify-between gap-2"
+                      >
+                        <div className="flex items-center gap-2 overflow-hidden flex-1">
+                          <span className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: DOT_PALETTE[idx % 5] }} />
+                          <span className="truncate">"{r.quote}"</span>
+                        </div>
+                        <span className="font-mono text-[10px] text-[#8C8C8C] not-italic shrink-0 ml-auto w-16 text-right tabular-nums">Row #{r.row_number}</span>
+                      </div>
+                    ))}
+                  </div>
                 </div>
-              </div>
 
-              {/* ALWAYS VISIBLE: Product Implication */}
-              <div className="pt-1">
-                <span className="text-[9.5px] font-bold text-[#8C8C8C] uppercase tracking-wider block mb-0.5">Product Implication</span>
-                <p className="text-[12.5px] text-[#171717] font-semibold">Decision supported: Launching dynamic cross-category loyalty rewards versus flat membership plans.</p>
-              </div>
+                <div className="bg-[#F3F1EA] rounded-lg p-3.5 flex flex-col justify-between space-y-2 border-none">
+                  <div>
+                    <span className="text-[9.5px] font-bold text-[#8C8C8C] uppercase tracking-wider block mb-0.5">Product Implication</span>
+                    <p className="text-[12.5px] text-[#171717] font-semibold leading-snug">Decision supported: Launching dynamic cross-category loyalty rewards versus flat membership plans.</p>
+                  </div>
 
-              {/* COLLAPSED EXPANDER TOGGLE */}
-              <div className="pt-2 border-t border-gray-100 flex items-center justify-between">
-                <button
-                  onClick={() => toggleQuestion(4)}
-                  className="flex items-center gap-1.5 text-[12px] font-bold text-[#5F6368] hover:text-[#000000] transition-colors py-1 focus:outline-none"
-                >
-                  <span>Full analysis</span>
-                  {expandedQuestions[4] ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
-                </button>
+                  <div>
+                    <button
+                      onClick={() => toggleQuestion(4)}
+                      className="flex items-center gap-1 text-[12px] font-bold text-[#8A6A0F] hover:underline focus:outline-none py-0.5"
+                    >
+                      <span className="font-mono text-[13px]">{expandedQuestions[4] ? "−" : "+"}</span>
+                      <span>What this finding means</span>
+                    </button>
+                  </div>
+                </div>
               </div>
 
               {/* EXPANDED CONTENT (Closed by default) */}
@@ -1211,38 +1237,43 @@ export default function EngineDashboard() {
                 />
               </div>
 
-              {/* ALWAYS VISIBLE: 2 Evidence Quotes */}
-              <div className="space-y-1.5 pt-2 border-t border-gray-100">
-                <span className="text-[9.5px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Evidence</span>
-                <div className="space-y-1.5">
-                  {getEvidenceForQuestion(5).slice(0, 2).map((r) => (
-                    <div 
-                      key={r.row_number} 
-                      onClick={() => jumpToRow(r.row_number)}
-                      className="bg-[#F4F3EE] border border-gray-100 rounded-md p-2.5 text-[12px] text-[#171717] italic cursor-pointer hover:bg-[#EDEBE3] transition-all duration-200 shadow-sm flex justify-between items-center"
-                    >
-                      <span className="truncate">"{r.quote}"</span>
-                      <span className="font-mono text-[10px] text-[#8C8C8C] not-italic shrink-0 ml-2">Row #{r.row_number}</span>
-                    </div>
-                  ))}
+              {/* TWO-COLUMN CARD GRID: Evidence Quotes (Left) + Takeaway Sentence Container (Right) */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-3 border-t border-gray-100 items-stretch">
+                <div className="space-y-2">
+                  <span className="text-[9.5px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Evidence</span>
+                  <div className="space-y-1.5">
+                    {getEvidenceForQuestion(5).slice(0, 2).map((r, idx) => (
+                      <div 
+                        key={r.row_number} 
+                        onClick={() => jumpToRow(r.row_number)}
+                        className="bg-[#F8F9FA] hover:bg-[#F3F1EA] border border-gray-100 rounded-md p-2.5 text-[12px] text-[#171717] italic cursor-pointer transition-all duration-200 shadow-sm flex items-center justify-between gap-2"
+                      >
+                        <div className="flex items-center gap-2 overflow-hidden flex-1">
+                          <span className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: DOT_PALETTE[idx % 5] }} />
+                          <span className="truncate">"{r.quote}"</span>
+                        </div>
+                        <span className="font-mono text-[10px] text-[#8C8C8C] not-italic shrink-0 ml-auto w-16 text-right tabular-nums">Row #{r.row_number}</span>
+                      </div>
+                    ))}
+                  </div>
                 </div>
-              </div>
 
-              {/* ALWAYS VISIBLE: Product Implication */}
-              <div className="pt-1">
-                <span className="text-[9.5px] font-bold text-[#8C8C8C] uppercase tracking-wider block mb-0.5">Product Implication</span>
-                <p className="text-[12.5px] text-[#171717] font-semibold">Decision supported: Whether to build generalized customer support tools or specific checkout security badges.</p>
-              </div>
+                <div className="bg-[#F3F1EA] rounded-lg p-3.5 flex flex-col justify-between space-y-2 border-none">
+                  <div>
+                    <span className="text-[9.5px] font-bold text-[#8C8C8C] uppercase tracking-wider block mb-0.5">Product Implication</span>
+                    <p className="text-[12.5px] text-[#171717] font-semibold leading-snug">Decision supported: Whether to build generalized customer support tools or specific checkout security badges.</p>
+                  </div>
 
-              {/* COLLAPSED EXPANDER TOGGLE */}
-              <div className="pt-2 border-t border-gray-100 flex items-center justify-between">
-                <button
-                  onClick={() => toggleQuestion(5)}
-                  className="flex items-center gap-1.5 text-[12px] font-bold text-[#5F6368] hover:text-[#000000] transition-colors py-1 focus:outline-none"
-                >
-                  <span>Full analysis</span>
-                  {expandedQuestions[5] ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
-                </button>
+                  <div>
+                    <button
+                      onClick={() => toggleQuestion(5)}
+                      className="flex items-center gap-1 text-[12px] font-bold text-[#8A6A0F] hover:underline focus:outline-none py-0.5"
+                    >
+                      <span className="font-mono text-[13px]">{expandedQuestions[5] ? "−" : "+"}</span>
+                      <span>What this finding means</span>
+                    </button>
+                  </div>
+                </div>
               </div>
 
               {/* EXPANDED CONTENT (Closed by default) */}
@@ -1307,38 +1338,43 @@ export default function EngineDashboard() {
                 />
               </div>
 
-              {/* ALWAYS VISIBLE: 2 Evidence Quotes */}
-              <div className="space-y-1.5 pt-2 border-t border-gray-100">
-                <span className="text-[9.5px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Evidence</span>
-                <div className="space-y-1.5">
-                  {getEvidenceForQuestion(6).slice(0, 2).map((r) => (
-                    <div 
-                      key={r.row_number} 
-                      onClick={() => jumpToRow(r.row_number)}
-                      className="bg-[#F4F3EE] border border-gray-100 rounded-md p-2.5 text-[12px] text-[#171717] italic cursor-pointer hover:bg-[#EDEBE3] transition-all duration-200 shadow-sm flex justify-between items-center"
-                    >
-                      <span className="truncate">"{r.quote}"</span>
-                      <span className="font-mono text-[10px] text-[#8C8C8C] not-italic shrink-0 ml-2">Row #{r.row_number}</span>
-                    </div>
-                  ))}
+              {/* TWO-COLUMN CARD GRID: Evidence Quotes (Left) + Takeaway Sentence Container (Right) */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-3 border-t border-gray-100 items-stretch">
+                <div className="space-y-2">
+                  <span className="text-[9.5px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Evidence</span>
+                  <div className="space-y-1.5">
+                    {getEvidenceForQuestion(6).slice(0, 2).map((r, idx) => (
+                      <div 
+                        key={r.row_number} 
+                        onClick={() => jumpToRow(r.row_number)}
+                        className="bg-[#F8F9FA] hover:bg-[#F3F1EA] border border-gray-100 rounded-md p-2.5 text-[12px] text-[#171717] italic cursor-pointer transition-all duration-200 shadow-sm flex items-center justify-between gap-2"
+                      >
+                        <div className="flex items-center gap-2 overflow-hidden flex-1">
+                          <span className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: DOT_PALETTE[idx % 5] }} />
+                          <span className="truncate">"{r.quote}"</span>
+                        </div>
+                        <span className="font-mono text-[10px] text-[#8C8C8C] not-italic shrink-0 ml-auto w-16 text-right tabular-nums">Row #{r.row_number}</span>
+                      </div>
+                    ))}
+                  </div>
                 </div>
-              </div>
 
-              {/* ALWAYS VISIBLE: Product Implication */}
-              <div className="pt-1">
-                <span className="text-[9.5px] font-bold text-[#8C8C8C] uppercase tracking-wider block mb-0.5">Product Implication</span>
-                <p className="text-[12.5px] text-[#171717] font-semibold">Decision supported: Aligning roadmap goals with supply chain fulfillment accuracy metrics rather than top-funnel marketing.</p>
-              </div>
+                <div className="bg-[#F3F1EA] rounded-lg p-3.5 flex flex-col justify-between space-y-2 border-none">
+                  <div>
+                    <span className="text-[9.5px] font-bold text-[#8C8C8C] uppercase tracking-wider block mb-0.5">Product Implication</span>
+                    <p className="text-[12.5px] text-[#171717] font-semibold leading-snug">Decision supported: Aligning roadmap goals with supply chain fulfillment accuracy metrics rather than top-funnel marketing.</p>
+                  </div>
 
-              {/* COLLAPSED EXPANDER TOGGLE */}
-              <div className="pt-2 border-t border-gray-100 flex items-center justify-between">
-                <button
-                  onClick={() => toggleQuestion(6)}
-                  className="flex items-center gap-1.5 text-[12px] font-bold text-[#5F6368] hover:text-[#000000] transition-colors py-1 focus:outline-none"
-                >
-                  <span>Full analysis</span>
-                  {expandedQuestions[6] ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
-                </button>
+                  <div>
+                    <button
+                      onClick={() => toggleQuestion(6)}
+                      className="flex items-center gap-1 text-[12px] font-bold text-[#8A6A0F] hover:underline focus:outline-none py-0.5"
+                    >
+                      <span className="font-mono text-[13px]">{expandedQuestions[6] ? "−" : "+"}</span>
+                      <span>What this finding means</span>
+                    </button>
+                  </div>
+                </div>
               </div>
 
               {/* EXPANDED CONTENT (Closed by default) */}
@@ -1403,30 +1439,44 @@ export default function EngineDashboard() {
                 />
               </div>
 
-              {/* ALWAYS VISIBLE: 2 Evidence Quotes */}
-              <div className="space-y-1.5 pt-2 border-t border-gray-100">
-                <span className="text-[9.5px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Evidence</span>
-                <div className="space-y-1.5">
-                  {getEvidenceForQuestion(7).slice(0, 2).map((r) => (
-                    <div 
-                      key={r.row_number} 
-                      onClick={() => jumpToRow(r.row_number)}
-                      className="bg-[#F4F3EE] border border-gray-100 rounded-md p-2.5 text-[12px] text-[#171717] italic cursor-pointer hover:bg-[#EDEBE3] transition-all duration-200 shadow-sm flex justify-between items-center"
+              {/* TWO-COLUMN CARD GRID: Evidence Quotes (Left) + Takeaway Sentence Container (Right) */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-3 border-t border-gray-100 items-stretch">
+                <div className="space-y-2">
+                  <span className="text-[9.5px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Evidence</span>
+                  <div className="space-y-1.5">
+                    {getEvidenceForQuestion(7).slice(0, 2).map((r, idx) => (
+                      <div 
+                        key={r.row_number} 
+                        onClick={() => jumpToRow(r.row_number)}
+                        className="bg-[#F8F9FA] hover:bg-[#F3F1EA] border border-gray-100 rounded-md p-2.5 text-[12px] text-[#171717] italic cursor-pointer transition-all duration-200 shadow-sm flex items-center justify-between gap-2"
+                      >
+                        <div className="flex items-center gap-2 overflow-hidden flex-1">
+                          <span className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: DOT_PALETTE[idx % 5] }} />
+                          <span className="truncate">"{r.quote}"</span>
+                        </div>
+                        <span className="font-mono text-[10px] text-[#8C8C8C] not-italic shrink-0 ml-auto w-16 text-right tabular-nums">Row #{r.row_number}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="bg-[#F3F1EA] rounded-lg p-3.5 flex flex-col justify-between space-y-2 border-none">
+                  <div>
+                    <span className="text-[9.5px] font-bold text-[#8C8C8C] uppercase tracking-wider block mb-0.5">Product Implication</span>
+                    <p className="text-[12.5px] text-[#171717] font-semibold leading-snug">Decision supported: Targeting new feature pilots to the "heavy_user" segment rather than mass-market launches.</p>
+                  </div>
+
+                  <div>
+                    <button
+                      onClick={() => toggleQuestion(7)}
+                      className="flex items-center gap-1 text-[12px] font-bold text-[#8A6A0F] hover:underline focus:outline-none py-0.5"
                     >
-                      <span className="truncate">"{r.quote}"</span>
-                      <span className="font-mono text-[10px] text-[#8C8C8C] not-italic shrink-0 ml-2">Row #{r.row_number}</span>
-                    </div>
-                  ))}
+                      <span className="font-mono text-[13px]">{expandedQuestions[7] ? "−" : "+"}</span>
+                      <span>What this finding means & matrix</span>
+                    </button>
+                  </div>
                 </div>
               </div>
-
-              {/* ALWAYS VISIBLE: Product Implication */}
-              <div className="pt-1">
-                <span className="text-[9.5px] font-bold text-[#8C8C8C] uppercase tracking-wider block mb-0.5">Product Implication</span>
-                <p className="text-[12.5px] text-[#171717] font-semibold">Decision supported: Targeting new feature pilots to the "heavy_user" segment rather than mass-market launches.</p>
-              </div>
-
-              {/* COLLAPSED EXPANDER TOGGLE */}
               <div className="pt-2 border-t border-gray-100 flex items-center justify-between">
                 <button
                   onClick={() => toggleQuestion(7)}
@@ -1480,12 +1530,12 @@ export default function EngineDashboard() {
                     </a>
                   </div>
 
-                  {/* Segment x Reason Matrix */}
+                  {/* Dynamic Intensity Heatmap Matrix */}
                   <div className="bg-white border border-gray-100 rounded-lg p-4 space-y-3 mt-3">
                     <div>
-                      <h4 className="text-[13px] font-bold text-[#171717]">Supporting Matrix: Segments × Reason-Types</h4>
+                      <h4 className="text-[13px] font-bold text-[#171717]">Supporting Matrix: Segments × Reason-Types (Intensity Heatmap)</h4>
                       <p className="text-[11.5px] text-[#5F6368] mt-0.5 leading-relaxed">
-                        Matrix compares segments by reason type. Cells are clickable to filter and browse matching records in the Evidence Explorer.
+                        Cells scale smoothly in background saturation based on real signal counts. Click any cell to inspect filtered rows in the Evidence Explorer.
                       </p>
                     </div>
 
@@ -1512,6 +1562,9 @@ export default function EngineDashboard() {
                                       .reduce((sum, r) => sum + (r.confidence === "high" ? 1.0 : r.confidence === "med" ? 0.6 : 0.3), 0) / count
                                   : 0;
 
+                                const ratio = count / maxMatrixCount;
+                                const opacity = count > 0 ? (0.12 + ratio * 0.78).toFixed(2) : "0";
+
                                 return (
                                   <td 
                                     key={reason}
@@ -1519,8 +1572,8 @@ export default function EngineDashboard() {
                                     className="p-1.5 text-center cursor-pointer transition-colors hover:bg-[#FFF6DD]"
                                     style={{
                                       backgroundColor: count > 0 
-                                        ? `rgba(0, 0, 0, ${0.05 + (count / maxMatrixCount) * 0.25})` 
-                                        : "transparent"
+                                        ? `rgba(248, 203, 70, ${opacity})` 
+                                        : "#FAF9F5"
                                     }}
                                   >
                                     {count > 0 ? (
@@ -1570,38 +1623,43 @@ export default function EngineDashboard() {
                 />
               </div>
 
-              {/* ALWAYS VISIBLE: 2 Evidence Quotes */}
-              <div className="space-y-1.5 pt-2 border-t border-gray-100">
-                <span className="text-[9.5px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Evidence</span>
-                <div className="space-y-1.5">
-                  {getEvidenceForQuestion(8).slice(0, 2).map((r) => (
-                    <div 
-                      key={r.row_number} 
-                      onClick={() => jumpToRow(r.row_number)}
-                      className="bg-[#F4F3EE] border border-gray-100 rounded-md p-2.5 text-[12px] text-[#171717] italic cursor-pointer hover:bg-[#EDEBE3] transition-all duration-200 shadow-sm flex justify-between items-center"
-                    >
-                      <span className="truncate">"{r.quote}"</span>
-                      <span className="font-mono text-[10px] text-[#8C8C8C] not-italic shrink-0 ml-2">Row #{r.row_number}</span>
-                    </div>
-                  ))}
+              {/* TWO-COLUMN CARD GRID: Evidence Quotes (Left) + Takeaway Sentence Container (Right) */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-3 border-t border-gray-100 items-stretch">
+                <div className="space-y-2">
+                  <span className="text-[9.5px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Evidence</span>
+                  <div className="space-y-1.5">
+                    {getEvidenceForQuestion(8).slice(0, 2).map((r, idx) => (
+                      <div 
+                        key={r.row_number} 
+                        onClick={() => jumpToRow(r.row_number)}
+                        className="bg-[#F8F9FA] hover:bg-[#F3F1EA] border border-gray-100 rounded-md p-2.5 text-[12px] text-[#171717] italic cursor-pointer transition-all duration-200 shadow-sm flex items-center justify-between gap-2"
+                      >
+                        <div className="flex items-center gap-2 overflow-hidden flex-1">
+                          <span className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: DOT_PALETTE[idx % 5] }} />
+                          <span className="truncate">"{r.quote}"</span>
+                        </div>
+                        <span className="font-mono text-[10px] text-[#8C8C8C] not-italic shrink-0 ml-auto w-16 text-right tabular-nums">Row #{r.row_number}</span>
+                      </div>
+                    ))}
+                  </div>
                 </div>
-              </div>
 
-              {/* ALWAYS VISIBLE: Product Implication */}
-              <div className="pt-1">
-                <span className="text-[9.5px] font-bold text-[#8C8C8C] uppercase tracking-wider block mb-0.5">Product Implication</span>
-                <p className="text-[12.5px] text-[#171717] font-semibold">Decision supported: Running dedicated qualitative validation studies for accessibility features.</p>
-              </div>
+                <div className="bg-[#F3F1EA] rounded-lg p-3.5 flex flex-col justify-between space-y-2 border-none">
+                  <div>
+                    <span className="text-[9.5px] font-bold text-[#8C8C8C] uppercase tracking-wider block mb-0.5">Product Implication</span>
+                    <p className="text-[12.5px] text-[#171717] font-semibold leading-snug">Decision supported: Running dedicated qualitative validation studies for accessibility features.</p>
+                  </div>
 
-              {/* COLLAPSED EXPANDER TOGGLE */}
-              <div className="pt-2 border-t border-gray-100 flex items-center justify-between">
-                <button
-                  onClick={() => toggleQuestion(8)}
-                  className="flex items-center gap-1.5 text-[12px] font-bold text-[#5F6368] hover:text-[#000000] transition-colors py-1 focus:outline-none"
-                >
-                  <span>Full analysis</span>
-                  {expandedQuestions[8] ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
-                </button>
+                  <div>
+                    <button
+                      onClick={() => toggleQuestion(8)}
+                      className="flex items-center gap-1 text-[12px] font-bold text-[#8A6A0F] hover:underline focus:outline-none py-0.5"
+                    >
+                      <span className="font-mono text-[13px]">{expandedQuestions[8] ? "−" : "+"}</span>
+                      <span>What this finding means</span>
+                    </button>
+                  </div>
+                </div>
               </div>
 
               {/* EXPANDED CONTENT (Closed by default) */}
@@ -1657,82 +1715,104 @@ export default function EngineDashboard() {
             </p>
           </div>
 
-          {/* Explorer Filters Header Card */}
-          <div className="bg-[#FFFFFF] border-none shadow-[0_1px_3px_rgba(0,0,0,0.08),0_1px_2px_rgba(0,0,0,0.06)] rounded-lg p-5 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-4 items-end">
-            {/* Search input */}
-            <div className="space-y-1">
-              <label className="text-[9.5px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Search Quote/Row</label>
-              <div className="relative">
-                <input
-                  type="text"
-                  placeholder="e.g. 22 or 'spoiled'"
-                  value={explorerSearch}
-                  onChange={(e) => setExplorerSearch(e.target.value)}
-                  className="w-full bg-[#FFFFFF] border border-gray-200 rounded px-3 py-1.5 text-[12px] focus:outline-none text-[#171717] font-medium"
-                />
-                {explorerSearch && (
-                  <button 
-                    onClick={() => setExplorerSearch("")}
-                    className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[10px] font-bold text-[#8C8C8C] hover:text-[#171717]"
-                  >
-                    ×
-                  </button>
-                )}
+          {/* Explorer Filters Contained Panel */}
+          <div className="bg-[#FFFFFF] border border-gray-200 rounded-xl p-5 shadow-sm space-y-3">
+            <div className="flex items-center justify-between border-b border-gray-100 pb-2">
+              <span className="text-[10px] font-mono font-bold text-[#8C8C8C] uppercase tracking-wider">
+                FILTER PANEL
+              </span>
+              {(explorerSearch || explorerSource !== "all" || explorerSegment !== "all" || explorerReason !== "all" || explorerConfidence !== "all") && (
+                <button
+                  onClick={() => {
+                    setExplorerSearch("");
+                    setExplorerSource("all");
+                    setExplorerSegment("all");
+                    setExplorerReason("all");
+                    setExplorerConfidence("all");
+                  }}
+                  className="text-[11px] font-bold text-[#D93025] hover:underline"
+                >
+                  Reset Filters
+                </button>
+              )}
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-4 items-end">
+              {/* Search input */}
+              <div className="space-y-1">
+                <label className="text-[9.5px] font-mono font-bold text-[#8C8C8C] uppercase tracking-wider block">SEARCH QUOTE / ROW</label>
+                <div className="relative">
+                  <input
+                    type="text"
+                    placeholder="e.g. 22 or 'spoiled'"
+                    value={explorerSearch}
+                    onChange={(e) => setExplorerSearch(e.target.value)}
+                    className="w-full bg-[#FFFFFF] border border-gray-200 rounded px-3 py-1.5 text-[12px] focus:outline-none text-[#171717] font-medium"
+                  />
+                  {explorerSearch && (
+                    <button 
+                      onClick={() => setExplorerSearch("")}
+                      className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[10px] font-bold text-[#8C8C8C] hover:text-[#171717]"
+                    >
+                      ×
+                    </button>
+                  )}
+                </div>
               </div>
-            </div>
 
-            {/* Source dropdown */}
-            <div className="space-y-1">
-              <label className="text-[9.5px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Source</label>
-              <select
-                value={explorerSource}
-                onChange={(e) => setExplorerSource(e.target.value)}
-                className="w-full bg-[#FFFFFF] border border-gray-200 rounded px-2.5 py-1.5 text-[12px] focus:outline-none text-[#171717] font-medium"
-              >
-                <option value="all">All Sources</option>
-                {SOURCES.map(s => <option key={s} value={s}>{s}</option>)}
-              </select>
-            </div>
+              {/* Source dropdown */}
+              <div className="space-y-1">
+                <label className="text-[9.5px] font-mono font-bold text-[#8C8C8C] uppercase tracking-wider block">SOURCES</label>
+                <select
+                  value={explorerSource}
+                  onChange={(e) => setExplorerSource(e.target.value)}
+                  className="w-full bg-[#FFFFFF] border border-gray-200 rounded px-2.5 py-1.5 text-[12px] focus:outline-none text-[#171717] font-medium"
+                >
+                  <option value="all">All Sources</option>
+                  {SOURCES.map(s => <option key={s} value={s}>{s}</option>)}
+                </select>
+              </div>
 
-            {/* Segment dropdown */}
-            <div className="space-y-1">
-              <label className="text-[9.5px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Segment</label>
-              <select
-                value={explorerSegment}
-                onChange={(e) => setExplorerSegment(e.target.value)}
-                className="w-full bg-[#FFFFFF] border border-gray-200 rounded px-2.5 py-1.5 text-[12px] focus:outline-none text-[#171717] font-medium capitalize"
-              >
-                <option value="all">All Segments</option>
-                {SEGMENTS.map(s => <option key={s} value={s}>{s.replace(/_/g, " ")}</option>)}
-              </select>
-            </div>
+              {/* Segment dropdown */}
+              <div className="space-y-1">
+                <label className="text-[9.5px] font-mono font-bold text-[#8C8C8C] uppercase tracking-wider block">SEGMENTS</label>
+                <select
+                  value={explorerSegment}
+                  onChange={(e) => setExplorerSegment(e.target.value)}
+                  className="w-full bg-[#FFFFFF] border border-gray-200 rounded px-2.5 py-1.5 text-[12px] focus:outline-none text-[#171717] font-medium capitalize"
+                >
+                  <option value="all">All Segments</option>
+                  {SEGMENTS.map(s => <option key={s} value={s}>{s.replace(/_/g, " ")}</option>)}
+                </select>
+              </div>
 
-            {/* Reason dropdown */}
-            <div className="space-y-1">
-              <label className="text-[9.5px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Reason Type</label>
-              <select
-                value={explorerReason}
-                onChange={(e) => setExplorerReason(e.target.value)}
-                className="w-full bg-[#FFFFFF] border border-gray-200 rounded px-2.5 py-1.5 text-[12px] focus:outline-none text-[#171717] font-medium capitalize"
-              >
-                <option value="all">All Reasons</option>
-                {REASONS.map(r => <option key={r} value={r}>{r}</option>)}
-              </select>
-            </div>
+              {/* Reason dropdown */}
+              <div className="space-y-1">
+                <label className="text-[9.5px] font-mono font-bold text-[#8C8C8C] uppercase tracking-wider block">REASONS</label>
+                <select
+                  value={explorerReason}
+                  onChange={(e) => setExplorerReason(e.target.value)}
+                  className="w-full bg-[#FFFFFF] border border-gray-200 rounded px-2.5 py-1.5 text-[12px] focus:outline-none text-[#171717] font-medium capitalize"
+                >
+                  <option value="all">All Reasons</option>
+                  {REASONS.map(r => <option key={r} value={r}>{r}</option>)}
+                </select>
+              </div>
 
-            {/* Confidence dropdown */}
-            <div className="space-y-1">
-              <label className="text-[9.5px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Confidence</label>
-              <select
-                value={explorerConfidence}
-                onChange={(e) => setExplorerConfidence(e.target.value)}
-                className="w-full bg-[#FFFFFF] border border-gray-200 rounded px-2.5 py-1.5 text-[12px] focus:outline-none text-[#171717] font-medium capitalize"
-              >
-                <option value="all">All Confidence</option>
-                <option value="high">High</option>
-                <option value="med">Medium</option>
-                <option value="low">Low</option>
-              </select>
+              {/* Confidence dropdown */}
+              <div className="space-y-1">
+                <label className="text-[9.5px] font-mono font-bold text-[#8C8C8C] uppercase tracking-wider block">CONFIDENCE</label>
+                <select
+                  value={explorerConfidence}
+                  onChange={(e) => setExplorerConfidence(e.target.value)}
+                  className="w-full bg-[#FFFFFF] border border-gray-200 rounded px-2.5 py-1.5 text-[12px] focus:outline-none text-[#171717] font-medium capitalize"
+                >
+                  <option value="all">All Confidence</option>
+                  <option value="high">High</option>
+                  <option value="med">Medium</option>
+                  <option value="low">Low</option>
+                </select>
+              </div>
             </div>
           </div>
 
