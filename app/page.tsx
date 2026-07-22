@@ -179,23 +179,25 @@ export default function EngineDashboard() {
   // Discovery Questions Data & Sourcing
   const getEvidenceForQuestion = (qIndex: number): ReviewRow[] => {
     switch (qIndex) {
-      case 1:
-        return reviews.filter(r => r.repeat_buying_signal === "yes" && r.reason_type === "habit").slice(0, 2);
+      case 1: {
+        const set1 = reviews.filter(r => r.repeat_buying_signal === "yes");
+        const set2 = reviews.filter(r => r.reason_type === "habit");
+        return Array.from(new Set([...set1, ...set2])).slice(0, 2);
+      }
       case 2:
-        return reviews.filter(r => r.repeat_buying_signal === "no" && r.reason_type === "trust" && r.category_mentioned !== "none").slice(0, 2);
+        return reviews.filter(r => r.reason_type === "trust" && r.category_mentioned !== "none").slice(0, 2);
       case 3:
         return reviews.filter(r => r.reason_type === "no_discovery").slice(0, 2);
       case 4:
-        return reviews.filter(r => r.reason_type === "price" && r.user_segment === "price_sensitive").slice(0, 2);
+        return reviews.filter(r => r.reason_type === "price").slice(0, 2);
       case 5:
         return reviews.filter(r => r.info_needed !== "none" && r.info_needed !== "not stated" && r.confidence === "high").slice(0, 2);
       case 6:
         return reviews.filter(r => r.barrier_to_new_category !== "none" && r.reason_type === "trust").slice(0, 2);
       case 7:
-        return reviews.filter(r => r.user_segment === "heavy_user" && r.reason_type === "trust").slice(0, 2);
+        return reviews.filter(r => r.user_segment === "heavy_user").slice(0, 2);
       case 8:
-        return reviews.filter(r => r.info_needed !== "none" && r.info_needed !== "not stated" && r.user_segment === "senior_citizen").slice(0, 1)
-          .concat(reviews.filter(r => r.info_needed !== "none" && r.info_needed !== "not stated" && r.confidence === "med").slice(0, 1));
+        return reviews.filter(r => r.info_needed !== "none" && r.info_needed !== "not stated").slice(0, 2);
       default:
         return [];
     }
@@ -292,8 +294,8 @@ export default function EngineDashboard() {
         </header>
       )}
 
-      {/* Primary Business Objective Banner */}
-      {currentView !== "landing" && (
+      {/* Primary Business Objective Banner (Shown once on Discovery Workspace entry point) */}
+      {currentView === "workspace" && (
         <div className="bg-[#F3F5F1] border border-[#59624B]/20 p-4 rounded-lg text-[13px] text-[#59624B] leading-relaxed max-w-4xl mx-auto shadow-sm">
           <strong>Primary Objective:</strong> Understand why customers who already trust Blinkit for one category hesitate to expand into additional categories, and identify evidence-backed opportunities to reduce that hesitation.
         </div>

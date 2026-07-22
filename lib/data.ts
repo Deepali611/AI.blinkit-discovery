@@ -14,56 +14,11 @@ export type ReviewRow = {
   quote: string;
 };
 
-export const reviews = (reviewsRaw as any[]).map((r, index) => {
-  // Deterministic source based on index:
-  // Google Play: ~56.3%
-  // Reddit: ~30.6%
-  // YouTube: ~12.2%
-  // App Store: ~0.9%
-  let source: "Google Play" | "Reddit" | "YouTube" | "App Store" = "Google Play";
-  const pct = index % 100;
-  if (pct < 56) {
-    source = "Google Play";
-  } else if (pct < 87) {
-    source = "Reddit";
-  } else if (pct < 99) {
-    source = "YouTube";
-  } else {
-    source = "App Store";
-  }
-
-  // Realistic quote generator based on data fields
-  let quote = "";
-  const cat = r.category_mentioned === "none" ? "groceries" : r.category_mentioned.toLowerCase();
-  
-  if (r.reason_type === "trust") {
-    if (cat.includes("milk") || cat.includes("dairy") || cat.includes("fresh") || cat.includes("produce") || cat.includes("bakery") || cat.includes("meat")) {
-      quote = `Veggies and milk were near expiry. Can't trust ordering perishables without seeing expiry dates first.`;
-    } else if (cat.includes("electronics") || cat.includes("appliances") || cat.includes("phone")) {
-      quote = `Worried about getting a counterfeit adaptor. Show me seller verification tags before I buy.`;
-    } else if (cat.includes("medicine") || cat.includes("health")) {
-      quote = `Unsure if these medicines are stored in cold chain. Better to buy from local chemist.`;
-    } else {
-      quote = `Received damaged packaging and returning is a headache. Need absolute quality guarantee.`;
-    }
-  } else if (r.reason_type === "price") {
-    quote = `Zepto/Instamart has the same category cheaper this week. Switching apps for better discounts.`;
-  } else if (r.reason_type === "convenience") {
-    quote = `Delivery is very fast, but catalog is often out of stock or items get substituted.`;
-  } else if (r.reason_type === "no_discovery") {
-    quote = `Hard to find niche regional brands in search. Blinkit search always shows irrelevant ads.`;
-  } else if (r.reason_type === "habit") {
-    quote = `Only buy daily milk out of routine. I prefer Amazon or DMart for everything else.`;
-  } else {
-    quote = `Need transparency on packaging, seal and expiry before ordering anything new.`;
-  }
-
-  return {
-    ...r,
-    source,
-    quote,
-  };
-}) as ReviewRow[];
+export const reviews = (reviewsRaw as any[]).map((r) => ({
+  ...r,
+  source: r.source || "Google Play",
+  quote: r.quote || "Customer review signal extracted from source."
+})) as ReviewRow[];
 
 export const TOTAL_REVIEWS_SCANNED = 1176;
 export const N = reviews.length;
