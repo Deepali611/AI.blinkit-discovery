@@ -982,13 +982,13 @@ export default function EngineDashboard() {
                       className="flex items-center gap-1 text-[12px] font-bold text-[#54B226] hover:underline focus:outline-none py-0.5"
                     >
                       <span className="font-mono text-[13px]">{expandedQuestions[1] ? "−" : "+"}</span>
-                      <span>What this finding means & 7-layer analysis</span>
+                      <span>What this finding means & structured analysis</span>
                     </button>
                   </div>
                 </div>
               </div>
 
-              {/* EXPANDED CONTENT — 7-LAYER INSIGHT STRUCTURE */}
+              {/* EXPANDED CONTENT — STRUCTURED INSIGHT */}
               {expandedQuestions[1] && (
                 <motion.div 
                   initial={{ opacity: 0, height: 0 }}
@@ -1040,14 +1040,6 @@ export default function EngineDashboard() {
                     <span className="text-[9.5px] font-bold text-[#54B226] uppercase tracking-wider block mb-1">Remaining Uncertainty</span>
                     <p className="text-[#5F6368]">
                       Review mining cannot establish whether non-reviewing customers show the same pattern, or whether some customers who describe "habit" language are minimizing a risk-based decision for social reasons (e.g., not wanting to sound overly cautious).
-                    </p>
-                  </div>
-
-                  {/* Layer 7: Interview Hypothesis */}
-                  <div className="bg-[#FFF9E6] border border-[#F8CB45]/50 p-3 rounded-md">
-                    <span className="text-[9.5px] font-bold text-[#1F1F1F] uppercase tracking-wider block mb-1">Interview Hypothesis</span>
-                    <p className="text-[#1F1F1F] font-semibold">
-                      Ask customers directly: "Think about the last time you didn't try a new category on Blinkit — was there a specific reason, or did you just not think about it?" This should surface whether the stated pattern (deliberate risk avoidance vs. true default behavior) holds in a live conversation.
                     </p>
                   </div>
 
@@ -1118,13 +1110,13 @@ export default function EngineDashboard() {
                       className="flex items-center gap-1 text-[12px] font-bold text-[#54B226] hover:underline focus:outline-none py-0.5"
                     >
                       <span className="font-mono text-[13px]">{expandedQuestions[2] ? "−" : "+"}</span>
-                      <span>What this finding means & 7-layer analysis</span>
+                      <span>What this finding means & structured analysis</span>
                     </button>
                   </div>
                 </div>
               </div>
 
-              {/* EXPANDED CONTENT — 7-LAYER INSIGHT STRUCTURE */}
+              {/* EXPANDED CONTENT — STRUCTURED INSIGHT */}
               {expandedQuestions[2] && (
                 <motion.div 
                   initial={{ opacity: 0, height: 0 }}
@@ -1176,14 +1168,6 @@ export default function EngineDashboard() {
                     <span className="text-[9.5px] font-bold text-[#54B226] uppercase tracking-wider block mb-1">Remaining Uncertainty</span>
                     <p className="text-[#5F6368]">
                       Whether trust failures are concentrated in specific fulfillment centers, courier networks, or supplier relationships cannot be determined from review text alone.
-                    </p>
-                  </div>
-
-                  {/* Layer 7: Interview Hypothesis */}
-                  <div className="bg-[#FFF9E6] border border-[#F8CB45]/50 p-3 rounded-md">
-                    <span className="text-[9.5px] font-bold text-[#1F1F1F] uppercase tracking-wider block mb-1">Interview Hypothesis</span>
-                    <p className="text-[#1F1F1F] font-semibold">
-                      Ask: "If you had a bad experience with [category A], does that change how you feel about trying [category B] you've never used?" This tests whether trust is category-siloed or generalizes.
                     </p>
                   </div>
 
@@ -1254,13 +1238,13 @@ export default function EngineDashboard() {
                       className="flex items-center gap-1 text-[12px] font-bold text-[#54B226] hover:underline focus:outline-none py-0.5"
                     >
                       <span className="font-mono text-[13px]">{expandedQuestions[3] ? "−" : "+"}</span>
-                      <span>What this finding means & 7-layer analysis</span>
+                      <span>What this finding means & structured analysis</span>
                     </button>
                   </div>
                 </div>
               </div>
 
-              {/* EXPANDED CONTENT — 7-LAYER INSIGHT STRUCTURE */}
+              {/* EXPANDED CONTENT — STRUCTURED INSIGHT */}
               {expandedQuestions[3] && (
                 <motion.div 
                   initial={{ opacity: 0, height: 0 }}
@@ -1312,14 +1296,6 @@ export default function EngineDashboard() {
                     <span className="text-[9.5px] font-bold text-[#54B226] uppercase tracking-wider block mb-1">Remaining Uncertainty</span>
                     <p className="text-[#5F6368]">
                       Review mining structurally cannot measure silent churn — customers who leave without complaining are invisible to this method entirely. This is a known blind spot, not a finding.
-                    </p>
-                  </div>
-
-                  {/* Layer 7: Interview Hypothesis */}
-                  <div className="bg-[#FFF9E6] border border-[#F8CB45]/50 p-3 rounded-md">
-                    <span className="text-[9.5px] font-bold text-[#1F1F1F] uppercase tracking-wider block mb-1">Interview Hypothesis</span>
-                    <p className="text-[#1F1F1F] font-semibold">
-                      Ask: "Have you ever looked for something specific on Blinkit, not found it, and gone somewhere else without saying anything?" This directly probes the silent-churn gap review data cannot see.
                     </p>
                   </div>
 
@@ -1390,13 +1366,13 @@ export default function EngineDashboard() {
                       className="flex items-center gap-1 text-[12px] font-bold text-[#54B226] hover:underline focus:outline-none py-0.5"
                     >
                       <span className="font-mono text-[13px]">{expandedQuestions[4] ? "−" : "+"}</span>
-                      <span>What this finding means & 7-layer analysis</span>
+                      <span>What this finding means & structured analysis</span>
                     </button>
                   </div>
                 </div>
               </div>
 
-              {/* EXPANDED CONTENT — 7-LAYER INSIGHT STRUCTURE */}
+              {/* EXPANDED CONTENT — STRUCTURED INSIGHT */}
               {expandedQuestions[4] && (
                 <motion.div 
                   initial={{ opacity: 0, height: 0 }}
@@ -1448,14 +1424,6 @@ export default function EngineDashboard() {
                     <span className="text-[9.5px] font-bold text-[#54B226] uppercase tracking-wider block mb-1">Remaining Uncertainty</span>
                     <p className="text-[#5F6368]">
                       Whether this price-comparison behavior is stable over time or specific to the review-writing population (who may be more price-conscious than average) cannot be determined here.
-                    </p>
-                  </div>
-
-                  {/* Layer 7: Interview Hypothesis */}
-                  <div className="bg-[#FFF9E6] border border-[#F8CB45]/50 p-3 rounded-md">
-                    <span className="text-[9.5px] font-bold text-[#1F1F1F] uppercase tracking-wider block mb-1">Interview Hypothesis</span>
-                    <p className="text-[#1F1F1F] font-semibold">
-                      Ask: "Last time you compared Blinkit to another app before buying something — walk me through what you were thinking." This surfaces the actual decision process behind the language pattern.
                     </p>
                   </div>
 
@@ -1526,13 +1494,13 @@ export default function EngineDashboard() {
                       className="flex items-center gap-1 text-[12px] font-bold text-[#54B226] hover:underline focus:outline-none py-0.5"
                     >
                       <span className="font-mono text-[13px]">{expandedQuestions[5] ? "−" : "+"}</span>
-                      <span>What this finding means & 7-layer analysis</span>
+                      <span>What this finding means & structured analysis</span>
                     </button>
                   </div>
                 </div>
               </div>
 
-              {/* EXPANDED CONTENT — 7-LAYER INSIGHT STRUCTURE */}
+              {/* EXPANDED CONTENT — STRUCTURED INSIGHT */}
               {expandedQuestions[5] && (
                 <motion.div 
                   initial={{ opacity: 0, height: 0 }}
@@ -1584,14 +1552,6 @@ export default function EngineDashboard() {
                     <span className="text-[9.5px] font-bold text-[#54B226] uppercase tracking-wider block mb-1">Remaining Uncertainty</span>
                     <p className="text-[#5F6368]">
                       Whether customers who state a specific fix would actually convert if that fix were implemented, or whether stated requirements are post-hoc rationalizations for a decision already made, cannot be resolved from review text.
-                    </p>
-                  </div>
-
-                  {/* Layer 7: Interview Hypothesis */}
-                  <div className="bg-[#FFF9E6] border border-[#F8CB45]/50 p-3 rounded-md">
-                    <span className="text-[9.5px] font-bold text-[#1F1F1F] uppercase tracking-wider block mb-1">Interview Hypothesis</span>
-                    <p className="text-[#1F1F1F] font-semibold">
-                      Present customers with a mocked authenticity/return-guarantee treatment and ask: "Would this actually change what you buy, or does the hesitation go deeper than this?" This tests whether the stated fix is causally sufficient or only necessary.
                     </p>
                   </div>
 
@@ -1662,13 +1622,13 @@ export default function EngineDashboard() {
                       className="flex items-center gap-1 text-[12px] font-bold text-[#54B226] hover:underline focus:outline-none py-0.5"
                     >
                       <span className="font-mono text-[13px]">{expandedQuestions[6] ? "−" : "+"}</span>
-                      <span>What this finding means & 7-layer analysis</span>
+                      <span>What this finding means & structured analysis</span>
                     </button>
                   </div>
                 </div>
               </div>
 
-              {/* EXPANDED CONTENT — 7-LAYER INSIGHT STRUCTURE */}
+              {/* EXPANDED CONTENT — STRUCTURED INSIGHT */}
               {expandedQuestions[6] && (
                 <motion.div 
                   initial={{ opacity: 0, height: 0 }}
@@ -1720,14 +1680,6 @@ export default function EngineDashboard() {
                     <span className="text-[9.5px] font-bold text-[#54B226] uppercase tracking-wider block mb-1">Remaining Uncertainty</span>
                     <p className="text-[#5F6368]">
                       Whether fixing all five simultaneously produces a larger trust improvement than the sum of fixing each individually cannot be tested with review data — this requires a controlled before/after comparison.
-                    </p>
-                  </div>
-
-                  {/* Layer 7: Interview Hypothesis */}
-                  <div className="bg-[#FFF9E6] border border-[#F8CB45]/50 p-3 rounded-md">
-                    <span className="text-[9.5px] font-bold text-[#1F1F1F] uppercase tracking-wider block mb-1">Interview Hypothesis</span>
-                    <p className="text-[#1F1F1F] font-semibold">
-                      Ask customers who've had one of these five experiences: "Did this one experience change how you think about Blinkit generally, or just about that specific type of order?" This directly tests the generalization-vs-domain-specific tension noted above.
                     </p>
                   </div>
 
@@ -1798,7 +1750,7 @@ export default function EngineDashboard() {
                       className="flex items-center gap-1 text-[12px] font-bold text-[#54B226] hover:underline focus:outline-none py-0.5"
                     >
                       <span className="font-mono text-[13px]">{expandedQuestions[7] ? "−" : "+"}</span>
-                      <span>What this finding means & 7-layer analysis</span>
+                      <span>What this finding means & structured analysis</span>
                     </button>
                   </div>
                 </div>
@@ -1813,7 +1765,7 @@ export default function EngineDashboard() {
                 </button>
               </div>
 
-              {/* EXPANDED CONTENT — 7-LAYER INSIGHT STRUCTURE */}
+              {/* EXPANDED CONTENT — STRUCTURED INSIGHT */}
               {expandedQuestions[7] && (
                 <motion.div 
                   initial={{ opacity: 0, height: 0 }}
@@ -1865,14 +1817,6 @@ export default function EngineDashboard() {
                     <span className="text-[9.5px] font-bold text-[#54B226] uppercase tracking-wider block mb-1">Remaining Uncertainty</span>
                     <p className="text-[#5F6368]">
                       Whether language-inferred frequency correlates with actual transaction frequency is unverified and unverifiable from this dataset alone.
-                    </p>
-                  </div>
-
-                  {/* Layer 7: Interview Hypothesis */}
-                  <div className="bg-[#FFF9E6] border border-[#F8CB45]/50 p-3 rounded-md">
-                    <span className="text-[9.5px] font-bold text-[#1F1F1F] uppercase tracking-wider block mb-1">Interview Hypothesis</span>
-                    <p className="text-[#1F1F1F] font-semibold">
-                      Recruit customers by actual purchase-history frequency (not language inference) and ask the same objection-framing question to both frequent and infrequent customers, to test whether the specific-vs-absolute language pattern actually tracks real usage frequency or was a language artifact.
                     </p>
                   </div>
 
@@ -2008,13 +1952,13 @@ export default function EngineDashboard() {
                       className="flex items-center gap-1 text-[12px] font-bold text-[#54B226] hover:underline focus:outline-none py-0.5"
                     >
                       <span className="font-mono text-[13px]">{expandedQuestions[8] ? "−" : "+"}</span>
-                      <span>What this finding means & 7-layer analysis</span>
+                      <span>What this finding means & structured analysis</span>
                     </button>
                   </div>
                 </div>
               </div>
 
-              {/* EXPANDED CONTENT — 7-LAYER INSIGHT STRUCTURE */}
+              {/* EXPANDED CONTENT — STRUCTURED INSIGHT */}
               {expandedQuestions[8] && (
                 <motion.div 
                   initial={{ opacity: 0, height: 0 }}
@@ -2065,15 +2009,7 @@ export default function EngineDashboard() {
                   <div>
                     <span className="text-[9.5px] font-bold text-[#54B226] uppercase tracking-wider block mb-1">Remaining Uncertainty</span>
                     <p className="text-[#5F6368]">
-                      Whether this is one vocal outlier or an indicator of a systematically unheard segment is precisely the kind of question review mining cannot answer and interviews exist to resolve.
-                    </p>
-                  </div>
-
-                  {/* Layer 7: Interview Hypothesis */}
-                  <div className="bg-[#FFF9E6] border border-[#F8CB45]/50 p-3 rounded-md">
-                    <span className="text-[9.5px] font-bold text-[#1F1F1F] uppercase tracking-wider block mb-1">Interview Hypothesis</span>
-                    <p className="text-[#1F1F1F] font-semibold">
-                      Actively recruit for interview participants outside the typical review-writing profile (older, less tech-fluent) specifically to test whether this n=1 signal generalizes.
+                      Whether this is one vocal outlier or an indicator of a systematically unheard segment is precisely the kind of question review mining cannot answer alone.
                     </p>
                   </div>
 
@@ -2177,7 +2113,7 @@ export default function EngineDashboard() {
               </div>
 
               <p className="text-[11.5px] text-[#737373] italic border-t border-gray-100 pt-3">
-                Caption: "This is an inferred causal chain connecting independently-measured findings — it is a hypothesis for interview validation, not a proven behavioral sequence."
+                Caption: "This is an inferred causal chain connecting independently-measured findings — it is a hypothesis for qualitative validation, not a proven behavioral sequence."
               </p>
             </div>
           </div>
