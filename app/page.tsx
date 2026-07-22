@@ -397,28 +397,134 @@ export default function EngineDashboard() {
           1. LANDING VIEW
           ═══════════════════════════════════════════ */}
       {currentView === "landing" && (
-        <div className="min-h-[70vh] flex flex-col items-center justify-center max-w-2xl mx-auto text-center space-y-8 py-10">
-          <div className="space-y-4">
-            <div className="w-[48px] h-[48px] rounded-[12px] bg-[#F8CB46] text-[#000000] font-bold text-[22px] flex items-center justify-center mx-auto border-2 border-[#000000]">
+        <div className="min-h-[75vh] flex flex-col items-center justify-center max-w-3xl mx-auto space-y-8 py-10">
+          {/* Header Block */}
+          <div className="text-center space-y-4">
+            <div className="w-[48px] h-[48px] rounded-[12px] bg-[#F8CB46] text-[#000000] font-bold text-[22px] flex items-center justify-center mx-auto border-2 border-[#000000] shadow-sm">
               B
             </div>
-            <h1 className="font-display font-[900] text-[32px] leading-tight tracking-tight text-[#000000]">
+            <h1 className="font-display font-[900] text-[28px] md:text-[34px] leading-tight tracking-tight text-[#000000] max-w-2xl mx-auto">
               Blinkit Discovery Engine — reads customer feedback so Product doesn't have to guess why customers stay inside the categories they already trust.
             </h1>
-            <p className="text-[14px] text-[#5F6368] font-medium leading-relaxed border-t border-gray-200 pt-4">
-              189 behavioral signals extracted from 1,176 reviews across 4 sources. Every signal traces back to a real customer sentence.
-            </p>
-            <p className="text-[12.5px] text-[#737373] font-normal leading-relaxed mt-2">
+            <p className="text-[13.5px] text-[#5F6368] font-medium leading-relaxed max-w-xl mx-auto">
               Blinkit's growth goal: increase the share of Monthly Active Customers who buy from at least one new category every month. This engine exists to find out what's stopping that today.
             </p>
+
+            {/* BLOCK 1: CHIP ROW (4 pill-shaped tags floating freely in a single row) */}
+            <div className="flex flex-wrap items-center justify-center gap-2.5 pt-2">
+              <span className="px-3.5 py-1 text-[11.5px] font-semibold text-[#171717] bg-white border border-gray-200 rounded-full shadow-[0_1px_2px_rgba(0,0,0,0.04)]">
+                Trust barriers
+              </span>
+              <span className="px-3.5 py-1 text-[11.5px] font-semibold text-[#171717] bg-white border border-gray-200 rounded-full shadow-[0_1px_2px_rgba(0,0,0,0.04)]">
+                Price switching
+              </span>
+              <span className="px-3.5 py-1 text-[11.5px] font-semibold text-[#171717] bg-white border border-gray-200 rounded-full shadow-[0_1px_2px_rgba(0,0,0,0.04)]">
+                Segment evidence
+              </span>
+              <span className="px-3.5 py-1 text-[11.5px] font-semibold text-[#171717] bg-white border border-gray-200 rounded-full shadow-[0_1px_2px_rgba(0,0,0,0.04)]">
+                Verbatim proof
+              </span>
+            </div>
           </div>
 
-          <button
-            onClick={() => setCurrentView("workspace")}
-            className="bg-[#000000] text-[#FFFFFF] font-bold text-[13px] px-6 py-3 rounded-[8px] border-2 border-[#000000] flex items-center gap-2 transition-all shadow-sm"
-          >
-            Open the engine <ArrowRight size={14} />
-          </button>
+          {/* BLOCK 2: HIGHLIGHTED CALLOUT BOX */}
+          <div className="w-full relative bg-[#FFFDF5] border-l-4 border-l-[#F8CB46] rounded-xl p-6 md:p-7 shadow-[0_1px_3px_rgba(0,0,0,0.06),0_1px_2px_rgba(0,0,0,0.04)] overflow-hidden flex flex-col md:flex-row items-center justify-between gap-6">
+            {/* Soft decorative bleeding circle in top-right corner */}
+            <div className="absolute -top-10 -right-10 w-36 h-36 bg-[#F8CB46]/20 rounded-full pointer-events-none" />
+
+            <div className="space-y-3 flex-1 relative z-10 text-left">
+              <span className="text-[10px] font-mono font-bold text-[#8A6A0F] uppercase tracking-wider block">
+                ENGINE STATUS
+              </span>
+              <p className="text-[15px] font-bold text-[#171717] leading-snug">
+                189 behavioral signals extracted from 1,176 reviews across 4 sources — ready for structured discovery.
+              </p>
+              <p className="text-[12px] text-[#5F6368] leading-relaxed">
+                Every signal traces back to a real customer sentence.
+              </p>
+              <div className="pt-2 flex items-center gap-3">
+                <button
+                  onClick={() => setCurrentView("workspace")}
+                  className="bg-[#000000] text-[#FFFFFF] font-bold text-[13px] px-5 py-2.5 rounded-[8px] border-2 border-[#000000] flex items-center gap-2 hover:bg-[#171717] transition-all shadow-sm shrink-0"
+                >
+                  Open the engine <ArrowRight size={14} />
+                </button>
+              </div>
+            </div>
+
+            {/* Distinct WHITE card floating inside this colored box */}
+            <div className="bg-white shadow-[0_2px_6px_rgba(0,0,0,0.08)] rounded-xl p-5 text-center border border-gray-100 min-w-[140px] shrink-0 relative z-10">
+              <div className="font-display font-[900] text-[40px] text-[#000000] leading-none">
+                189
+              </div>
+              <span className="text-[10px] font-bold text-[#8C8C8C] uppercase tracking-wider mt-1.5 block">
+                Verified Signals
+              </span>
+            </div>
+          </div>
+
+          {/* BLOCK 3: THREE LINK CARDS (In a row or stacked on mobile) */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 w-full text-left">
+            {/* Card 1 */}
+            <div 
+              onClick={() => setCurrentView("methodology")}
+              className="bg-white border border-gray-100 shadow-[0_1px_3px_rgba(0,0,0,0.06)] rounded-xl p-4 cursor-pointer hover:border-gray-300 transition-all duration-200 flex flex-col justify-between space-y-3 group"
+            >
+              <div>
+                <h4 className="font-bold text-[14px] text-[#171717] group-hover:text-[#000000]">
+                  How the engine works
+                </h4>
+                <p className="text-[12px] text-[#737373] mt-0.5">
+                  Methodology and validation
+                </p>
+              </div>
+              <div className="flex justify-end pt-1">
+                <span className="text-[11px] font-bold text-[#000000] group-hover:underline flex items-center gap-1">
+                  View →
+                </span>
+              </div>
+            </div>
+
+            {/* Card 2 */}
+            <div 
+              onClick={() => setCurrentView("explorer")}
+              className="bg-white border border-gray-100 shadow-[0_1px_3px_rgba(0,0,0,0.06)] rounded-xl p-4 cursor-pointer hover:border-gray-300 transition-all duration-200 flex flex-col justify-between space-y-3 group"
+            >
+              <div>
+                <h4 className="font-bold text-[14px] text-[#171717] group-hover:text-[#000000]">
+                  Evidence Explorer
+                </h4>
+                <p className="text-[12px] text-[#737373] mt-0.5">
+                  Verify any finding against source data
+                </p>
+              </div>
+              <div className="flex justify-end pt-1">
+                <span className="text-[11px] font-bold text-[#000000] group-hover:underline flex items-center gap-1">
+                  Browse →
+                </span>
+              </div>
+            </div>
+
+            {/* Card 3 */}
+            <div 
+              onClick={() => setCurrentView("docs")}
+              className="bg-white border border-gray-100 shadow-[0_1px_3px_rgba(0,0,0,0.06)] rounded-xl p-4 cursor-pointer hover:border-gray-300 transition-all duration-200 flex flex-col justify-between space-y-3 group"
+            >
+              <div>
+                <h4 className="font-bold text-[14px] text-[#171717] group-hover:text-[#000000]">
+                  Project repository
+                </h4>
+                <p className="text-[12px] text-[#737373] mt-0.5">
+                  Source code and pipeline
+                </p>
+              </div>
+              <div className="flex justify-end pt-1">
+                <span className="text-[11px] font-bold text-[#000000] group-hover:underline flex items-center gap-1">
+                  Docs →
+                </span>
+              </div>
+            </div>
+          </div>
         </div>
       )}
 
