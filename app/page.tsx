@@ -90,16 +90,63 @@ const SEGMENTS = [
 ];
 const REASONS = ["trust", "price", "convenience", "no_discovery", "habit", "other"];
 
+const REASON_TO_QUESTION: Record<string, { qNum: number; headline: string; id: string }> = {
+  habit: { qNum: 1, headline: "Customers aren't loyal. They're cautious.", id: "q1" },
+  trust: { qNum: 2, headline: "Customers don't avoid new categories. They avoid risk.", id: "q2" },
+  no_discovery: { qNum: 3, headline: "Discovery isn't failing on trust — it's failing on visibility.", id: "q3" },
+  price: { qNum: 4, headline: "The customer isn't passive. They're constantly comparing.", id: "q4" },
+  convenience: { qNum: 6, headline: "Five failures repeat across every category.", id: "q6" },
+  other: { qNum: 8, headline: "Customers didn't just complain — they specified the fix.", id: "q8" }
+};
+
+function PlatformIcon({ source, size = 18 }: { source: string; size?: number }) {
+  const s = (source || "").toLowerCase();
+  
+  if (s.includes("google") || s.includes("play")) {
+    return (
+      <svg width={size} height={size} viewBox="0 0 24 24" fill="none" className="shrink-0">
+        <path d="M3 20.5V3.5C3 2.91 3.34 2.39 3.84 2.15L14.3 12L3.84 21.85C3.34 21.61 3 21.09 3 20.5Z" fill="#00E676" />
+        <path d="M16.8 9.5L14.3 12L16.8 14.5L20.3 12.5C21.1 12.05 21.1 11.95 20.3 11.5L16.8 9.5Z" fill="#FFC107" />
+        <path d="M3.84 21.85L14.3 12L16.8 14.5L4.4 21.6C4.05 21.8 3.92 21.82 3.84 21.85Z" fill="#FF3D00" />
+        <path d="M3.84 2.15C3.92 2.18 4.05 2.2 4.4 2.4L16.8 9.5L14.3 12L3.84 2.15Z" fill="#00B0FF" />
+      </svg>
+    );
+  }
+  
+  if (s.includes("reddit")) {
+    return (
+      <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" className="text-[#FF4500] shrink-0">
+        <path d="M12 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0zm5.01 4.744c.688 0 1.25.561 1.25 1.249a1.25 1.25 0 0 1-2.498.056l-2.597-.547-.8 3.747c1.824.07 3.48.632 4.674 1.488.308-.309.73-.491 1.207-.491.968 0 1.754.786 1.754 1.754 0 .716-.435 1.333-1.01 1.614a3.111 3.111 0 0 1 .042.52c0 2.694-3.13 4.87-7.004 4.87-3.874 0-7.004-2.176-7.004-4.87 0-.183.015-.366.043-.534A1.748 1.748 0 0 1 4.028 12c0-.968.786-1.754 1.754-1.754.463 0 .898.196 1.207.49 1.207-.883 2.878-1.43 4.744-1.487l.885-4.182a.342.342 0 0 1 .14-.197.35.35 0 0 1 .238-.042l2.906.616a1.244 1.244 0 0 1 1.108-.702zM9.25 12C8.561 12 8 12.562 8 13.25c0 .687.561 1.248 1.25 1.248.687 0 1.248-.561 1.248-1.249 0-.687-.561-1.249-1.249-1.249zm5.5 0c-.687 0-1.248.562-1.248 1.25 0 .687.561 1.248 1.249 1.248.688 0 1.249-.561 1.249-1.249 0-.687-.562-1.249-1.25-1.249zm-4.566 3.868a.333.333 0 0 0-.03.47c.435.506 1.15.82 1.846.82.696 0 1.411-.314 1.846-.82a.333.333 0 0 0-.499-.44c-.318.371-.871.602-1.347.602-.476 0-1.029-.231-1.347-.602a.333.333 0 0 0-.469-.03z" />
+      </svg>
+    );
+  }
+  
+  if (s.includes("youtube")) {
+    return (
+      <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" className="text-[#FF0000] shrink-0">
+        <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+      </svg>
+    );
+  }
+  
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" className="text-[#171717] shrink-0">
+      <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.32c.64-.78 1.08-1.85.96-2.92-.93.04-2.06.62-2.73 1.4-.59.68-1.11 1.77-.97 2.83 1.04.08 2.1-.53 2.74-1.31z"/>
+    </svg>
+  );
+}
+
 export default function EngineDashboard() {
   // Navigation State: "landing", "methodology", "workspace", "explorer", "docs"
   const [currentView, setCurrentView] = useState<"landing" | "methodology" | "workspace" | "explorer" | "docs">("landing");
 
-  // Evidence Explorer Filter States
+  // Evidence Explorer Filter States & Selection
   const [explorerSearch, setExplorerSearch] = useState("");
   const [explorerSource, setExplorerSource] = useState<string>("all");
   const [explorerSegment, setExplorerSegment] = useState<string>("all");
   const [explorerReason, setExplorerReason] = useState<string>("all");
   const [explorerConfidence, setExplorerConfidence] = useState<string>("all");
+  const [selectedRowId, setSelectedRowId] = useState<number | null>(null);
 
   // Try It Live Analyzer States
   const [apiKey, setApiKey] = useState("");
@@ -230,6 +277,17 @@ export default function EngineDashboard() {
     if (explorerConfidence !== "all" && r.confidence !== explorerConfidence) return false;
     return true;
   });
+
+  const selectedRecord = reviews.find(r => r.row_number === selectedRowId);
+
+  useEffect(() => {
+    if (selectedRowId !== null) {
+      const isStillFiltered = filteredExplorerReviews.some(r => r.row_number === selectedRowId);
+      if (!isStillFiltered) {
+        setSelectedRowId(null);
+      }
+    }
+  }, [explorerSearch, explorerSource, explorerSegment, explorerReason, explorerConfidence]);
 
   return (
     <div className="space-y-8 font-sans antialiased text-[#171717]">
@@ -1468,55 +1526,169 @@ export default function EngineDashboard() {
             </div>
           )}
 
-          {/* Results Table */}
-          <div className="bg-white border border-[#ECE8DE] rounded-lg shadow-sm overflow-hidden">
-            <div className="overflow-x-auto">
-              <table className="w-full border-collapse text-left text-[12px]">
-                <thead>
-                  <tr className="bg-[#F2F1EC]/60 border-b border-[#ECE8DE]">
-                    <th className="p-3 font-mono font-bold text-[#8C8C8C] uppercase tracking-wider text-center w-16">Row</th>
-                    <th className="p-3 font-bold text-[#8C8C8C] uppercase tracking-wider w-24">Source</th>
-                    <th className="p-3 font-bold text-[#8C8C8C] uppercase tracking-wider w-24">Confidence</th>
-                    <th className="p-3 font-bold text-[#8C8C8C] uppercase tracking-wider w-28">Segment</th>
-                    <th className="p-3 font-bold text-[#8C8C8C] uppercase tracking-wider w-28">Reason Type</th>
-                    <th className="p-3 font-bold text-[#8C8C8C] uppercase tracking-wider">Verbatim customer sentence</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {filteredExplorerReviews.length === 0 ? (
-                    <tr>
-                      <td colSpan={6} className="p-8 text-center text-[#8C8C8C] italic">
-                        No records match the current filter selection.
-                      </td>
-                    </tr>
-                  ) : (
-                    filteredExplorerReviews.map((r) => (
-                      <tr key={r.row_number} className="border-b border-[#ECE8DE] hover:bg-[#F8F9FA] transition-colors">
-                        <td className="p-3 font-mono font-bold text-center text-[#59624B]">{r.row_number}</td>
-                        <td className="p-3 font-medium text-[#171717]">{r.source}</td>
-                        <td className="p-3">
-                          <span className={`text-[10px] font-bold uppercase px-1.5 py-0.2 rounded border ${
-                            r.confidence === "high"
-                              ? "bg-[#59624B]/10 text-[#59624B] border-[#59624B]/20"
-                              : r.confidence === "med"
-                              ? "bg-[#F59E0B]/10 text-[#F59E0B] border-[#F59E0B]/20"
-                              : "bg-[#8C8C8C]/10 text-[#5F6368] border-[#ECE8DE]"
-                          }`}>
-                            {r.confidence}
-                          </span>
-                        </td>
-                        <td className="p-3 capitalize">{r.user_segment.replace(/_/g, " ")}</td>
-                        <td className="p-3 capitalize">{r.reason_type}</td>
-                        <td className="p-3 italic text-[#5F6368] leading-relaxed">"{r.quote}"</td>
-                      </tr>
-                    ))
-                  )}
-                </tbody>
-              </table>
+          {/* Master-Detail Evidence Inspector */}
+          <div className="flex flex-col md:flex-row items-start gap-6">
+            {/* LEFT PANEL — compact evidence list */}
+            <div className="w-full md:w-[360px] shrink-0 bg-white border border-[#ECE8DE] rounded-lg shadow-sm overflow-hidden flex flex-col h-[560px]">
+              <div className="p-3 bg-[#F2F1EC]/80 border-b border-[#ECE8DE] flex justify-between items-center text-[10px] font-mono font-bold text-[#737373] uppercase tracking-wider">
+                <span>RECORDS ({filteredExplorerReviews.length})</span>
+                <span>CONFIDENCE</span>
+              </div>
+              
+              <div className="overflow-y-auto flex-1 divide-y divide-[#ECE8DE]/60">
+                {filteredExplorerReviews.length === 0 ? (
+                  <div className="p-8 text-center text-[#8C8C8C] italic text-[12px]">
+                    No records match the current filter selection.
+                  </div>
+                ) : (
+                  filteredExplorerReviews.map((r) => {
+                    const isSelected = selectedRowId === r.row_number;
+                    const dotColor = r.confidence === "high" ? "bg-emerald-500" : r.confidence === "med" ? "bg-amber-500" : "bg-gray-400";
+                    return (
+                      <div
+                        key={r.row_number}
+                        onClick={() => setSelectedRowId(r.row_number)}
+                        className={`p-3.5 cursor-pointer transition-all flex items-start gap-3 text-left ${
+                          isSelected ? "bg-[#F3F5F1] border-l-4 border-l-[#59624B]" : "hover:bg-[#F8F9FA]"
+                        }`}
+                      >
+                        <PlatformIcon source={r.source} size={18} />
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center justify-between gap-1 mb-1">
+                            <span className="font-mono text-[10.5px] font-bold text-[#59624B]">Row #{r.row_number}</span>
+                            <span className={`w-2.5 h-2.5 rounded-full ${dotColor} shrink-0`} title={`Confidence: ${r.confidence}`} />
+                          </div>
+                          <p className="text-[12px] text-[#171717] font-medium truncate leading-tight">
+                            "{r.quote}"
+                          </p>
+                          <div className="flex items-center gap-2 mt-1.5 text-[10.5px] text-[#737373]">
+                            <span>{r.source}</span>
+                            <span>•</span>
+                            <span className="capitalize">{r.reason_type}</span>
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })
+                )}
+              </div>
+              <div className="bg-[#F8F9FA] p-2.5 text-[10.5px] text-[#8C8C8C] border-t border-[#ECE8DE] text-right font-mono">
+                Showing {filteredExplorerReviews.length} of 189 records
+              </div>
             </div>
-            {/* Summary info footer */}
-            <div className="bg-[#F8F9FA] p-3 text-[11px] text-[#8C8C8C] border-t border-[#ECE8DE] text-right font-mono">
-              Showing {filteredExplorerReviews.length} of 189 matching records
+
+            {/* RIGHT PANEL — evidence inspection card */}
+            <div className="w-full flex-1 min-h-[560px]">
+              {!selectedRecord ? (
+                <div className="bg-white border border-[#ECE8DE] rounded-lg p-8 shadow-sm flex flex-col items-center justify-center text-center h-[560px]">
+                  <div className="w-12 h-12 rounded-full bg-[#F3F5F1] text-[#59624B] flex items-center justify-center mb-3">
+                    <Search size={20} />
+                  </div>
+                  <h3 className="font-display font-bold text-[16px] text-[#171717]">No Record Selected</h3>
+                  <p className="text-[13px] text-[#737373] mt-1 max-w-xs leading-relaxed">
+                    Select any record to inspect the full evidence and AI reasoning behind it.
+                  </p>
+                </div>
+              ) : (
+                <div className="bg-white border border-[#ECE8DE] rounded-lg p-6 shadow-sm space-y-6 h-[560px] flex flex-col justify-between overflow-y-auto">
+                  <div className="space-y-6">
+                    {/* Inspection Header */}
+                    <div className="flex items-center justify-between border-b border-[#ECE8DE] pb-4">
+                      <div className="flex items-center gap-3">
+                        <PlatformIcon source={selectedRecord.source} size={24} />
+                        <div>
+                          <span className="font-display font-extrabold text-[16px] text-[#171717] block">
+                            {selectedRecord.source}
+                          </span>
+                          <span className="font-mono text-[11px] font-bold text-[#59624B]">
+                            Row #{selectedRecord.row_number}
+                          </span>
+                        </div>
+                      </div>
+
+                      {/* Confidence Meter */}
+                      <div className="flex flex-col items-end gap-1">
+                        <span className="text-[10px] font-bold text-[#737373] uppercase tracking-wider">
+                          Confidence ({selectedRecord.confidence})
+                        </span>
+                        <div className="flex items-center gap-1">
+                          <div className={`w-5 h-2 rounded-sm ${selectedRecord.confidence === "high" || selectedRecord.confidence === "med" || selectedRecord.confidence === "low" ? (selectedRecord.confidence === "high" ? "bg-emerald-500" : selectedRecord.confidence === "med" ? "bg-amber-500" : "bg-gray-400") : "bg-gray-200"}`} />
+                          <div className={`w-5 h-2 rounded-sm ${selectedRecord.confidence === "high" || selectedRecord.confidence === "med" ? (selectedRecord.confidence === "high" ? "bg-emerald-500" : "bg-amber-500") : "bg-gray-200"}`} />
+                          <div className={`w-5 h-2 rounded-sm ${selectedRecord.confidence === "high" ? "bg-emerald-500" : "bg-gray-200"}`} />
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* AI-Verified Source Text with Yellow Marker Highlight */}
+                    <div className="space-y-2">
+                      <span className="text-[10px] font-bold text-[#8C8C8C] uppercase tracking-wider block">
+                        AI-Verified Source Text
+                      </span>
+                      <div className="bg-[#F8F9FA] border border-[#ECE8DE] rounded-lg p-5">
+                        <p className="text-[14.5px] font-medium leading-relaxed text-[#171717]">
+                          <mark className="bg-[#FFF3C4] text-[#171717] px-1.5 py-0.5 rounded border-b-2 border-[#F59E0B] font-semibold">
+                            "{selectedRecord.quote}"
+                          </mark>
+                        </p>
+                      </div>
+                      <p className="text-[11.5px] text-[#737373] italic">
+                        {selectedRecord.confidence === "high"
+                          ? "High confidence: the model found a clear, unambiguous statement directly in the source text."
+                          : selectedRecord.confidence === "med"
+                          ? "Medium confidence: language required contextual interpretation, treat as directional cue."
+                          : "Low confidence: weak signal inferred from partial phrase, treat as exploratory cue."}
+                      </p>
+                    </div>
+
+                    {/* Extracted Structure Pill Tags */}
+                    <div className="space-y-2 pt-2 border-t border-[#ECE8DE]/60">
+                      <span className="text-[10px] font-bold text-[#8C8C8C] uppercase tracking-wider block">
+                        Extracted Structure
+                      </span>
+                      <div className="flex flex-wrap gap-2 text-[11px] font-medium">
+                        <span className="bg-[#F3F5F1] text-[#59624B] border border-[#59624B]/20 px-2.5 py-1 rounded-md font-mono">
+                          Reason: <strong className="capitalize">{selectedRecord.reason_type}</strong>
+                        </span>
+                        <span className="bg-[#F8F9FA] text-[#171717] border border-[#ECE8DE] px-2.5 py-1 rounded-md">
+                          Category: <strong>{selectedRecord.category_mentioned === "none" ? "General Catalog" : selectedRecord.category_mentioned}</strong>
+                        </span>
+                        <span className="bg-[#F8F9FA] text-[#171717] border border-[#ECE8DE] px-2.5 py-1 rounded-md capitalize">
+                          Segment: <strong>{selectedRecord.user_segment.replace(/_/g, " ")}</strong>
+                        </span>
+                        {selectedRecord.info_needed !== "none" && selectedRecord.info_needed !== "not stated" && (
+                          <span className="bg-[#F8F9FA] text-[#5F6368] border border-[#ECE8DE] px-2.5 py-1 rounded-md">
+                            Info Needed: <strong>{selectedRecord.info_needed}</strong>
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Link back to Discovery Workspace */}
+                  {(() => {
+                    const mappedQ = REASON_TO_QUESTION[selectedRecord.reason_type] || REASON_TO_QUESTION.trust;
+                    return (
+                      <div className="pt-4 border-t border-[#ECE8DE]">
+                        <span className="text-[10px] font-bold text-[#8C8C8C] uppercase tracking-wider block mb-1">
+                          Supported Finding
+                        </span>
+                        <button
+                          onClick={() => {
+                            setCurrentView("workspace");
+                            setTimeout(() => {
+                              const el = document.getElementById(mappedQ.id);
+                              if (el) el.scrollIntoView({ behavior: "smooth" });
+                            }, 100);
+                          }}
+                          className="text-[13px] font-bold text-[#59624B] hover:underline flex items-center gap-1 text-left"
+                        >
+                          This supports Question 0{mappedQ.qNum}: "{mappedQ.headline}" →
+                        </button>
+                      </div>
+                    );
+                  })()}
+                </div>
+              )}
             </div>
           </div>
         </div>
