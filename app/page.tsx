@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
+import { motion, useInView, animate } from "framer-motion";
 import { 
   reviews, 
   ReviewRow, 
@@ -20,6 +21,44 @@ import {
   Info,
   Lock
 } from "lucide-react";
+
+// Count-up Stat Callout component using Framer Motion
+function AnimatedStat({ value, label, colorClass }: { value: string; label: string; colorClass: string }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const isInView = useInView(ref, { once: true, margin: "-20px" });
+  const [displayVal, setDisplayVal] = useState(value);
+
+  const numericMatch = value.match(/[\d.]+/);
+  const targetNum = numericMatch ? parseFloat(numericMatch[0]) : 0;
+  const isPercent = value.includes("%");
+
+  useEffect(() => {
+    if (!isInView || targetNum === 0) return;
+    const controls = animate(0, targetNum, {
+      duration: 1.2,
+      ease: [0.16, 1, 0.3, 1],
+      onUpdate: (latest) => {
+        if (isPercent) {
+          setDisplayVal(latest.toFixed(1) + "%");
+        } else {
+          setDisplayVal(Math.round(latest).toString());
+        }
+      }
+    });
+    return () => controls.stop();
+  }, [isInView, targetNum, isPercent]);
+
+  return (
+    <div ref={ref} className="flex flex-col items-start min-w-[130px] shrink-0 border-l md:border-l border-[#ECE8DE] pl-4 md:pl-6 my-auto pt-2 md:pt-0">
+      <span className={`text-[46px] md:text-[54px] font-extrabold font-mono leading-none tracking-tight ${colorClass}`}>
+        {displayVal}
+      </span>
+      <span className="text-[11.5px] font-medium text-[#737373] mt-1 max-w-[140px] leading-tight">
+        {label}
+      </span>
+    </div>
+  );
+}
 
 // Local helper to bucket info needed
 function bucketInfoNeeded(text: string): string | null {
@@ -432,36 +471,68 @@ export default function EngineDashboard() {
           </div>
 
           {/* 8 Questions list */}
-          <div className="space-y-6">
+          <div className="space-y-8">
             
             {/* Q1 */}
-            <div id="q1" className="bg-white border border-[#ECE8DE] rounded-lg p-6 shadow-sm space-y-4 scroll-mt-20">
-              <div className="flex items-center justify-between">
-                <span className="font-mono text-[10px] font-bold text-[#59624B] bg-[#F3F5F1] px-2.5 py-0.5 rounded border border-[#59624B]/20">
-                  Question 01
+            <div id="q1" className="bg-white border border-[#ECE8DE] border-l-4 border-l-[#59624B] rounded-lg p-6 md:p-7 shadow-sm space-y-6 scroll-mt-20">
+              {/* Card Header: Eyebrow + Confidence badge */}
+              <div className="flex items-center justify-between gap-2 border-b border-[#ECE8DE]/60 pb-3">
+                <span className="font-mono text-[10px] font-bold text-[#737373] uppercase tracking-wider">
+                  WHY CUSTOMERS KEEP BUYING FROM THE SAME CATEGORIES
                 </span>
-                <span className="text-[11px] font-bold text-[#59624B]">Confidence: High (Known from evidence)</span>
+                <motion.span 
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.5 }}
+                  className="text-[11px] font-bold text-[#59624B] bg-[#F3F5F1] px-2.5 py-0.5 rounded border border-[#59624B]/20 shrink-0"
+                >
+                  Confidence: High (Known from evidence)
+                </motion.span>
               </div>
-              <h3 className="font-display font-bold text-[15.5px] text-[#171717]">
-                Why do customers keep buying from the same categories?
-              </h3>
+
+              {/* Main Title Block + Stat Callout */}
+              <div className="flex flex-col md:flex-row md:items-center justify-between gap-5">
+                <div className="space-y-3 flex-1">
+                  <h3 className="font-display font-extrabold text-[24px] md:text-[28px] text-[#171717] leading-tight tracking-tight">
+                    "Customers aren't loyal. They're cautious."
+                  </h3>
+                  
+                  {/* Assumed vs Found Block */}
+                  <div className="bg-[#F8F9FA] border border-[#ECE8DE] rounded-md p-3 text-[12px] space-y-1">
+                    <div className="text-[#8C8C8C] line-through font-mono">
+                      <strong className="no-underline">ASSUMED:</strong> Customers buy the same things out of habit.
+                    </div>
+                    <div className="text-[#171717] font-bold font-mono">
+                      <strong className="text-[#59624B]">FOUND:</strong> Only 3.7% show habitual buying — the rest is deliberate risk-avoidance.
+                    </div>
+                  </div>
+                </div>
+
+                {/* Stat Callout */}
+                <AnimatedStat 
+                  value="3.7%" 
+                  label="of signals show habitual buying" 
+                  colorClass="text-[#59624B]" 
+                />
+              </div>
               
-              <div className="space-y-3 pt-3 border-t border-[#ECE8DE]/60 text-[12.5px] leading-relaxed">
+              {/* Structured Body Sections */}
+              <div className="space-y-4 pt-3 border-t border-[#ECE8DE]/60 text-[13px] font-normal leading-relaxed">
                 <div>
-                  <span className="text-[9px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Observed Pattern</span>
-                  <p className="text-[#171717] font-medium italic">
+                  <span className="text-[9.5px] font-bold text-[#8C8C8C] uppercase tracking-wider block mb-1">Observed Pattern</span>
+                  <p className="text-[#171717] font-medium italic bg-[#F8F9FA] p-3 rounded border border-[#ECE8DE]/50">
                     "This isn't habit. Only 7 of 189 signals (3.7%) describe routine or automatic buying — the weakest pattern in the entire dataset. What actually repeats is caution: customers keep returning to categories where nothing has gone wrong for them yet, and they describe this as a deliberate choice, not a default."
                   </p>
                 </div>
                 
                 <div>
-                  <span className="text-[9px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Evidence</span>
+                  <span className="text-[9.5px] font-bold text-[#8C8C8C] uppercase tracking-wider block mb-1">Evidence</span>
                   <div className="space-y-2 mt-1.5">
                     {getEvidenceForQuestion(1).map((r) => (
                       <div 
                         key={r.row_number} 
                         onClick={() => jumpToRow(r.row_number)}
-                        className="bg-[#F8F9FA] border border-[#ECE8DE] rounded-md p-3 text-[12px] text-[#171717] italic cursor-pointer hover:bg-[#F2F1EC] transition-all"
+                        className="bg-[#F4F3EE] border border-[#E2DFD2] rounded-md p-3.5 text-[12px] text-[#171717] italic cursor-pointer hover:bg-[#EDEBE3] hover:-translate-y-0.5 transition-all duration-200 shadow-sm"
                       >
                         "{r.quote}" <span className="font-mono text-[10px] text-[#8C8C8C] not-italic block mt-1">Row #{r.row_number} · Click to verify</span>
                       </div>
@@ -470,14 +541,14 @@ export default function EngineDashboard() {
                 </div>
 
                 <div>
-                  <span className="text-[9px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Interpretation</span>
+                  <span className="text-[9.5px] font-bold text-[#8C8C8C] uppercase tracking-wider block mb-1">Interpretation</span>
                   <p className="text-[#5F6368]">
                     Repeat purchasing in quick-commerce is driven by active risk avoidance. Once a customer has a negative experience in a category, they isolate themselves to safe, verified categories, preventing cross-category exploration.
                   </p>
                 </div>
 
                 <div>
-                  <span className="text-[9px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Product Implication</span>
+                  <span className="text-[9.5px] font-bold text-[#8C8C8C] uppercase tracking-wider block mb-1">Product Implication</span>
                   <p className="text-[#171717] font-semibold">Decision supported: Whether to focus roadmap resources on generic personalization algorithms or on category-specific risk-reduction features.</p>
                   <p className="text-[#5F6368] mt-1">Unvalidated product bets (suppositions generated from customer feedback):</p>
                   <ul className="list-disc pl-4 text-[#5F6368] space-y-1 mt-1">
@@ -487,13 +558,13 @@ export default function EngineDashboard() {
                 </div>
 
                 <div>
-                  <span className="text-[9px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Remaining Uncertainty</span>
+                  <span className="text-[9.5px] font-bold text-[#8C8C8C] uppercase tracking-wider block mb-1">Remaining Uncertainty</span>
                   <p className="text-[#5F6368]">
                     Whether introducing category-specific trust guarantees would actually convert caution-based shoppers into new category trials, or if their avoidance is driven by other factors not observable from this dataset.
                   </p>
                 </div>
 
-                <div className="pt-2.5 border-t border-[#ECE8DE]/40">
+                <div className="pt-3 border-t border-[#ECE8DE]/40">
                   <a href="#q2" className="text-[12px] font-bold text-[#59624B] hover:underline flex items-center gap-1">
                     Related findings: What's stopping customers from trying a new category? →
                   </a>
@@ -502,33 +573,55 @@ export default function EngineDashboard() {
             </div>
 
             {/* Q2 */}
-            <div id="q2" className="bg-white border border-[#ECE8DE] rounded-lg p-6 shadow-sm space-y-4 scroll-mt-20">
-              <div className="flex items-center justify-between">
-                <span className="font-mono text-[10px] font-bold text-[#59624B] bg-[#F3F5F1] px-2.5 py-0.5 rounded border border-[#59624B]/20">
-                  Question 02
+            <div id="q2" className="bg-white border border-[#ECE8DE] border-l-4 border-l-red-600 rounded-lg p-6 md:p-7 shadow-sm space-y-6 scroll-mt-20">
+              {/* Card Header */}
+              <div className="flex items-center justify-between gap-2 border-b border-[#ECE8DE]/60 pb-3">
+                <span className="font-mono text-[10px] font-bold text-[#737373] uppercase tracking-wider">
+                  WHAT'S STOPPING CUSTOMERS FROM TRYING A NEW CATEGORY?
                 </span>
-                <span className="text-[11px] font-bold text-[#59624B]">Confidence: High (Known from evidence)</span>
+                <motion.span 
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.5 }}
+                  className="text-[11px] font-bold text-[#59624B] bg-[#F3F5F1] px-2.5 py-0.5 rounded border border-[#59624B]/20 shrink-0"
+                >
+                  Confidence: High (Known from evidence)
+                </motion.span>
               </div>
-              <h3 className="font-display font-bold text-[15.5px] text-[#171717]">
-                What's stopping customers from trying a new category?
-              </h3>
-              
-              <div className="space-y-3 pt-3 border-t border-[#ECE8DE]/60 text-[12.5px] leading-relaxed">
+
+              {/* Main Title Block + Stat Callout */}
+              <div className="flex flex-col md:flex-row md:items-center justify-between gap-5">
+                <div className="space-y-2 flex-1">
+                  <h3 className="font-display font-extrabold text-[24px] md:text-[28px] text-[#171717] leading-tight tracking-tight">
+                    "Customers don't avoid new categories. They avoid risk."
+                  </h3>
+                </div>
+
+                {/* Stat Callout */}
+                <AnimatedStat 
+                  value="55.6%" 
+                  label="cite specific trust failures (105 of 189 signals)" 
+                  colorClass="text-red-600" 
+                />
+              </div>
+
+              {/* Structured Body Sections */}
+              <div className="space-y-4 pt-3 border-t border-[#ECE8DE]/60 text-[13px] font-normal leading-relaxed">
                 <div>
-                  <span className="text-[9px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Observed Pattern</span>
-                  <p className="text-[#171717] font-medium italic">
+                  <span className="text-[9.5px] font-bold text-[#8C8C8C] uppercase tracking-wider block mb-1">Observed Pattern</span>
+                  <p className="text-[#171717] font-medium italic bg-[#F8F9FA] p-3 rounded border border-[#ECE8DE]/50">
                     "Trust is the blocker, and it's specific, not vague — customers aren't saying 'I don't trust Blinkit,' they're describing concrete failures: a fake product, an expired item, a tampered electronics box. 105 of 189 signals (55.6%) cite this. Price uncertainty is real but secondary (40 signals, 21.2%) — customers comparing prices across apps are a different behavior from customers avoiding a category altogether."
                   </p>
                 </div>
 
                 <div>
-                  <span className="text-[9px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Evidence</span>
+                  <span className="text-[9.5px] font-bold text-[#8C8C8C] uppercase tracking-wider block mb-1">Evidence</span>
                   <div className="space-y-2 mt-1.5">
                     {getEvidenceForQuestion(2).map((r) => (
                       <div 
                         key={r.row_number} 
                         onClick={() => jumpToRow(r.row_number)}
-                        className="bg-[#F8F9FA] border border-[#ECE8DE] rounded-md p-3 text-[12px] text-[#171717] italic cursor-pointer hover:bg-[#F2F1EC] transition-all"
+                        className="bg-[#F4F3EE] border border-[#E2DFD2] rounded-md p-3.5 text-[12px] text-[#171717] italic cursor-pointer hover:bg-[#EDEBE3] hover:-translate-y-0.5 transition-all duration-200 shadow-sm"
                       >
                         "{r.quote}" <span className="font-mono text-[10px] text-[#8C8C8C] not-italic block mt-1">Row #{r.row_number} · Click to verify</span>
                       </div>
@@ -537,14 +630,14 @@ export default function EngineDashboard() {
                 </div>
 
                 <div>
-                  <span className="text-[9px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Interpretation</span>
+                  <span className="text-[9.5px] font-bold text-[#8C8C8C] uppercase tracking-wider block mb-1">Interpretation</span>
                   <p className="text-[#5F6368]">
                     The primary friction to category expansion is quality risk. Customers are comfortable ordering low-risk items (like snacks) but hesitate to buy high-ticket or fresh items due to visible platform failures.
                   </p>
                 </div>
 
                 <div>
-                  <span className="text-[9px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Product Implication</span>
+                  <span className="text-[9.5px] font-bold text-[#8C8C8C] uppercase tracking-wider block mb-1">Product Implication</span>
                   <p className="text-[#171717] font-semibold">Decision supported: Prioritizing physical quality assurance workflows over UI navigation changes.</p>
                   <p className="text-[#5F6368] mt-1">Unvalidated product bets (suppositions generated from customer feedback):</p>
                   <ul className="list-disc pl-4 text-[#5F6368] space-y-1 mt-1">
@@ -554,13 +647,13 @@ export default function EngineDashboard() {
                 </div>
 
                 <div>
-                  <span className="text-[9px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Remaining Uncertainty</span>
+                  <span className="text-[9.5px] font-bold text-[#8C8C8C] uppercase tracking-wider block mb-1">Remaining Uncertainty</span>
                   <p className="text-[#5F6368]">
                     Whether the proportion of trust-related complaints differs by geographic location or warehouse-specific operations.
                   </p>
                 </div>
 
-                <div className="pt-2.5 border-t border-[#ECE8DE]/40">
+                <div className="pt-3 border-t border-[#ECE8DE]/40">
                   <a href="#q5" className="text-[12px] font-bold text-[#59624B] hover:underline flex items-center gap-1">
                     Related findings: What would make a customer trust a category? →
                   </a>
@@ -569,33 +662,55 @@ export default function EngineDashboard() {
             </div>
 
             {/* Q3 */}
-            <div id="q3" className="bg-white border border-[#ECE8DE] rounded-lg p-6 shadow-sm space-y-4 scroll-mt-20">
-              <div className="flex items-center justify-between">
-                <span className="font-mono text-[10px] font-bold text-[#59624B] bg-[#F3F5F1] px-2.5 py-0.5 rounded border border-[#59624B]/20">
-                  Question 03
+            <div id="q3" className="bg-white border border-[#ECE8DE] border-l-4 border-l-purple-600 rounded-lg p-6 md:p-7 shadow-sm space-y-6 scroll-mt-20">
+              {/* Card Header */}
+              <div className="flex items-center justify-between gap-2 border-b border-[#ECE8DE]/60 pb-3">
+                <span className="font-mono text-[10px] font-bold text-[#737373] uppercase tracking-wider">
+                  HOW DO CUSTOMERS FIND PRODUCTS TODAY?
                 </span>
-                <span className="text-[11px] font-bold text-[#5F6368]">Confidence: Medium (Inferred from language)</span>
+                <motion.span 
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.5 }}
+                  className="text-[11px] font-bold text-[#5F6368] bg-[#F3F5F1] px-2.5 py-0.5 rounded border border-[#59624B]/20 shrink-0"
+                >
+                  Confidence: Medium (Inferred from language)
+                </motion.span>
               </div>
-              <h3 className="font-display font-bold text-[15.5px] text-[#171717]">
-                How do customers find products today?
-              </h3>
 
-              <div className="space-y-3 pt-3 border-t border-[#ECE8DE]/60 text-[12.5px] leading-relaxed">
+              {/* Main Title Block + Stat Callout */}
+              <div className="flex flex-col md:flex-row md:items-center justify-between gap-5">
+                <div className="space-y-2 flex-1">
+                  <h3 className="font-display font-extrabold text-[24px] md:text-[28px] text-[#171717] leading-tight tracking-tight">
+                    "Discovery isn't failing on trust — it's failing on visibility."
+                  </h3>
+                </div>
+
+                {/* Stat Callout */}
+                <AnimatedStat 
+                  value="4.8%" 
+                  label="leave due to inventory visibility (9 signals)" 
+                  colorClass="text-purple-600" 
+                />
+              </div>
+
+              {/* Structured Body Sections */}
+              <div className="space-y-4 pt-3 border-t border-[#ECE8DE]/60 text-[13px] font-normal leading-relaxed">
                 <div>
-                  <span className="text-[9px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Observed Pattern</span>
-                  <p className="text-[#171717] font-medium italic">
+                  <span className="text-[9.5px] font-bold text-[#8C8C8C] uppercase tracking-wider block mb-1">Observed Pattern</span>
+                  <p className="text-[#171717] font-medium italic bg-[#F8F9FA] p-3 rounded border border-[#ECE8DE]/50">
                     "Weakly, and mostly by accident. The smallest but most telling pattern (9 signals, 4.8%) shows customers leaving for a competitor not because they distrust Blinkit, but because a specific product they wanted — a cat food variant, a collectible — wasn't visible or in stock. Discovery isn't failing on trust here, it's failing on basic inventory visibility."
                   </p>
                 </div>
 
                 <div>
-                  <span className="text-[9px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Evidence</span>
+                  <span className="text-[9.5px] font-bold text-[#8C8C8C] uppercase tracking-wider block mb-1">Evidence</span>
                   <div className="space-y-2 mt-1.5">
                     {getEvidenceForQuestion(3).map((r) => (
                       <div 
                         key={r.row_number} 
                         onClick={() => jumpToRow(r.row_number)}
-                        className="bg-[#F8F9FA] border border-[#ECE8DE] rounded-md p-3 text-[12px] text-[#171717] italic cursor-pointer hover:bg-[#F2F1EC] transition-all"
+                        className="bg-[#F4F3EE] border border-[#E2DFD2] rounded-md p-3.5 text-[12px] text-[#171717] italic cursor-pointer hover:bg-[#EDEBE3] hover:-translate-y-0.5 transition-all duration-200 shadow-sm"
                       >
                         "{r.quote}" <span className="font-mono text-[10px] text-[#8C8C8C] not-italic block mt-1">Row #{r.row_number} · Click to verify</span>
                       </div>
@@ -604,14 +719,14 @@ export default function EngineDashboard() {
                 </div>
 
                 <div>
-                  <span className="text-[9px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Interpretation</span>
+                  <span className="text-[9.5px] font-bold text-[#8C8C8C] uppercase tracking-wider block mb-1">Interpretation</span>
                   <p className="text-[#5F6368]">
                     Discovery fails when customers cannot easily locate niche or regional stock. Silent churn occurs when product search algorithms return irrelevant items or fail to show accurate stock levels.
                   </p>
                 </div>
 
                 <div>
-                  <span className="text-[9px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Product Implication</span>
+                  <span className="text-[9.5px] font-bold text-[#8C8C8C] uppercase tracking-wider block mb-1">Product Implication</span>
                   <p className="text-[#171717] font-semibold">Decision supported: Investing in semantic search quality vs. generic banner advertisements.</p>
                   <p className="text-[#5F6368] mt-1">Unvalidated product bets (suppositions generated from customer feedback):</p>
                   <ul className="list-disc pl-4 text-[#5F6368] space-y-1 mt-1">
@@ -621,13 +736,13 @@ export default function EngineDashboard() {
                 </div>
 
                 <div>
-                  <span className="text-[9px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Remaining Uncertainty</span>
+                  <span className="text-[9.5px] font-bold text-[#8C8C8C] uppercase tracking-wider block mb-1">Remaining Uncertainty</span>
                   <p className="text-[#5F6368]">
                     Whether these inventory discovery issues exist outside review writers who take the time to post complaints online.
                   </p>
                 </div>
 
-                <div className="pt-2.5 border-t border-[#ECE8DE]/40">
+                <div className="pt-3 border-t border-[#ECE8DE]/40">
                   <a href="#q8" className="text-[12px] font-bold text-[#59624B] hover:underline flex items-center gap-1">
                     Related findings: What do customers consistently say is missing? →
                   </a>
@@ -636,33 +751,65 @@ export default function EngineDashboard() {
             </div>
 
             {/* Q4 */}
-            <div id="q4" className="bg-white border border-[#ECE8DE] rounded-lg p-6 shadow-sm space-y-4 scroll-mt-20">
-              <div className="flex items-center justify-between">
-                <span className="font-mono text-[10px] font-bold text-[#59624B] bg-[#F3F5F1] px-2.5 py-0.5 rounded border border-[#59624B]/20">
-                  Question 04
+            <div id="q4" className="bg-white border border-[#ECE8DE] border-l-4 border-l-blue-600 rounded-lg p-6 md:p-7 shadow-sm space-y-6 scroll-mt-20">
+              {/* Card Header */}
+              <div className="flex items-center justify-between gap-2 border-b border-[#ECE8DE]/60 pb-3">
+                <span className="font-mono text-[10px] font-bold text-[#737373] uppercase tracking-wider">
+                  WHAT ROLE DOES HABIT ACTUALLY PLAY?
                 </span>
-                <span className="text-[11px] font-bold text-[#59624B]">Confidence: High (Known from evidence)</span>
+                <motion.span 
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.5 }}
+                  className="text-[11px] font-bold text-[#59624B] bg-[#F3F5F1] px-2.5 py-0.5 rounded border border-[#59624B]/20 shrink-0"
+                >
+                  Confidence: High (Known from evidence)
+                </motion.span>
               </div>
-              <h3 className="font-display font-bold text-[15.5px] text-[#171717]">
-                What role does habit actually play?
-              </h3>
 
-              <div className="space-y-3 pt-3 border-t border-[#ECE8DE]/60 text-[12.5px] leading-relaxed">
+              {/* Main Title Block + Stat Callout */}
+              <div className="flex flex-col md:flex-row md:items-center justify-between gap-5">
+                <div className="space-y-3 flex-1">
+                  <h3 className="font-display font-extrabold text-[24px] md:text-[28px] text-[#171717] leading-tight tracking-tight">
+                    "The customer isn't passive. They're constantly comparing."
+                  </h3>
+
+                  {/* Assumed vs Found Block */}
+                  <div className="bg-[#F8F9FA] border border-[#ECE8DE] rounded-md p-3 text-[12px] space-y-1">
+                    <div className="text-[#8C8C8C] line-through font-mono">
+                      <strong className="no-underline">ASSUMED:</strong> Customers passively return out of app loyalty.
+                    </div>
+                    <div className="text-[#171717] font-bold font-mono">
+                      <strong className="text-blue-600">FOUND:</strong> 21.2% actively price-shop across Blinkit, Zepto, and Instamart in the same session.
+                    </div>
+                  </div>
+                </div>
+
+                {/* Stat Callout */}
+                <AnimatedStat 
+                  value="21.2%" 
+                  label="price-shop across multiple apps (40 signals)" 
+                  colorClass="text-blue-600" 
+                />
+              </div>
+
+              {/* Structured Body Sections */}
+              <div className="space-y-4 pt-3 border-t border-[#ECE8DE]/60 text-[13px] font-normal leading-relaxed">
                 <div>
-                  <span className="text-[9px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Observed Pattern</span>
-                  <p className="text-[#171717] font-medium italic">
+                  <span className="text-[9.5px] font-bold text-[#8C8C8C] uppercase tracking-wider block mb-1">Observed Pattern</span>
+                  <p className="text-[#171717] font-medium italic bg-[#F8F9FA] p-3 rounded border border-[#ECE8DE]/50">
                     "Less than assumed. 7 signals (3.7%) describe habitual buying, while 40 signals (21.2%) describe customers actively price-shopping across Blinkit, Zepto, and Instamart in the same shopping session. Customers are not passively loyal — they're evaluating, constantly, and that means engagement mechanics have room to work if the underlying trust problem is addressed first."
                   </p>
                 </div>
 
                 <div>
-                  <span className="text-[9px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Evidence</span>
+                  <span className="text-[9.5px] font-bold text-[#8C8C8C] uppercase tracking-wider block mb-1">Evidence</span>
                   <div className="space-y-2 mt-1.5">
                     {getEvidenceForQuestion(4).map((r) => (
                       <div 
                         key={r.row_number} 
                         onClick={() => jumpToRow(r.row_number)}
-                        className="bg-[#F8F9FA] border border-[#ECE8DE] rounded-md p-3 text-[12px] text-[#171717] italic cursor-pointer hover:bg-[#F2F1EC] transition-all"
+                        className="bg-[#F4F3EE] border border-[#E2DFD2] rounded-md p-3.5 text-[12px] text-[#171717] italic cursor-pointer hover:bg-[#EDEBE3] hover:-translate-y-0.5 transition-all duration-200 shadow-sm"
                       >
                         "{r.quote}" <span className="font-mono text-[10px] text-[#8C8C8C] not-italic block mt-1">Row #{r.row_number} · Click to verify</span>
                       </div>
@@ -671,14 +818,14 @@ export default function EngineDashboard() {
                 </div>
 
                 <div>
-                  <span className="text-[9px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Interpretation</span>
+                  <span className="text-[9.5px] font-bold text-[#8C8C8C] uppercase tracking-wider block mb-1">Interpretation</span>
                   <p className="text-[#5F6368]">
                     Loyalty is transactional, not habitual. Customers compare prices in real-time, meaning cross-category exploration is highly vulnerable to competitive pricing.
                   </p>
                 </div>
 
                 <div>
-                  <span className="text-[9px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Product Implication</span>
+                  <span className="text-[9.5px] font-bold text-[#8C8C8C] uppercase tracking-wider block mb-1">Product Implication</span>
                   <p className="text-[#171717] font-semibold">Decision supported: Launching dynamic cross-category loyalty rewards versus flat membership plans.</p>
                   <p className="text-[#5F6368] mt-1">Unvalidated product bets (suppositions generated from customer feedback):</p>
                   <ul className="list-disc pl-4 text-[#5F6368] space-y-1 mt-1">
@@ -688,13 +835,13 @@ export default function EngineDashboard() {
                 </div>
 
                 <div>
-                  <span className="text-[9px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Remaining Uncertainty</span>
+                  <span className="text-[9.5px] font-bold text-[#8C8C8C] uppercase tracking-wider block mb-1">Remaining Uncertainty</span>
                   <p className="text-[#5F6368]">
                     Whether this price-sensitive app-switching behavior leads to long-term churn or simply short-term order fragmentation.
                   </p>
                 </div>
 
-                <div className="pt-2.5 border-t border-[#ECE8DE]/40">
+                <div className="pt-3 border-t border-[#ECE8DE]/40">
                   <a href="#q2" className="text-[12px] font-bold text-[#59624B] hover:underline flex items-center gap-1">
                     Related findings: What's stopping customers from trying a new category? →
                   </a>
@@ -703,33 +850,55 @@ export default function EngineDashboard() {
             </div>
 
             {/* Q5 */}
-            <div id="q5" className="bg-white border border-[#ECE8DE] rounded-lg p-6 shadow-sm space-y-4 scroll-mt-20">
-              <div className="flex items-center justify-between">
-                <span className="font-mono text-[10px] font-bold text-[#59624B] bg-[#F3F5F1] px-2.5 py-0.5 rounded border border-[#59624B]/20">
-                  Question 05
+            <div id="q5" className="bg-white border border-[#ECE8DE] border-l-4 border-l-amber-500 rounded-lg p-6 md:p-7 shadow-sm space-y-6 scroll-mt-20">
+              {/* Card Header */}
+              <div className="flex items-center justify-between gap-2 border-b border-[#ECE8DE]/60 pb-3">
+                <span className="font-mono text-[10px] font-bold text-[#737373] uppercase tracking-wider">
+                  WHAT WOULD MAKE A CUSTOMER TRUST A CATEGORY ENOUGH TO TRY IT?
                 </span>
-                <span className="text-[11px] font-bold text-[#59624B]">Confidence: High (Known from evidence)</span>
+                <motion.span 
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.5 }}
+                  className="text-[11px] font-bold text-[#59624B] bg-[#F3F5F1] px-2.5 py-0.5 rounded border border-[#59624B]/20 shrink-0"
+                >
+                  Confidence: High (Known from evidence)
+                </motion.span>
               </div>
-              <h3 className="font-display font-bold text-[15.5px] text-[#171717]">
-                What would make a customer trust a category enough to try it?
-              </h3>
 
-              <div className="space-y-3 pt-3 border-t border-[#ECE8DE]/60 text-[12.5px] leading-relaxed">
+              {/* Main Title Block + Stat Callout */}
+              <div className="flex flex-col md:flex-row md:items-center justify-between gap-5">
+                <div className="space-y-2 flex-1">
+                  <h3 className="font-display font-extrabold text-[24px] md:text-[28px] text-[#171717] leading-tight tracking-tight">
+                    "Customers already told us what would change their mind."
+                  </h3>
+                </div>
+
+                {/* Stat Callout */}
+                <AnimatedStat 
+                  value="45.5%" 
+                  label="describe specific trust fixes (86 of 189 signals)" 
+                  colorClass="text-amber-500" 
+                />
+              </div>
+
+              {/* Structured Body Sections */}
+              <div className="space-y-4 pt-3 border-t border-[#ECE8DE]/60 text-[13px] font-normal leading-relaxed">
                 <div>
-                  <span className="text-[9px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Observed Pattern</span>
-                  <p className="text-[#171717] font-medium italic">
+                  <span className="text-[9.5px] font-bold text-[#8C8C8C] uppercase tracking-wider block mb-1">Observed Pattern</span>
+                  <p className="text-[#171717] font-medium italic bg-[#F8F9FA] p-3 rounded border border-[#ECE8DE]/50">
                     "Nearly half of all signal (86 of 189, 45.5%) answers this directly and specifically — not 'better service' but concrete asks: visible authenticity checks, tamper-evident packaging, expiry dates shown before checkout, a working return process, accurate stock counts. This is the most actionable finding in the dataset because customers described the fix, not just the problem."
                   </p>
                 </div>
 
                 <div>
-                  <span className="text-[9px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Evidence</span>
+                  <span className="text-[9.5px] font-bold text-[#8C8C8C] uppercase tracking-wider block mb-1">Evidence</span>
                   <div className="space-y-2 mt-1.5">
                     {getEvidenceForQuestion(5).map((r) => (
                       <div 
                         key={r.row_number} 
                         onClick={() => jumpToRow(r.row_number)}
-                        className="bg-[#F8F9FA] border border-[#ECE8DE] rounded-md p-3 text-[12px] text-[#171717] italic cursor-pointer hover:bg-[#F2F1EC] transition-all"
+                        className="bg-[#F4F3EE] border border-[#E2DFD2] rounded-md p-3.5 text-[12px] text-[#171717] italic cursor-pointer hover:bg-[#EDEBE3] hover:-translate-y-0.5 transition-all duration-200 shadow-sm"
                       >
                         "{r.quote}" <span className="font-mono text-[10px] text-[#8C8C8C] not-italic block mt-1">Row #{r.row_number} · Click to verify</span>
                       </div>
@@ -738,14 +907,14 @@ export default function EngineDashboard() {
                 </div>
 
                 <div>
-                  <span className="text-[9px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Interpretation</span>
+                  <span className="text-[9.5px] font-bold text-[#8C8C8C] uppercase tracking-wider block mb-1">Interpretation</span>
                   <p className="text-[#5F6368]">
                     Customers are willing to try new categories if the platform explicitly surfaces verification assurances.
                   </p>
                 </div>
 
                 <div>
-                  <span className="text-[9px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Product Implication</span>
+                  <span className="text-[9.5px] font-bold text-[#8C8C8C] uppercase tracking-wider block mb-1">Product Implication</span>
                   <p className="text-[#171717] font-semibold">Decision supported: Whether to build generalized customer support tools or specific checkout security badges.</p>
                   <p className="text-[#5F6368] mt-1">Unvalidated product bets (suppositions generated from customer feedback):</p>
                   <ul className="list-disc pl-4 text-[#5F6368] space-y-1 mt-1">
@@ -755,13 +924,13 @@ export default function EngineDashboard() {
                 </div>
 
                 <div>
-                  <span className="text-[9px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Remaining Uncertainty</span>
+                  <span className="text-[9.5px] font-bold text-[#8C8C8C] uppercase tracking-wider block mb-1">Remaining Uncertainty</span>
                   <p className="text-[#5F6368]">
                     Whether showing these trust tags increases category conversion rates or if users ignore them during high-speed checkouts.
                   </p>
                 </div>
 
-                <div className="pt-2.5 border-t border-[#ECE8DE]/40">
+                <div className="pt-3 border-t border-[#ECE8DE]/40">
                   <a href="#q6" className="text-[12px] font-bold text-[#59624B] hover:underline flex items-center gap-1">
                     Related findings: What frustrates customers repeatedly? →
                   </a>
@@ -770,33 +939,55 @@ export default function EngineDashboard() {
             </div>
 
             {/* Q6 */}
-            <div id="q6" className="bg-white border border-[#ECE8DE] rounded-lg p-6 shadow-sm space-y-4 scroll-mt-20">
-              <div className="flex items-center justify-between">
-                <span className="font-mono text-[10px] font-bold text-[#59624B] bg-[#F3F5F1] px-2.5 py-0.5 rounded border border-[#59624B]/20">
-                  Question 06
+            <div id="q6" className="bg-white border border-[#ECE8DE] border-l-4 border-l-red-600 rounded-lg p-6 md:p-7 shadow-sm space-y-6 scroll-mt-20">
+              {/* Card Header */}
+              <div className="flex items-center justify-between gap-2 border-b border-[#ECE8DE]/60 pb-3">
+                <span className="font-mono text-[10px] font-bold text-[#737373] uppercase tracking-wider">
+                  WHAT FRUSTRATES CUSTOMERS REPEATEDLY?
                 </span>
-                <span className="text-[11px] font-bold text-[#59624B]">Confidence: High (Known from evidence)</span>
+                <motion.span 
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.5 }}
+                  className="text-[11px] font-bold text-[#59624B] bg-[#F3F5F1] px-2.5 py-0.5 rounded border border-[#59624B]/20 shrink-0"
+                >
+                  Confidence: High (Known from evidence)
+                </motion.span>
               </div>
-              <h3 className="font-display font-bold text-[15.5px] text-[#171717]">
-                What frustrates customers repeatedly?
-              </h3>
 
-              <div className="space-y-3 pt-3 border-t border-[#ECE8DE]/60 text-[12.5px] leading-relaxed">
+              {/* Main Title Block + Stat Callout */}
+              <div className="flex flex-col md:flex-row md:items-center justify-between gap-5">
+                <div className="space-y-2 flex-1">
+                  <h3 className="font-display font-extrabold text-[24px] md:text-[28px] text-[#171717] leading-tight tracking-tight">
+                    "Five failures repeat across every category."
+                  </h3>
+                </div>
+
+                {/* Stat Callout */}
+                <AnimatedStat 
+                  value="5" 
+                  label="recurring platform failure modes" 
+                  colorClass="text-red-600" 
+                />
+              </div>
+
+              {/* Structured Body Sections */}
+              <div className="space-y-4 pt-3 border-t border-[#ECE8DE]/60 text-[13px] font-normal leading-relaxed">
                 <div>
-                  <span className="text-[9px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Observed Pattern</span>
-                  <p className="text-[#171717] font-medium italic">
+                  <span className="text-[9.5px] font-bold text-[#8C8C8C] uppercase tracking-wider block mb-1">Observed Pattern</span>
+                  <p className="text-[#171717] font-medium italic bg-[#F8F9FA] p-3 rounded border border-[#ECE8DE]/50">
                     "The same five failures recur across unrelated categories: counterfeit goods, expired perishables, refund promises that don't get honored, substitutions made without asking, and promo codes that don't work at checkout. These aren't category-specific complaints — they're platform-trust failures that happen to surface most often in electronics and perishables because that's where the cost of being wrong is highest for the customer."
                   </p>
                 </div>
 
                 <div>
-                  <span className="text-[9px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Evidence</span>
+                  <span className="text-[9.5px] font-bold text-[#8C8C8C] uppercase tracking-wider block mb-1">Evidence</span>
                   <div className="space-y-2 mt-1.5">
                     {getEvidenceForQuestion(6).map((r) => (
                       <div 
                         key={r.row_number} 
                         onClick={() => jumpToRow(r.row_number)}
-                        className="bg-[#F8F9FA] border border-[#ECE8DE] rounded-md p-3 text-[12px] text-[#171717] italic cursor-pointer hover:bg-[#F2F1EC] transition-all"
+                        className="bg-[#F4F3EE] border border-[#E2DFD2] rounded-md p-3.5 text-[12px] text-[#171717] italic cursor-pointer hover:bg-[#EDEBE3] hover:-translate-y-0.5 transition-all duration-200 shadow-sm"
                       >
                         "{r.quote}" <span className="font-mono text-[10px] text-[#8C8C8C] not-italic block mt-1">Row #{r.row_number} · Click to verify</span>
                       </div>
@@ -805,14 +996,14 @@ export default function EngineDashboard() {
                 </div>
 
                 <div>
-                  <span className="text-[9px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Interpretation</span>
+                  <span className="text-[9.5px] font-bold text-[#8C8C8C] uppercase tracking-wider block mb-1">Interpretation</span>
                   <p className="text-[#5F6368]">
                     Core operational errors (expired stock, forced replacements) destroy trust globally, making category discovery initiatives useless if core fulfillment is broken.
                   </p>
                 </div>
 
                 <div>
-                  <span className="text-[9px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Product Implication</span>
+                  <span className="text-[9.5px] font-bold text-[#8C8C8C] uppercase tracking-wider block mb-1">Product Implication</span>
                   <p className="text-[#171717] font-semibold">Decision supported: Aligning roadmap goals with supply chain fulfillment accuracy metrics rather than top-funnel marketing.</p>
                   <p className="text-[#5F6368] mt-1">Unvalidated product bets (suppositions generated from customer feedback):</p>
                   <ul className="list-disc pl-4 text-[#5F6368] space-y-1 mt-1">
@@ -822,13 +1013,13 @@ export default function EngineDashboard() {
                 </div>
 
                 <div>
-                  <span className="text-[9px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Remaining Uncertainty</span>
+                  <span className="text-[9.5px] font-bold text-[#8C8C8C] uppercase tracking-wider block mb-1">Remaining Uncertainty</span>
                   <p className="text-[#5F6368]">
                     Whether these platform-trust failures are concentrated in specific courier networks or are evenly distributed across the entire catalog.
                   </p>
                 </div>
 
-                <div className="pt-2.5 border-t border-[#ECE8DE]/40">
+                <div className="pt-3 border-t border-[#ECE8DE]/40">
                   <a href="#q7" className="text-[12px] font-bold text-[#59624B] hover:underline flex items-center gap-1">
                     Related findings: Which customers are closest to trying something new? →
                   </a>
@@ -837,75 +1028,105 @@ export default function EngineDashboard() {
             </div>
 
             {/* Q7 */}
-            <div id="q7" className="bg-white border border-[#ECE8DE] rounded-lg p-6 shadow-sm space-y-6 scroll-mt-20">
-              <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <span className="font-mono text-[10px] font-bold text-[#59624B] bg-[#F3F5F1] px-2.5 py-0.5 rounded border border-[#59624B]/20">
-                    Question 07
-                  </span>
-                  <span className="text-[11px] font-bold text-[#5F6368]">Confidence: Medium (Inferred from language)</span>
-                </div>
-                <h3 className="font-display font-bold text-[15.5px] text-[#171717]">
-                  Which customers are closest to trying something new?
-                </h3>
-                
-                <div className="space-y-3 pt-3 border-t border-[#ECE8DE]/60 text-[12.5px] leading-relaxed">
-                  <div>
-                    <span className="text-[9px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Observed Pattern</span>
-                    <p className="text-[#171717] font-medium italic">
-                      "Customers whose language suggests frequent, ongoing use (19 signals, 10.1%) describe specific, fixable complaints rather than blanket distrust — that distinction matters. A customer who says 'I won't buy electronics here because of X' is different from a customer who says 'I'll never use this app again.' The first is telling you what to fix. Treat this as a supposition about where to test first, not a confirmed customer list — segment inference here comes from language, not verified purchase history."
-                    </p>
-                  </div>
+            <div id="q7" className="bg-white border border-[#ECE8DE] border-l-4 border-l-[#59624B] rounded-lg p-6 md:p-7 shadow-sm space-y-6 scroll-mt-20">
+              {/* Card Header */}
+              <div className="flex items-center justify-between gap-2 border-b border-[#ECE8DE]/60 pb-3">
+                <span className="font-mono text-[10px] font-bold text-[#737373] uppercase tracking-wider">
+                  WHICH CUSTOMERS ARE CLOSEST TO TRYING SOMETHING NEW?
+                </span>
+                <motion.span 
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.5 }}
+                  className="text-[11px] font-bold text-[#5F6368] bg-[#F3F5F1] px-2.5 py-0.5 rounded border border-[#59624B]/20 shrink-0"
+                >
+                  Confidence: Medium (Inferred from language)
+                </motion.span>
+              </div>
 
-                  <div>
-                    <span className="text-[9px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Evidence</span>
-                    <div className="space-y-2 mt-1.5">
-                      {getEvidenceForQuestion(7).map((r) => (
-                        <div 
-                          key={r.row_number} 
-                          onClick={() => jumpToRow(r.row_number)}
-                          className="bg-[#F8F9FA] border border-[#ECE8DE] rounded-md p-3 text-[12px] text-[#171717] italic cursor-pointer hover:bg-[#F2F1EC] transition-all"
-                        >
-                          "{r.quote}" <span className="font-mono text-[10px] text-[#8C8C8C] not-italic block mt-1">Row #{r.row_number} · Click to verify</span>
-                        </div>
-                      ))}
+              {/* Main Title Block + Stat Callout */}
+              <div className="flex flex-col md:flex-row md:items-center justify-between gap-5">
+                <div className="space-y-3 flex-1">
+                  <h3 className="font-display font-extrabold text-[24px] md:text-[28px] text-[#171717] leading-tight tracking-tight">
+                    "Some customers are closer to trying something new than others."
+                  </h3>
+
+                  {/* Assumed vs Found Block */}
+                  <div className="bg-[#F8F9FA] border border-[#ECE8DE] rounded-md p-3 text-[12px] space-y-1">
+                    <div className="text-[#8C8C8C] line-through font-mono">
+                      <strong className="no-underline">ASSUMED:</strong> Non-buyers across categories have blanket distrust of the platform.
+                    </div>
+                    <div className="text-[#171717] font-bold font-mono">
+                      <strong className="text-[#59624B]">FOUND:</strong> 10.1% of high-frequency users express fixable transactional barriers, ready for trial.
                     </div>
                   </div>
+                </div>
 
-                  <div>
-                    <span className="text-[9px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Interpretation</span>
-                    <p className="text-[#5F6368]">
-                      High-frequency users represent the highest conversion potential because their barriers are transactional friction, not complete platform distrust.
-                    </p>
-                  </div>
+                {/* Stat Callout */}
+                <AnimatedStat 
+                  value="10.1%" 
+                  label="show high-frequency usage language (19 signals)" 
+                  colorClass="text-[#59624B]" 
+                />
+              </div>
 
-                  <div>
-                    <span className="text-[9px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Product Implication</span>
-                    <p className="text-[#171717] font-semibold">Decision supported: Targeting new feature pilots to the "heavy_user" segment rather than mass-market launches.</p>
-                    <p className="text-[#5F6368] mt-1">Unvalidated product bets (suppositions generated from customer feedback):</p>
-                    <ul className="list-disc pl-4 text-[#5F6368] space-y-1 mt-1">
-                      <li>Pilot a trust-verification layout with heavy users first.</li>
-                      <li>Deliver tailored trial discounts on high-ticket categories to recurring daily shoppers.</li>
-                    </ul>
-                  </div>
+              {/* Structured Body Sections */}
+              <div className="space-y-4 pt-3 border-t border-[#ECE8DE]/60 text-[13px] font-normal leading-relaxed">
+                <div>
+                  <span className="text-[9.5px] font-bold text-[#8C8C8C] uppercase tracking-wider block mb-1">Observed Pattern</span>
+                  <p className="text-[#171717] font-medium italic bg-[#F8F9FA] p-3 rounded border border-[#ECE8DE]/50">
+                    "Customers whose language suggests frequent, ongoing use (19 signals, 10.1%) describe specific, fixable complaints rather than blanket distrust — that distinction matters. A customer who says 'I won't buy electronics here because of X' is different from a customer who says 'I'll never use this app again.' The first is telling you what to fix. Treat this as a supposition about where to test first, not a confirmed customer list — segment inference here comes from language, not verified purchase history."
+                  </p>
+                </div>
 
-                  <div>
-                    <span className="text-[9px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Remaining Uncertainty</span>
-                    <p className="text-[#5F6368]">
-                      Whether the language-inferred segments align with actual historical purchase frequencies and spending profiles.
-                    </p>
+                <div>
+                  <span className="text-[9.5px] font-bold text-[#8C8C8C] uppercase tracking-wider block mb-1">Evidence</span>
+                  <div className="space-y-2 mt-1.5">
+                    {getEvidenceForQuestion(7).map((r) => (
+                      <div 
+                        key={r.row_number} 
+                        onClick={() => jumpToRow(r.row_number)}
+                        className="bg-[#F4F3EE] border border-[#E2DFD2] rounded-md p-3.5 text-[12px] text-[#171717] italic cursor-pointer hover:bg-[#EDEBE3] hover:-translate-y-0.5 transition-all duration-200 shadow-sm"
+                      >
+                        "{r.quote}" <span className="font-mono text-[10px] text-[#8C8C8C] not-italic block mt-1">Row #{r.row_number} · Click to verify</span>
+                      </div>
+                    ))}
                   </div>
+                </div>
 
-                  <div className="pt-2.5 border-t border-[#ECE8DE]/40">
-                    <a href="#q8" className="text-[12px] font-bold text-[#59624B] hover:underline flex items-center gap-1">
-                      Related findings: What do customers consistently say is missing? →
-                    </a>
-                  </div>
+                <div>
+                  <span className="text-[9.5px] font-bold text-[#8C8C8C] uppercase tracking-wider block mb-1">Interpretation</span>
+                  <p className="text-[#5F6368]">
+                    High-frequency users represent the highest conversion potential because their barriers are transactional friction, not complete platform distrust.
+                  </p>
+                </div>
+
+                <div>
+                  <span className="text-[9.5px] font-bold text-[#8C8C8C] uppercase tracking-wider block mb-1">Product Implication</span>
+                  <p className="text-[#171717] font-semibold">Decision supported: Targeting new feature pilots to the "heavy_user" segment rather than mass-market launches.</p>
+                  <p className="text-[#5F6368] mt-1">Unvalidated product bets (suppositions generated from customer feedback):</p>
+                  <ul className="list-disc pl-4 text-[#5F6368] space-y-1 mt-1">
+                    <li>Pilot a trust-verification layout with heavy users first.</li>
+                    <li>Deliver tailored trial discounts on high-ticket categories to recurring daily shoppers.</li>
+                  </ul>
+                </div>
+
+                <div>
+                  <span className="text-[9.5px] font-bold text-[#8C8C8C] uppercase tracking-wider block mb-1">Remaining Uncertainty</span>
+                  <p className="text-[#5F6368]">
+                    Whether the language-inferred segments align with actual historical purchase frequencies and spending profiles.
+                  </p>
+                </div>
+
+                <div className="pt-3 border-t border-[#ECE8DE]/40">
+                  <a href="#q8" className="text-[12px] font-bold text-[#59624B] hover:underline flex items-center gap-1">
+                    Related findings: What do customers consistently say is missing? →
+                  </a>
                 </div>
               </div>
 
-              {/* Segment x Reason Matrix (Belongs inside Workspace here as supporting evidence for Q7) */}
-              <div className="bg-[#F8F9FA] border border-[#ECE8DE] rounded-lg p-5 space-y-4">
+              {/* Segment x Reason Matrix */}
+              <div className="bg-[#F8F9FA] border border-[#ECE8DE] rounded-lg p-5 space-y-4 mt-4">
                 <div>
                   <h4 className="text-[14px] font-bold text-[#171717]">Supporting Matrix: Segments × Reason-Types</h4>
                   <p className="text-[12px] text-[#5F6368] mt-1 leading-relaxed">
@@ -968,33 +1189,55 @@ export default function EngineDashboard() {
             </div>
 
             {/* Q8 */}
-            <div id="q8" className="bg-white border border-[#ECE8DE] rounded-lg p-6 shadow-sm space-y-4 scroll-mt-20">
-              <div className="flex items-center justify-between">
-                <span className="font-mono text-[10px] font-bold text-[#59624B] bg-[#F3F5F1] px-2.5 py-0.5 rounded border border-[#59624B]/20">
-                  Question 08
+            <div id="q8" className="bg-white border border-[#ECE8DE] border-l-4 border-l-purple-600 rounded-lg p-6 md:p-7 shadow-sm space-y-6 scroll-mt-20">
+              {/* Card Header */}
+              <div className="flex items-center justify-between gap-2 border-b border-[#ECE8DE]/60 pb-3">
+                <span className="font-mono text-[10px] font-bold text-[#737373] uppercase tracking-wider">
+                  WHAT DO CUSTOMERS CONSISTENTLY SAY IS MISSING?
                 </span>
-                <span className="text-[11px] font-bold text-[#5F6368]">Confidence: Medium (Inferred from language)</span>
+                <motion.span 
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.5 }}
+                  className="text-[11px] font-bold text-[#5F6368] bg-[#F3F5F1] px-2.5 py-0.5 rounded border border-[#59624B]/20 shrink-0"
+                >
+                  Confidence: Medium (Inferred from language)
+                </motion.span>
               </div>
-              <h3 className="font-display font-bold text-[15.5px] text-[#171717]">
-                What do customers consistently say is missing?
-              </h3>
 
-              <div className="space-y-3 pt-3 border-t border-[#ECE8DE]/60 text-[12.5px] leading-relaxed">
+              {/* Main Title Block + Stat Callout */}
+              <div className="flex flex-col md:flex-row md:items-center justify-between gap-5">
+                <div className="space-y-2 flex-1">
+                  <h3 className="font-display font-extrabold text-[24px] md:text-[28px] text-[#171717] leading-tight tracking-tight">
+                    "Customers didn't just complain — they specified the fix."
+                  </h3>
+                </div>
+
+                {/* Stat Callout */}
+                <AnimatedStat 
+                  value="5" 
+                  label="core unfulfilled customer needs" 
+                  colorClass="text-purple-600" 
+                />
+              </div>
+
+              {/* Structured Body Sections */}
+              <div className="space-y-4 pt-3 border-t border-[#ECE8DE]/60 text-[13px] font-normal leading-relaxed">
                 <div>
-                  <span className="text-[9px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Observed Pattern</span>
-                  <p className="text-[#171717] font-medium italic">
+                  <span className="text-[9.5px] font-bold text-[#8C8C8C] uppercase tracking-wider block mb-1">Observed Pattern</span>
+                  <p className="text-[#171717] font-medium italic bg-[#F8F9FA] p-3 rounded border border-[#ECE8DE]/50">
                     "Five needs repeat across otherwise unrelated complaints: proof a product is genuine, clear pricing without surprise fees, a return process that actually works, accurate stock information for less-common items, and — mentioned by only one customer but worth flagging rather than discarding — a simpler interface for a non-technical user. Small signal isn't nothing; it's a prompt for direct research, not a proven segment need."
                   </p>
                 </div>
 
                 <div>
-                  <span className="text-[9px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Evidence</span>
+                  <span className="text-[9.5px] font-bold text-[#8C8C8C] uppercase tracking-wider block mb-1">Evidence</span>
                   <div className="space-y-2 mt-1.5">
                     {getEvidenceForQuestion(8).map((r) => (
                       <div 
                         key={r.row_number} 
                         onClick={() => jumpToRow(r.row_number)}
-                        className="bg-[#F8F9FA] border border-[#ECE8DE] rounded-md p-3 text-[12px] text-[#171717] italic cursor-pointer hover:bg-[#F2F1EC] transition-all"
+                        className="bg-[#F4F3EE] border border-[#E2DFD2] rounded-md p-3.5 text-[12px] text-[#171717] italic cursor-pointer hover:bg-[#EDEBE3] hover:-translate-y-0.5 transition-all duration-200 shadow-sm"
                       >
                         "{r.quote}" <span className="font-mono text-[10px] text-[#8C8C8C] not-italic block mt-1">Row #{r.row_number} · Click to verify</span>
                       </div>
@@ -1003,14 +1246,14 @@ export default function EngineDashboard() {
                 </div>
 
                 <div>
-                  <span className="text-[9px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Interpretation</span>
+                  <span className="text-[9.5px] font-bold text-[#8C8C8C] uppercase tracking-wider block mb-1">Interpretation</span>
                   <p className="text-[#5F6368]">
                     Customer needs concentrate around catalog integrity and transparency, with occasional accessibility signals (e.g., senior citizen segment usability) representing critical qualitative cues.
                   </p>
                 </div>
 
                 <div>
-                  <span className="text-[9px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Product Implication</span>
+                  <span className="text-[9.5px] font-bold text-[#8C8C8C] uppercase tracking-wider block mb-1">Product Implication</span>
                   <p className="text-[#171717] font-semibold">Decision supported: Running dedicated qualitative validation studies for accessibility features.</p>
                   <p className="text-[#5F6368] mt-1">Unvalidated product bets (suppositions generated from customer feedback):</p>
                   <ul className="list-disc pl-4 text-[#5F6368] space-y-1 mt-1">
@@ -1020,13 +1263,13 @@ export default function EngineDashboard() {
                 </div>
 
                 <div>
-                  <span className="text-[9px] font-bold text-[#8C8C8C] uppercase tracking-wider block">Remaining Uncertainty</span>
+                  <span className="text-[9.5px] font-bold text-[#8C8C8C] uppercase tracking-wider block mb-1">Remaining Uncertainty</span>
                   <p className="text-[#5F6368]">
                     Whether the accessibility need represents a broad, unserved cohort or is isolated to a few vocal outliers.
                   </p>
                 </div>
 
-                <div className="pt-2.5 border-t border-[#ECE8DE]/40">
+                <div className="pt-3 border-t border-[#ECE8DE]/40">
                   <a href="#q1" className="text-[12px] font-bold text-[#59624B] hover:underline flex items-center gap-1">
                     Related findings: Why do customers keep buying from the same categories? →
                   </a>
