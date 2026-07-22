@@ -515,6 +515,19 @@ export default function EngineDashboard() {
             </ol>
           </div>
 
+          {/* Dedicated Theme Identification Callout */}
+          <div className="bg-[#F3F5F1] border border-[#59624B]/30 rounded-lg p-5 shadow-sm space-y-2">
+            <span className="text-[9.5px] font-bold text-[#59624B] uppercase tracking-wider block font-mono">
+              Core Methodology: Theme Identification
+            </span>
+            <h3 className="font-display font-extrabold text-[15px] text-[#171717]">
+              How individual signals become a theme
+            </h3>
+            <p className="text-[13px] text-[#171717] leading-relaxed font-medium">
+              A single tagged review is one data point. A theme forms when multiple independently-extracted signals converge on the same <code className="bg-[#E5E9E0] px-1 py-0.5 rounded text-[12px] font-mono text-[#59624B]">reason_type</code> and category combination — e.g. 105 separate reviews, tagged individually with no knowledge of each other, all landing on 'trust' as the reason and 'electronics' or 'perishables' as the category. That convergence, not any single review, is what promotes a pattern to a named theme in Discovery Workspace. Themes with fewer than 10 supporting signals are labeled Medium or Low confidence rather than High, regardless of how compelling any individual quote sounds.
+            </p>
+          </div>
+
           {/* AI vs Human block */}
           <div className="bg-white border border-[#ECE8DE] rounded-lg p-6 shadow-sm space-y-3">
             <h3 className="font-display font-bold text-[15px] text-[#171717]">
