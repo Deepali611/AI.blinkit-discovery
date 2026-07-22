@@ -330,6 +330,81 @@ export default function EngineDashboard() {
           ═══════════════════════════════════════════ */}
       {currentView === "methodology" && (
         <div className="space-y-8 max-w-4xl mx-auto">
+          
+          {/* How the Data Was Collected Section */}
+          <div className="bg-white border border-[#ECE8DE] rounded-lg p-6 shadow-sm space-y-6">
+            <div>
+              <span className="text-[9.5px] font-bold text-[#737373] uppercase tracking-wider block">Completed Data Ingestion</span>
+              <h2 className="font-display font-extrabold text-[20px] text-[#171717] mt-0.5">Collection Method</h2>
+              <p className="text-[13.5px] text-[#5F6368] mt-1 leading-relaxed">
+                This engine analyzed a fixed set of 1,176 customer reviews, collected once across 4 sources. Below is exactly how.
+              </p>
+              <p className="text-[12px] font-mono text-[#737373] mt-2.5 bg-[#F8F9FA] px-3 py-1.5 rounded border border-[#ECE8DE]/80 inline-block">
+                Date Range / Scope: Reviews collected reflect recent customer activity across all 4 sources as of this analysis.
+              </p>
+            </div>
+
+            {/* Source Data Table */}
+            <div className="space-y-2">
+              <h4 className="text-[13px] font-bold text-[#171717]">Source Breakdown & Sample Distribution</h4>
+              <div className="overflow-x-auto border border-[#ECE8DE] rounded">
+                <table className="w-full border-collapse text-left text-[12px] bg-white">
+                  <thead>
+                    <tr className="bg-[#F2F1EC]/80 border-b border-[#ECE8DE] text-[#5F6368]">
+                      <th className="p-3 font-bold uppercase tracking-wider text-[10px]">Source</th>
+                      <th className="p-3 font-bold uppercase tracking-wider text-[10px] text-right font-mono">Reviews Collected</th>
+                      <th className="p-3 font-bold uppercase tracking-wider text-[10px] text-right font-mono">Share of Dataset</th>
+                      <th className="p-3 font-bold uppercase tracking-wider text-[10px]">Why This Source</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr className="border-b border-[#ECE8DE] hover:bg-[#F8F9FA]">
+                      <td className="p-3 font-bold text-[#171717]">Google Play</td>
+                      <td className="p-3 text-right font-mono font-bold text-[#171717]">662</td>
+                      <td className="p-3 text-right font-mono text-[#5F6368]">56.3%</td>
+                      <td className="p-3 text-[#5F6368] leading-relaxed">Largest volume; Android reviews on the core shopping app.</td>
+                    </tr>
+                    <tr className="border-b border-[#ECE8DE] hover:bg-[#F8F9FA]">
+                      <td className="p-3 font-bold text-[#171717]">Reddit</td>
+                      <td className="p-3 text-right font-mono font-bold text-[#171717]">360</td>
+                      <td className="p-3 text-right font-mono text-[#5F6368]">30.6%</td>
+                      <td className="p-3 text-[#5F6368] leading-relaxed">Candid discussion and comparison threads — richest reasoning, but mostly post titles rather than full bodies.</td>
+                    </tr>
+                    <tr className="border-b border-[#ECE8DE] hover:bg-[#F8F9FA]">
+                      <td className="p-3 font-bold text-[#171717]">YouTube comments</td>
+                      <td className="p-3 text-right font-mono font-bold text-[#171717]">144</td>
+                      <td className="p-3 text-right font-mono text-[#5F6368]">12.2%</td>
+                      <td className="p-3 text-[#5F6368] leading-relaxed">Comment-level reactions on review/unboxing videos.</td>
+                    </tr>
+                    <tr className="border-b border-[#ECE8DE] hover:bg-[#F8F9FA]">
+                      <td className="p-3 font-bold text-[#171717]">App Store</td>
+                      <td className="p-3 text-right font-mono font-bold text-[#171717]">10</td>
+                      <td className="p-3 text-right font-mono text-[#5F6368]">0.9%</td>
+                      <td className="p-3 text-[#5F6368] leading-relaxed">iOS reviews — too small a sample for independent conclusions, included for completeness and treated as directional only.</td>
+                    </tr>
+                    <tr className="bg-[#F8F9FA] font-bold text-[#171717]">
+                      <td className="p-3">Total</td>
+                      <td className="p-3 text-right font-mono font-bold">1,176</td>
+                      <td className="p-3 text-right font-mono">100%</td>
+                      <td className="p-3 text-[#8C8C8C] italic text-[11px] font-normal">All 4 sources combined</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            {/* Signal Extraction Summary */}
+            <div className="bg-[#F8F9FA] border border-[#ECE8DE] rounded-md p-4 space-y-3">
+              <h4 className="text-[13px] font-bold text-[#171717]">Signal Extraction Summary</h4>
+              <p className="text-[13px] text-[#5F6368] leading-relaxed">
+                Of 1,176 reviews collected, 189 (16.1%) contained real behavioral signal — a stated reason, barrier, or specific complaint the engine could extract and verify. The remaining 987 were excluded before analysis: generic ratings with no reasoning ('good app', '5 stars'), off-topic content (delivery-worker labor posts, industry-economics debate unrelated to shopping behavior), and statements too short to support a verifiable extraction.
+              </p>
+              <p className="text-[11.5px] text-[#737373] italic font-mono pt-2 border-t border-[#ECE8DE]/60">
+                Note: Per-source signal yield is not separately tracked in this dataset — the 16.1% extraction rate is measured across the full collected set, not broken down by source.
+              </p>
+            </div>
+          </div>
+
           {/* Engineering docs block */}
           <div className="bg-white border border-[#ECE8DE] rounded-lg p-6 shadow-sm space-y-6">
             <div>
