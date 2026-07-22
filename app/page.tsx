@@ -374,6 +374,9 @@ export default function EngineDashboard() {
             <p className="text-[14px] text-[#5F6368] font-medium leading-relaxed border-t border-[#ECE8DE] pt-4">
               189 behavioral signals extracted from 1,176 reviews across 4 sources. Every signal traces back to a real customer sentence.
             </p>
+            <p className="text-[12.5px] text-[#737373] font-normal leading-relaxed mt-2">
+              Blinkit's growth goal: increase the share of Monthly Active Customers who buy from at least one new category every month. This engine exists to find out what's stopping that today.
+            </p>
           </div>
 
           <button
@@ -494,11 +497,17 @@ export default function EngineDashboard() {
               <li className="flex gap-3">
                 <span className="font-mono font-bold text-[#59624B]">4.</span>
                 <div>
-                  <strong>Requires quote-grounding:</strong> Requires every extracted claim to quote the exact source sentence. If the model's stated reasoning can't be found verbatim in the original review, that record is discarded, not corrected or reworded.
+                  <strong>Identifies themes from signal convergence:</strong> How individual signals become a theme: A single tagged review is one data point. A theme forms when multiple independently-extracted signals converge on the same reason_type and category combination — e.g. 105 separate reviews, tagged individually with no knowledge of each other, all landing on 'trust' as the reason and 'electronics' or 'perishables' as the category. That convergence, not any single review, is what promotes a pattern to a named theme in Discovery Workspace. Themes with fewer than 10 supporting signals are labeled Medium or Low confidence rather than High, regardless of how compelling any individual quote sounds.
                 </div>
               </li>
               <li className="flex gap-3">
                 <span className="font-mono font-bold text-[#59624B]">5.</span>
+                <div>
+                  <strong>Requires quote-grounding:</strong> Requires every extracted claim to quote the exact source sentence. If the model's stated reasoning can't be found verbatim in the original review, that record is discarded, not corrected or reworded.
+                </div>
+              </li>
+              <li className="flex gap-3">
+                <span className="font-mono font-bold text-[#59624B]">6.</span>
                 <div>
                   <strong>Deduplicates feed:</strong> Flags near-duplicate content (20% of extracted signals) so a single viral complaint copy-pasted across threads doesn't inflate a theme's apparent size.
                 </div>
@@ -685,17 +694,12 @@ export default function EngineDashboard() {
                 <div>
                   <span className="text-[9.5px] font-bold text-[#8C8C8C] uppercase tracking-wider block mb-1">Product Implication</span>
                   <p className="text-[#171717] font-semibold">Decision supported: Whether to focus roadmap resources on generic personalization algorithms or on category-specific risk-reduction features.</p>
-                  <p className="text-[#5F6368] mt-1">Unvalidated product bets (suppositions generated from customer feedback):</p>
-                  <ul className="list-disc pl-4 text-[#5F6368] space-y-1 mt-1">
-                    <li>Introduce a "risk-free first trial" badge on new categories with a guaranteed refund if unsatisfied.</li>
-                    <li>Display category-specific customer ratings emphasizing service reliability instead of raw sales volume.</li>
-                  </ul>
                 </div>
 
                 <div>
                   <span className="text-[9.5px] font-bold text-[#8C8C8C] uppercase tracking-wider block mb-1">Remaining Uncertainty</span>
                   <p className="text-[#5F6368]">
-                    Whether introducing category-specific trust guarantees would actually convert caution-based shoppers into new category trials, or if their avoidance is driven by other factors not observable from this dataset.
+                    Whether this caution-driven pattern holds outside review-writers, or if non-reviewing customers show higher baseline willingness to try new categories.
                   </p>
                 </div>
 
@@ -774,11 +778,6 @@ export default function EngineDashboard() {
                 <div>
                   <span className="text-[9.5px] font-bold text-[#8C8C8C] uppercase tracking-wider block mb-1">Product Implication</span>
                   <p className="text-[#171717] font-semibold">Decision supported: Prioritizing physical quality assurance workflows over UI navigation changes.</p>
-                  <p className="text-[#5F6368] mt-1">Unvalidated product bets (suppositions generated from customer feedback):</p>
-                  <ul className="list-disc pl-4 text-[#5F6368] space-y-1 mt-1">
-                    <li>Display expiration dates clearly on perishables listings.</li>
-                    <li>Add tamper-evident seal options at checkout for high-value categories.</li>
-                  </ul>
                 </div>
 
                 <div>
@@ -863,11 +862,6 @@ export default function EngineDashboard() {
                 <div>
                   <span className="text-[9.5px] font-bold text-[#8C8C8C] uppercase tracking-wider block mb-1">Product Implication</span>
                   <p className="text-[#171717] font-semibold">Decision supported: Investing in semantic search quality vs. generic banner advertisements.</p>
-                  <p className="text-[#5F6368] mt-1">Unvalidated product bets (suppositions generated from customer feedback):</p>
-                  <ul className="list-disc pl-4 text-[#5F6368] space-y-1 mt-1">
-                    <li>Implement regional stock-request notifications.</li>
-                    <li>Optimize search to surface exact category variants rather than sponsored alternatives.</li>
-                  </ul>
                 </div>
 
                 <div>
@@ -962,11 +956,6 @@ export default function EngineDashboard() {
                 <div>
                   <span className="text-[9.5px] font-bold text-[#8C8C8C] uppercase tracking-wider block mb-1">Product Implication</span>
                   <p className="text-[#171717] font-semibold">Decision supported: Launching dynamic cross-category loyalty rewards versus flat membership plans.</p>
-                  <p className="text-[#5F6368] mt-1">Unvalidated product bets (suppositions generated from customer feedback):</p>
-                  <ul className="list-disc pl-4 text-[#5F6368] space-y-1 mt-1">
-                    <li>Show checkout price comparisons against local MRP.</li>
-                    <li>Provide instant price-match credits on cross-category purchases.</li>
-                  </ul>
                 </div>
 
                 <div>
@@ -1051,17 +1040,12 @@ export default function EngineDashboard() {
                 <div>
                   <span className="text-[9.5px] font-bold text-[#8C8C8C] uppercase tracking-wider block mb-1">Product Implication</span>
                   <p className="text-[#171717] font-semibold">Decision supported: Whether to build generalized customer support tools or specific checkout security badges.</p>
-                  <p className="text-[#5F6368] mt-1">Unvalidated product bets (suppositions generated from customer feedback):</p>
-                  <ul className="list-disc pl-4 text-[#5F6368] space-y-1 mt-1">
-                    <li>Embed active "Freshness Guarantee" and "Authentic Seal" tags on listings.</li>
-                    <li>Provide direct, single-tap return flows for untested categories.</li>
-                  </ul>
                 </div>
 
                 <div>
                   <span className="text-[9.5px] font-bold text-[#8C8C8C] uppercase tracking-wider block mb-1">Remaining Uncertainty</span>
                   <p className="text-[#5F6368]">
-                    Whether showing these trust tags increases category conversion rates or if users ignore them during high-speed checkouts.
+                    Whether customer-stated trust fixes reflect actual conversion barriers or post-hoc justifications for non-purchase.
                   </p>
                 </div>
 
@@ -1140,11 +1124,6 @@ export default function EngineDashboard() {
                 <div>
                   <span className="text-[9.5px] font-bold text-[#8C8C8C] uppercase tracking-wider block mb-1">Product Implication</span>
                   <p className="text-[#171717] font-semibold">Decision supported: Aligning roadmap goals with supply chain fulfillment accuracy metrics rather than top-funnel marketing.</p>
-                  <p className="text-[#5F6368] mt-1">Unvalidated product bets (suppositions generated from customer feedback):</p>
-                  <ul className="list-disc pl-4 text-[#5F6368] space-y-1 mt-1">
-                    <li>Block pickers from making substitutions without real-time customer app consent.</li>
-                    <li>Automate refunds for reported expired items within 5 minutes.</li>
-                  </ul>
                 </div>
 
                 <div>
@@ -1239,11 +1218,6 @@ export default function EngineDashboard() {
                 <div>
                   <span className="text-[9.5px] font-bold text-[#8C8C8C] uppercase tracking-wider block mb-1">Product Implication</span>
                   <p className="text-[#171717] font-semibold">Decision supported: Targeting new feature pilots to the "heavy_user" segment rather than mass-market launches.</p>
-                  <p className="text-[#5F6368] mt-1">Unvalidated product bets (suppositions generated from customer feedback):</p>
-                  <ul className="list-disc pl-4 text-[#5F6368] space-y-1 mt-1">
-                    <li>Pilot a trust-verification layout with heavy users first.</li>
-                    <li>Deliver tailored trial discounts on high-ticket categories to recurring daily shoppers.</li>
-                  </ul>
                 </div>
 
                 <div>
@@ -1390,11 +1364,6 @@ export default function EngineDashboard() {
                 <div>
                   <span className="text-[9.5px] font-bold text-[#8C8C8C] uppercase tracking-wider block mb-1">Product Implication</span>
                   <p className="text-[#171717] font-semibold">Decision supported: Running dedicated qualitative validation studies for accessibility features.</p>
-                  <p className="text-[#5F6368] mt-1">Unvalidated product bets (suppositions generated from customer feedback):</p>
-                  <ul className="list-disc pl-4 text-[#5F6368] space-y-1 mt-1">
-                    <li>Introduce an "easy-read/simple-checkout" toggle for elderly cohorts.</li>
-                    <li>Provide 100% transparent fee breakdowns at checkout.</li>
-                  </ul>
                 </div>
 
                 <div>
@@ -1699,49 +1668,21 @@ export default function EngineDashboard() {
           ═══════════════════════════════════════════ */}
       {currentView === "docs" && (
         <div className="space-y-8 max-w-4xl mx-auto">
-          {/* User Guide Doc Section */}
-          <div className="bg-white border border-[#ECE8DE] rounded-lg p-6 shadow-sm space-y-4">
-            <h2 className="font-display font-bold text-[18px] text-[#171717] flex items-center gap-2">
-              <BookOpen size={16} className="text-[#59624B]" /> User Guide
-            </h2>
-            <p className="text-[13px] text-[#5F6368] leading-relaxed">
-              Use the **Evidence Explorer** tab to search and verify findings. You can input a row number to view its details directly, or select a source, segment, or reason type from the dropdown selectors to recompute the list. The **Discovery Workspace** presents the 8 primary questions, each containing quote-grounded customer sentences. Click any quote block to jump directly to the Explorer and verify the sentence in the table.
-            </p>
-            <div className="text-[12.5px] text-[#5F6368] bg-[#F8F9FA] p-3.5 rounded border border-[#ECE8DE] space-y-2">
+          {/* Prominent Top Card: Test the Workflow Yourself */}
+          <div className="bg-white border-2 border-[#59624B] rounded-lg p-6 md:p-7 shadow-md space-y-5">
+            <div className="flex items-center justify-between gap-4 border-b border-[#ECE8DE] pb-4">
               <div>
-                <strong>Confidence Levels:</strong> Sourced self-reported scores indicating model classification depth. Treats "high" as zero hedging, and "medium/low" as directional cues requiring follow-up inspection.
+                <span className="text-[10px] font-bold text-[#59624B] uppercase tracking-wider block mb-1">Interactive Deliverable</span>
+                <h2 className="font-display font-extrabold text-[22px] text-[#171717] flex items-center gap-2">
+                  <Lock size={18} className="text-[#59624B]" /> Test the Workflow Yourself
+                </h2>
+                <p className="text-[13px] text-[#5F6368] mt-1">
+                  Enter your Gemini API key and paste a raw customer review to process it live through the extraction schema.
+                </p>
               </div>
-              <div>
-                <strong>Verbatim Quotes:</strong> Every record is grounded in character-match validation. Claims are only retained if the exact text resides word-for-word in the raw source feedback database.
-              </div>
-            </div>
-          </div>
-
-          {/* Links to engineering methodology */}
-          <div className="bg-white border border-[#ECE8DE] rounded-lg p-5 shadow-sm flex items-center justify-between">
-            <div className="space-y-1">
-              <h4 className="text-[14px] font-bold text-[#171717]">Technical Pipeline Reference</h4>
-              <p className="text-[12px] text-[#5F6368]">
-                Read the details on review noise rejection steps, source biases, and extraction standards.
-              </p>
-            </div>
-            <button
-              onClick={() => setCurrentView("methodology")}
-              className="bg-[#F2F1EC] hover:bg-[#ECE8DE] text-[#171717] font-bold text-[11.5px] px-4 py-2 rounded transition-colors"
-            >
-              Open Technical Docs
-            </button>
-          </div>
-
-          {/* Try It: Live Review Analyzer */}
-          <div className="bg-white border border-[#ECE8DE] rounded-lg p-6 shadow-sm space-y-5">
-            <div>
-              <h3 className="font-display font-bold text-[16px] text-[#171717] flex items-center gap-2">
-                <Lock size={15} className="text-[#59624B]" /> Try It: Live Review Analyzer
-              </h3>
-              <p className="text-[12.5px] text-[#5F6368] mt-1">
-                Enter your Gemini API key and paste a raw customer review to process it through the extraction schema.
-              </p>
+              <span className="bg-[#59624B] text-white text-[11px] font-bold px-3 py-1 rounded shrink-0 uppercase tracking-wider">
+                Live Analyzer
+              </span>
             </div>
 
             <div className="space-y-4">
@@ -1845,6 +1786,40 @@ export default function EngineDashboard() {
                 </div>
               </div>
             )}
+          </div>
+
+          {/* User Guide Doc Section */}
+          <div className="bg-white border border-[#ECE8DE] rounded-lg p-6 shadow-sm space-y-4">
+            <h2 className="font-display font-bold text-[18px] text-[#171717] flex items-center gap-2">
+              <BookOpen size={16} className="text-[#59624B]" /> User Guide
+            </h2>
+            <p className="text-[13px] text-[#5F6368] leading-relaxed">
+              Use the **Evidence Explorer** tab to search and verify findings. You can input a row number to view its details directly, or select a source, segment, or reason type from the dropdown selectors to recompute the list. The **Discovery Workspace** presents the 8 primary questions, each containing quote-grounded customer sentences. Click any quote block to jump directly to the Explorer and verify the sentence in the table.
+            </p>
+            <div className="text-[12.5px] text-[#5F6368] bg-[#F8F9FA] p-3.5 rounded border border-[#ECE8DE] space-y-2">
+              <div>
+                <strong>Confidence Levels:</strong> Sourced self-reported scores indicating model classification depth. Treats "high" as zero hedging, and "medium/low" as directional cues requiring follow-up inspection.
+              </div>
+              <div>
+                <strong>Verbatim Quotes:</strong> Every record is grounded in character-match validation. Claims are only retained if the exact text resides word-for-word in the raw source feedback database.
+              </div>
+            </div>
+          </div>
+
+          {/* Links to engineering methodology */}
+          <div className="bg-white border border-[#ECE8DE] rounded-lg p-5 shadow-sm flex items-center justify-between">
+            <div className="space-y-1">
+              <h4 className="text-[14px] font-bold text-[#171717]">Technical Pipeline Reference</h4>
+              <p className="text-[12px] text-[#5F6368]">
+                Read the details on review noise rejection steps, source biases, and extraction standards.
+              </p>
+            </div>
+            <button
+              onClick={() => setCurrentView("methodology")}
+              className="bg-[#F2F1EC] hover:bg-[#ECE8DE] text-[#171717] font-bold text-[11.5px] px-4 py-2 rounded transition-colors"
+            >
+              Open Technical Docs
+            </button>
           </div>
         </div>
       )}
