@@ -23,7 +23,8 @@ import {
   Info,
   Lock,
   ChevronDown,
-  ChevronUp
+  ChevronUp,
+  Play
 } from "lucide-react";
 
 // Repeating decorative palette for list dot bullets
@@ -180,6 +181,22 @@ export default function EngineDashboard() {
   const [analyzerResult, setAnalyzerResult] = useState<any>(null);
   const [analyzerError, setAnalyzerError] = useState("");
   const [analyzerStep, setAnalyzerStep] = useState(0);
+  const [hasServerKey, setHasServerKey] = useState<boolean | null>(null);
+
+  useEffect(() => {
+    fetch("/api/analyze")
+      .then((res) => res.json())
+      .then((data) => {
+        if (typeof data.hasServerKey === "boolean") {
+          setHasServerKey(data.hasServerKey);
+        } else {
+          setHasServerKey(false);
+        }
+      })
+      .catch(() => setHasServerKey(false));
+  }, []);
+
+  const SAMPLE_REVIEW = "Ordered a fresh milk packet but it was bloated and expired tomorrow. Very poor quality control, going back to buying from Mother Dairy store.";
 
   // Methodology list expanded states
   const [expandedQuestions, setExpandedQuestions] = useState<Record<number, boolean>>({});
@@ -224,14 +241,16 @@ export default function EngineDashboard() {
   };
 
   // Run analyzer logic
-  const handleAnalyze = async () => {
+  const handleAnalyze = async (textOverride?: string) => {
+    const textToAnalyze = typeof textOverride === "string" ? textOverride : reviewInput;
     setAnalyzerError("");
     setAnalyzerResult(null);
-    if (!apiKey.trim()) {
+
+    if (!hasServerKey && !apiKey.trim()) {
       setAnalyzerError("Please input an API Key.");
       return;
     }
-    if (!reviewInput.trim()) {
+    if (!textToAnalyze.trim()) {
       setAnalyzerError("Please paste a review to check.");
       return;
     }
@@ -246,7 +265,7 @@ export default function EngineDashboard() {
       const res = await fetch("/api/analyze", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ apiKey, review: reviewInput }),
+        body: JSON.stringify({ apiKey: apiKey.trim(), review: textToAnalyze.trim() }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Execution failed");
@@ -257,6 +276,11 @@ export default function EngineDashboard() {
       clearInterval(interval);
       setAnalyzerLoading(false);
     }
+  };
+
+  const handleRunSample = () => {
+    setReviewInput(SAMPLE_REVIEW);
+    handleAnalyze(SAMPLE_REVIEW);
   };
 
   // Discovery Questions Data & Sourcing
@@ -2429,12 +2453,13 @@ export default function EngineDashboard() {
           <div className="bg-[#FFFFFF] border-none shadow-[0_1px_3px_rgba(0,0,0,0.08),0_1px_2px_rgba(0,0,0,0.06)] rounded-lg p-6 md:p-7 space-y-5">
             <div className="flex items-center justify-between gap-4 border-b border-gray-100 pb-4">
               <div>
-                <span className="text-[10px] font-bold text-[#54B226] uppercase tracking-wider block mb-1">Interactive Deliverable</span>
-                <h2 className="font-display font-extrabold text-[22px] text-[#1F1F1F] flex items-center gap-2">
-                  <Lock size={18} className="text-[#54B226]" /> Test the Workflow Yourself
+                <h2 className="font-display font-bold text-[18px] text-[#1F1F1F]">
+                  Try Extraction Engine Live
                 </h2>
                 <p className="text-[13px] text-[#5F6368] mt-1">
-                  Enter your Gemini API key and paste a raw customer review to process it live through the extraction schema.
+                  {hasServerKey
+                    ? "Paste a raw customer review or click 'Run Sample Review' to process it live through the extraction schema."
+                    : "Enter your Gemini API key and paste a raw customer review to process it live through the extraction schema."}
                 </p>
               </div>
               <span className="bg-[#FFF9E6] text-[#1F1F1F] text-[11px] font-bold px-3 py-1 rounded shrink-0 uppercase tracking-wider border border-[#F8CB45]">
@@ -2443,19 +2468,24 @@ export default function EngineDashboard() {
             </div>
 
             <div className="space-y-4">
-              {/* API Key */}
-              <div>
-                <label className="text-[10px] font-bold text-[#54B226] uppercase tracking-wider block mb-1.5">
-                  Gemini API Key
-                </label>
-                <input
-                  type="password"
-                  placeholder="AIzaSy..."
-                  value={apiKey}
-                  onChange={(e) => setApiKey(e.target.value)}
-                  className="w-full bg-[#FFFFFF] border border-gray-200 rounded px-3 py-2 text-[12px] focus:outline-none text-[#1F1F1F] font-medium"
-                />
-              </div>
+              {/* API Key (only shown if no server key configured) */}
+              {!hasServerKey && (
+                <div>
+                  <p className="text-[11px] text-[#737373] italic mb-1">
+                    This key is used only for this request and is never stored.
+                  </p>
+                  <label className="text-[10px] font-bold text-[#54B226] uppercase tracking-wider block mb-1.5">
+                    Gemini API Key
+                  </label>
+                  <input
+                    type="password"
+                    placeholder="AIzaSy..."
+                    value={apiKey}
+                    onChange={(e) => setApiKey(e.target.value)}
+                    className="w-full bg-[#FFFFFF] border border-gray-200 rounded px-3 py-2 text-[12px] focus:outline-none text-[#1F1F1F] font-medium"
+                  />
+                </div>
+              )}
 
               {/* Text Area */}
               <div>
@@ -2470,15 +2500,26 @@ export default function EngineDashboard() {
                   className="w-full bg-[#FFFFFF] border border-gray-200 rounded px-3 py-2 text-[12px] focus:outline-none text-[#1F1F1F] font-medium leading-relaxed"
                 />
               </div>
+              {/* Action Buttons */}
+              <div className="flex flex-wrap items-center gap-3 pt-1">
+                <button
+                  onClick={() => handleAnalyze()}
+                  disabled={analyzerLoading}
+                  className="bg-[#54B226] hover:bg-[#479B1F] text-[#FFFFFF] font-bold text-[12.5px] px-5 py-2.5 rounded-[8px] border-none transition-colors disabled:opacity-60 shadow-sm"
+                >
+                  {analyzerLoading ? "Processing signal..." : "Analyze review"}
+                </button>
 
-              {/* Submit button */}
-              <button
-                onClick={handleAnalyze}
-                disabled={analyzerLoading}
-                className="bg-[#54B226] hover:bg-[#479B1F] text-[#FFFFFF] font-bold text-[12.5px] px-5 py-2.5 rounded-[8px] border-none transition-colors disabled:opacity-60 shadow-sm"
-              >
-                {analyzerLoading ? "Processing signal..." : "Analyze review"}
-              </button>
+                <button
+                  type="button"
+                  onClick={handleRunSample}
+                  disabled={analyzerLoading}
+                  className="bg-[#F8F9FA] hover:bg-[#EFEFEF] text-[#1F1F1F] font-bold text-[12.5px] px-4 py-2.5 rounded-[8px] border border-gray-300 transition-colors disabled:opacity-60 shadow-sm flex items-center gap-1.5"
+                >
+                  <Play size={14} className="text-[#54B226]" />
+                  Run Sample Review
+                </button>
+              </div>
             </div>
 
             {/* Loading step indicators */}

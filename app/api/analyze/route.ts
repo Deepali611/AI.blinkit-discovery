@@ -23,11 +23,23 @@ If has_signal is false, still return the JSON with has_signal: false and other f
 
 Review: ${review}`;
 
+export async function GET() {
+  const hasServerKey = Boolean(process.env.GEMINI_API_KEY && process.env.GEMINI_API_KEY.trim() !== "");
+  return NextResponse.json({ hasServerKey });
+}
+
 export async function POST(req: NextRequest) {
   try {
-    const { apiKey, review } = await req.json();
-    if (!apiKey || !review) {
-      return NextResponse.json({ error: "Missing apiKey or review" }, { status: 400 });
+    const { apiKey: clientKey, review } = await req.json();
+    const apiKey = (process.env.GEMINI_API_KEY && process.env.GEMINI_API_KEY.trim() !== "")
+      ? process.env.GEMINI_API_KEY.trim()
+      : (clientKey ? clientKey.trim() : "");
+
+    if (!apiKey) {
+      return NextResponse.json({ error: "Missing API key. Please provide a Gemini API key or set GEMINI_API_KEY in environment variables." }, { status: 400 });
+    }
+    if (!review || !review.trim()) {
+      return NextResponse.json({ error: "Missing review text" }, { status: 400 });
     }
 
     const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
