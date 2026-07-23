@@ -162,6 +162,60 @@ function PlatformIcon({ source, size = 18 }: { source: string; size?: number }) 
   );
 }
 
+const PRECOMPUTED_SAMPLES = [
+  {
+    id: "trust",
+    label: "Trust: fake product complaint",
+    badge: "Trust Barrier",
+    row_number: 22,
+    source: "Reddit",
+    raw_text: "Ordered a ₹14,000 Camera on Blinkit. Received an Empty Box. Support Has Stepped Back.",
+    result: {
+      has_signal: true,
+      category_mentioned: "electronics",
+      barrier_to_new_category: "safety concerns / empty box risk",
+      reason_type: "trust",
+      user_segment_signal: "quality_focused",
+      confidence: "high",
+      quote: "Received an Empty Box. Support Has Stepped Back."
+    }
+  },
+  {
+    id: "price",
+    label: "Price: cross-app comparison",
+    badge: "Price Barrier",
+    row_number: 73,
+    source: "Reddit",
+    raw_text: "Another Blinkit scam caught, they claim that they're giving 40% OFF while they are charging 2% more than MRP for the Haldiram Sev",
+    result: {
+      has_signal: true,
+      category_mentioned: "snacks",
+      barrier_to_new_category: "charging above MRP / false promotion",
+      reason_type: "price",
+      user_segment_signal: "price_sensitive",
+      confidence: "high",
+      quote: "charging 2% more than MRP for the Haldiram Sev"
+    }
+  },
+  {
+    id: "discovery",
+    label: "Discovery: search visibility",
+    badge: "Discovery Barrier",
+    row_number: 190,
+    source: "YouTube comments",
+    raw_text: "Swiggy/Blinkit has a shopping list option but most of us don't know about it. Why don't they put in more efforts to make people use the feature? To create awareness?",
+    result: {
+      has_signal: true,
+      category_mentioned: "none",
+      barrier_to_new_category: "unaware features exist / discovery friction",
+      reason_type: "no_discovery",
+      user_segment_signal: "unclear",
+      confidence: "medium",
+      quote: "most of us don't know about it. Why don't they put in more efforts?"
+    }
+  }
+];
+
 export default function EngineDashboard() {
   // Navigation State: "landing", "methodology", "workspace", "explorer", "docs"
   const [currentView, setCurrentView] = useState<"landing" | "methodology" | "workspace" | "explorer" | "docs">("landing");
@@ -174,7 +228,8 @@ export default function EngineDashboard() {
   const [explorerConfidence, setExplorerConfidence] = useState<string>("all");
   const [selectedRowId, setSelectedRowId] = useState<number | null>(null);
 
-  // Try It Live Analyzer States
+  // Try It Live Analyzer & Instant Precomputed States
+  const [selectedPrecomputedIndex, setSelectedPrecomputedIndex] = useState<number | null>(0);
   const [apiKey, setApiKey] = useState("");
   const [reviewInput, setReviewInput] = useState("");
   const [analyzerLoading, setAnalyzerLoading] = useState(false);
@@ -2449,21 +2504,128 @@ export default function EngineDashboard() {
           ═══════════════════════════════════════════ */}
       {currentView === "docs" && (
         <div className="space-y-8 max-w-4xl mx-auto">
-          {/* Prominent Top Card: Test the Workflow Yourself */}
+          {/* Card 1: See it work instantly (Zero-Dependency Pre-Computed Option) */}
           <div className="bg-[#FFFFFF] border-none shadow-[0_1px_3px_rgba(0,0,0,0.08),0_1px_2px_rgba(0,0,0,0.06)] rounded-lg p-6 md:p-7 space-y-5">
             <div className="flex items-center justify-between gap-4 border-b border-gray-100 pb-4">
               <div>
+                <span className="text-[10px] font-bold text-[#54B226] uppercase tracking-wider block mb-1">
+                  Zero-Dependency Demo
+                </span>
                 <h2 className="font-display font-bold text-[18px] text-[#1F1F1F]">
-                  Try Extraction Engine Live
+                  See it work instantly
                 </h2>
                 <p className="text-[13px] text-[#5F6368] mt-1">
-                  {hasServerKey
-                    ? "Paste a raw customer review or click 'Run Sample Review' to process it live through the extraction schema."
-                    : "Enter your Gemini API key and paste a raw customer review to process it live through the extraction schema."}
+                  Click any real review example below to instantly view its verified signal extraction from our dataset without an API key or network request.
                 </p>
               </div>
               <span className="bg-[#FFF9E6] text-[#1F1F1F] text-[11px] font-bold px-3 py-1 rounded shrink-0 uppercase tracking-wider border border-[#F8CB45]">
-                Live Analyzer
+                Instant Result
+              </span>
+            </div>
+
+            {/* 3 Interactive Sample Buttons */}
+            <div className="space-y-2.5">
+              <label className="text-[10px] font-bold text-[#54B226] uppercase tracking-wider block">
+                Try a real example:
+              </label>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+                {PRECOMPUTED_SAMPLES.map((sample, idx) => (
+                  <button
+                    key={sample.id}
+                    type="button"
+                    onClick={() => setSelectedPrecomputedIndex(idx)}
+                    className={`p-3 rounded-lg text-left transition-all text-[12px] border ${
+                      selectedPrecomputedIndex === idx
+                        ? "bg-[#1F1F1F] text-white border-[#1F1F1F] shadow-sm"
+                        : "bg-[#F8F9FA] hover:bg-[#F3F1EA] text-[#1F1F1F] border-gray-200"
+                    }`}
+                  >
+                    <div className="flex items-center justify-between gap-1 mb-1">
+                      <span className={`text-[9px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded ${
+                        selectedPrecomputedIndex === idx ? "bg-[#54B226] text-white" : "bg-gray-200 text-[#1F1F1F]"
+                      }`}>
+                        {sample.badge}
+                      </span>
+                      <span className="text-[10px] opacity-75 font-mono">Row #{sample.row_number}</span>
+                    </div>
+                    <span className="font-semibold block leading-snug">{sample.label}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Display active precomputed result */}
+            {selectedPrecomputedIndex !== null && (() => {
+              const activeSample = PRECOMPUTED_SAMPLES[selectedPrecomputedIndex];
+              const res = activeSample.result;
+              return (
+                <div className="pt-4 border-t border-gray-100 space-y-4">
+                  <div className="bg-[#F8F9FA] border border-gray-200 p-3.5 rounded-md text-[12.5px] text-[#1F1F1F] leading-relaxed italic">
+                    <span className="text-[9.5px] font-bold text-[#54B226] uppercase tracking-wider block not-italic mb-1">
+                      Source Review Text (Row #{activeSample.row_number} • {activeSample.source})
+                    </span>
+                    "{activeSample.raw_text}"
+                  </div>
+
+                  <div className="space-y-3">
+                    <span className="text-[10px] font-bold text-[#1F1F1F] bg-[#F8CB45] px-2.5 py-0.5 rounded border border-gray-200 inline-block uppercase tracking-wider">
+                      Pre-Computed Parameters (Verified Dataset Extraction)
+                    </span>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-[12px] bg-[#F8F9FA] p-4 rounded border border-gray-100 leading-relaxed text-[#1F1F1F]">
+                      <div>
+                        <span className="text-[9px] font-bold text-[#54B226] uppercase tracking-wider block">Has Signal</span>
+                        <span className="font-semibold">{String(res.has_signal)}</span>
+                      </div>
+                      <div>
+                        <span className="text-[9px] font-bold text-[#54B226] uppercase tracking-wider block">Category</span>
+                        <span className="font-semibold capitalize">{res.category_mentioned}</span>
+                      </div>
+                      <div>
+                        <span className="text-[9px] font-bold text-[#54B226] uppercase tracking-wider block">Stated Barrier</span>
+                        <span className="font-semibold">{res.barrier_to_new_category}</span>
+                      </div>
+                      <div>
+                        <span className="text-[9px] font-bold text-[#54B226] uppercase tracking-wider block">Reason Type</span>
+                        <span className="font-semibold capitalize">{res.reason_type}</span>
+                      </div>
+                      <div>
+                        <span className="text-[9px] font-bold text-[#54B226] uppercase tracking-wider block">User Segment</span>
+                        <span className="font-semibold capitalize">{res.user_segment_signal.replace(/_/g, " ")}</span>
+                      </div>
+                      <div>
+                        <span className="text-[9px] font-bold text-[#54B226] uppercase tracking-wider block">Confidence</span>
+                        <span className="font-semibold capitalize">{res.confidence}</span>
+                      </div>
+                      <div className="md:col-span-2 border-t border-gray-100 pt-2.5">
+                        <span className="text-[9px] font-bold text-[#54B226] uppercase tracking-wider block">Verbatim Sentence Match</span>
+                        <span className="font-semibold italic text-[#5F6368]">"{res.quote}"</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              );
+            })()}
+          </div>
+
+          {/* Card 2: Analyze your own review (Live Gemini Engine) */}
+          <div className="bg-[#FFFFFF] border-none shadow-[0_1px_3px_rgba(0,0,0,0.08),0_1px_2px_rgba(0,0,0,0.06)] rounded-lg p-6 md:p-7 space-y-5">
+            <div className="flex items-center justify-between gap-4 border-b border-gray-100 pb-4">
+              <div>
+                <span className="text-[10px] font-bold text-[#54B226] uppercase tracking-wider block mb-1">
+                  Real-Time Engine
+                </span>
+                <h2 className="font-display font-bold text-[18px] text-[#1F1F1F]">
+                  Analyze your own review
+                </h2>
+                <p className="text-[13px] text-[#5F6368] mt-1">
+                  {hasServerKey
+                    ? "Paste any custom customer review or run our sample review to test real-time extraction."
+                    : "Enter your Gemini API key and paste a raw customer review to process it live through the extraction schema."}
+                </p>
+              </div>
+              <span className="bg-[#E6F4EA] text-[#54B226] text-[11px] font-bold px-3 py-1 rounded shrink-0 uppercase tracking-wider border border-[#54B226]/30">
+                Live Engine
               </span>
             </div>
 
