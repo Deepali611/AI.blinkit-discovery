@@ -345,10 +345,11 @@ export default function EngineDashboard() {
   const [csvHeaders, setCsvHeaders] = useState<string[]>([]);
   const [csvRawRows, setCsvRawRows] = useState<string[][]>([]);
   const [selectedColumnIndex, setSelectedColumnIndex] = useState<number>(0);
+  const [batchLimit, setBatchLimit] = useState<number>(20);
   const [csvCapNotice, setCsvCapNotice] = useState<string>("");
-  const [csvProcessing, setCsvProcessing] = useState(true);
-  const [csvCurrentIndex, setCsvCurrentIndex] = useState(3);
-  const [csvTotalCount, setCsvTotalCount] = useState(15);
+  const [csvProcessing, setCsvProcessing] = useState(false);
+  const [csvCurrentIndex, setCsvCurrentIndex] = useState(0);
+  const [csvTotalCount, setCsvTotalCount] = useState(0);
   const [csvResults, setCsvResults] = useState<
     Array<{
       id: number;
@@ -2975,8 +2976,8 @@ export default function EngineDashboard() {
               </span>
             </div>
 
-            <p className="text-[11.5px] text-[#737373] italic bg-[#F8F9FA] p-3 rounded border border-gray-200">
-              This demonstrates the same extraction pipeline used to build the full 189-signal dataset - capped here to a small batch to keep results fast and within API rate limits.
+            <p className="text-[11.5px] text-[#737373] italic bg-[#F8F9FA] p-3 rounded border border-gray-200 leading-relaxed">
+              This runs the same extraction pipeline used to build the full 189-signal dataset, on your own uploaded reviews. Processing volume is adjustable to manage API rate limits.
             </p>
 
             {/* File Upload Box & Sample Action */}
@@ -2984,7 +2985,7 @@ export default function EngineDashboard() {
               <div className="flex flex-col sm:flex-row items-center gap-3">
                 <label className="flex-1 w-full flex items-center justify-center gap-2 bg-[#F8F9FA] hover:bg-[#F3F1EA] border border-dashed border-gray-300 rounded-lg p-4 cursor-pointer transition-colors text-[12.5px] font-semibold text-[#1F1F1F]">
                   <Upload size={16} className="text-[#54B226]" />
-                  <span>{csvFile ? csvFile.name : "Upload .csv file (Max 15 rows processed)"}</span>
+                  <span>{csvFile ? csvFile.name : "Upload .csv file"}</span>
                   <input
                     type="file"
                     accept=".csv"
@@ -2998,38 +2999,76 @@ export default function EngineDashboard() {
                   type="button"
                   onClick={handleLoadSampleCSV}
                   disabled={csvProcessing}
-                  className="w-full sm:w-auto bg-[#F8F9FA] hover:bg-[#EFEFEF] text-[#1F1F1F] font-bold text-[12px] px-4 py-3 rounded-lg border border-gray-300 transition-colors shrink-0 flex items-center justify-center gap-1.5 disabled:opacity-60"
+                  className="w-full sm:w-auto bg-[#F8F9FA] hover:bg-[#EFEFEF] text-[#1F1F1F] font-bold text-[12px] px-4 py-3 rounded-lg border border-gray-300 transition-colors shrink-0 flex items-center justify-center gap-1.5 disabled:opacity-60 shadow-2xs"
                 >
                   <FileText size={14} className="text-[#54B226]" />
-                  Load Sample CSV (15 rows)
+                  Load Sample CSV ({SAMPLE_CSV_REVIEWS.length} rows)
                 </button>
               </div>
 
-              {/* Column selection if multiple columns */}
-              {csvHeaders.length > 1 && (
-                <div className="bg-[#F8F9FA] p-3 rounded border border-gray-200 space-y-1.5">
-                  <label className="text-[10px] font-bold text-[#54B226] uppercase tracking-wider block">
-                    Select Review Text Column:
-                  </label>
-                  <select
-                    value={selectedColumnIndex}
-                    onChange={(e) => setSelectedColumnIndex(Number(e.target.value))}
-                    className="w-full bg-white border border-gray-200 rounded px-3 py-1.5 text-[12px] font-medium focus:outline-none"
-                  >
-                    {csvHeaders.map((header, idx) => (
-                      <option key={idx} value={idx}>
-                        Column {idx + 1}: {header || `Header ${idx + 1}`}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              )}
+              {/* Display Parsed Count & Volume Selector */}
+              {csvRawRows.length > 0 && (
+                <div className="bg-[#F8F9FA] p-3.5 rounded-lg border border-gray-200 space-y-3">
+                  <div className="flex items-center justify-between gap-2 border-b border-gray-200 pb-2">
+                    <span className="text-[12px] font-bold text-[#1F1F1F] flex items-center gap-1.5">
+                      <span className="w-2 h-2 rounded-full bg-[#54B226]" />
+                      File contains <strong className="font-mono text-[#54B226] text-[13px]">{csvRawRows.length}</strong> reviews
+                    </span>
+                    <span className="text-[10px] font-mono text-[#5F6368] uppercase tracking-wider">
+                      {csvHeaders.length} column{csvHeaders.length > 1 ? "s" : ""} detected
+                    </span>
+                  </div>
 
-              {/* Capping notice */}
-              {csvCapNotice && (
-                <p className="text-[11.5px] text-amber-700 bg-amber-50 p-2.5 rounded border border-amber-200 leading-normal">
-                  {csvCapNotice}
-                </p>
+                  {csvHeaders.length > 1 && (
+                    <div className="space-y-1">
+                      <label className="text-[10px] font-bold text-[#54B226] uppercase tracking-wider block">
+                        Select Review Text Column:
+                      </label>
+                      <select
+                        value={selectedColumnIndex}
+                        onChange={(e) => setSelectedColumnIndex(Number(e.target.value))}
+                        className="w-full bg-white border border-gray-200 rounded px-3 py-1.5 text-[12px] font-medium focus:outline-none"
+                      >
+                        {csvHeaders.map((header, idx) => (
+                          <option key={idx} value={idx}>
+                            Column {idx + 1}: {header || `Header ${idx + 1}`}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                  )}
+
+                  {/* Volume Selector (Slider & Number Input) */}
+                  <div className="space-y-2 pt-1 border-t border-gray-200/60">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 text-[11.5px]">
+                      <span className="font-semibold text-[#1F1F1F]">
+                        Process the first <strong className="font-mono text-[#54B226] font-bold text-[13px]">{Math.min(batchLimit, csvRawRows.length)}</strong> of {csvRawRows.length} rows.
+                      </span>
+                      <span className="text-[10.5px] font-medium text-[#5F6368]">
+                        (Max allowed per run: {Math.min(100, csvRawRows.length)})
+                      </span>
+                    </div>
+
+                    <div className="flex items-center gap-3">
+                      <input
+                        type="range"
+                        min={1}
+                        max={Math.min(100, csvRawRows.length)}
+                        value={Math.min(batchLimit, Math.min(100, csvRawRows.length))}
+                        onChange={(e) => setBatchLimit(Math.max(1, Math.min(100, Number(e.target.value))))}
+                        className="flex-1 accent-[#54B226] cursor-pointer"
+                      />
+                      <input
+                        type="number"
+                        min={1}
+                        max={Math.min(100, csvRawRows.length)}
+                        value={Math.min(batchLimit, Math.min(100, csvRawRows.length))}
+                        onChange={(e) => setBatchLimit(Math.max(1, Math.min(Math.min(100, csvRawRows.length), Number(e.target.value))))}
+                        className="w-16 bg-white border border-gray-200 rounded px-2.5 py-1 text-[12px] font-mono font-bold text-center focus:outline-none"
+                      />
+                    </div>
+                  </div>
+                </div>
               )}
 
               {/* Start Batch Button */}
@@ -3043,7 +3082,7 @@ export default function EngineDashboard() {
                     <Play size={14} />
                     {csvProcessing
                       ? `Processing row ${csvCurrentIndex + 1} of ${csvTotalCount}...`
-                      : `Run Batch Extraction (${Math.min(csvRawRows.length, 15)} rows)`}
+                      : `Run Batch Extraction (First ${Math.min(batchLimit, csvRawRows.length)} rows)`}
                   </button>
                 </div>
               )}
