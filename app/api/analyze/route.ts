@@ -4,9 +4,9 @@ const PROMPT_TEMPLATE = (review: string) => `You will be given a single user rev
 
 GOAL: Understand why users repeat-buy the same categories and what stops them from exploring new categories.
 
-STEP 1 — FILTER: Decide if the review has real behavioral signal about shopping habits, category choices, discovery, trust, or barriers to trying something new. Generic praise/complaints with no behavioral detail have no real signal.
+STEP 1: FILTER: Decide if the review has real behavioral signal about shopping habits, category choices, discovery, trust, or barriers to trying something new. Generic praise/complaints with no behavioral detail have no real signal.
 
-STEP 2 — If it has real signal, extract and return ONLY this JSON, nothing else, no markdown fences:
+STEP 2: If it has real signal, extract and return ONLY this JSON, nothing else, no markdown fences:
 {
   "has_signal": true or false,
   "repeat_buying_signal": "yes" or "no",

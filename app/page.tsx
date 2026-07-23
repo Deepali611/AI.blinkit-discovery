@@ -119,10 +119,10 @@ const REASONS = ["trust", "price", "convenience", "no_discovery", "habit", "othe
 const REASON_TO_QUESTION: Record<string, { qNum: number; headline: string; id: string }> = {
   habit: { qNum: 1, headline: "Customers aren't loyal. They're cautious.", id: "q1" },
   trust: { qNum: 2, headline: "Customers don't avoid new categories. They avoid risk.", id: "q2" },
-  no_discovery: { qNum: 3, headline: "Discovery isn't failing on trust — it's failing on visibility.", id: "q3" },
+  no_discovery: { qNum: 3, headline: "Discovery isn't failing on trust: it's failing on visibility.", id: "q3" },
   price: { qNum: 4, headline: "The customer isn't passive. They're constantly comparing.", id: "q4" },
   convenience: { qNum: 6, headline: "Five failures repeat across every category.", id: "q6" },
-  other: { qNum: 8, headline: "Customers didn't just complain — they specified the fix.", id: "q8" }
+  other: { qNum: 8, headline: "Customers didn't just complain, they specified the fix.", id: "q8" }
 };
 
 function PlatformIcon({ source, size = 18 }: { source: string; size?: number }) {
@@ -520,7 +520,7 @@ export default function EngineDashboard() {
                 ENGINE STATUS
               </span>
               <p className="text-[15px] font-bold text-[#1F1F1F] leading-snug">
-                189 behavioral signals extracted from 1,176 reviews across 4 sources — ready for structured discovery.
+                189 behavioral signals extracted from 1,176 reviews across 4 sources: ready for structured discovery.
               </p>
               <p className="text-[12px] text-[#5F6368] leading-relaxed">
                 Every signal traces back to a real customer sentence.
@@ -668,7 +668,7 @@ export default function EngineDashboard() {
                       </td>
                       <td className="p-3 text-right font-mono font-bold text-[#1F1F1F]">360</td>
                       <td className="p-3 text-right font-mono font-bold text-[#54B226]">30.6%</td>
-                      <td className="p-3 text-[#5F6368] leading-relaxed">Candid discussion and comparison threads — richest reasoning, but mostly post titles rather than full bodies.</td>
+                      <td className="p-3 text-[#5F6368] leading-relaxed">Candid discussion and comparison threads: richest reasoning, but mostly post titles rather than full bodies.</td>
                     </tr>
                     <tr className="border-b border-gray-100 hover:bg-[#F8F9FA]">
                       <td className="p-3 font-bold text-[#1F1F1F]">
@@ -690,7 +690,7 @@ export default function EngineDashboard() {
                       </td>
                       <td className="p-3 text-right font-mono font-bold text-[#1F1F1F]">10</td>
                       <td className="p-3 text-right font-mono font-bold text-[#54B226]">0.9%</td>
-                      <td className="p-3 text-[#5F6368] leading-relaxed">iOS reviews — too small a sample for independent conclusions, included for completeness and treated as directional only.</td>
+                      <td className="p-3 text-[#5F6368] leading-relaxed">iOS reviews: too small a sample for independent conclusions, included for completeness and treated as directional only.</td>
                     </tr>
                     <tr className="bg-[#F8F9FA] font-bold text-[#1F1F1F] border-t border-gray-200">
                       <td className="p-3">Total</td>
@@ -707,10 +707,10 @@ export default function EngineDashboard() {
             <div className="bg-[#FFFFFF] border border-gray-200 rounded-lg p-5 shadow-2xs space-y-3">
               <h4 className="text-[13px] font-bold text-[#1F1F1F]">Signal Extraction Summary</h4>
               <p className="text-[13px] text-[#5F6368] leading-relaxed">
-                Of 1,176 reviews collected, 189 (16.1%) contained real behavioral signal — a stated reason, barrier, or specific complaint the engine could extract and verify. The remaining 987 were excluded before analysis: generic ratings with no reasoning ('good app', '5 stars'), off-topic content (delivery-worker labor posts, industry-economics debate unrelated to shopping behavior), and statements too short to support a verifiable extraction.
+                Of 1,176 reviews collected, 189 (16.1%) contained real behavioral signal: a stated reason, barrier, or specific complaint the engine could extract and verify. The remaining 987 were excluded before analysis: generic ratings with no reasoning ('good app', '5 stars'), off-topic content (delivery-worker labor posts, industry-economics debate unrelated to shopping behavior), and statements too short to support a verifiable extraction.
               </p>
               <p className="text-[11.5px] text-[#737373] italic font-mono pt-2.5 border-t border-gray-200">
-                Note: Per-source signal yield is not separately tracked in this dataset — the 16.1% extraction rate is measured across the full collected set, not broken down by source.
+                Note: Per-source signal yield is not separately tracked in this dataset: the 16.1% extraction rate is measured across the full collected set, not broken down by source.
               </p>
             </div>
           </div>
@@ -732,7 +732,7 @@ export default function EngineDashboard() {
                   <div className="flex items-center gap-3">
                     <span className="w-6 h-6 rounded-full bg-[#54B226] text-white text-[12px] font-bold flex items-center justify-center shrink-0">1</span>
                     <strong className="text-[13.5px] text-[#1F1F1F]">Reads customer feedback</strong>
-                    <span className="text-[12px] text-[#737373] hidden sm:inline">— Ingests 1,176 entries across 4 sources</span>
+                    <span className="text-[12px] text-[#737373] hidden sm:inline">• Ingests 1,176 entries across 4 sources</span>
                   </div>
                   {expandedSteps[1] ? <ChevronUp size={16} className="text-[#54B226]" /> : <ChevronDown size={16} className="text-[#54B226]" />}
                 </button>
@@ -752,7 +752,7 @@ export default function EngineDashboard() {
                   <div className="flex items-center gap-3">
                     <span className="w-6 h-6 rounded-full bg-[#54B226] text-white text-[12px] font-bold flex items-center justify-center shrink-0">2</span>
                     <strong className="text-[13.5px] text-[#1F1F1F]">Rejects reviews with no behavioral content</strong>
-                    <span className="text-[12px] text-[#737373] hidden sm:inline">— Discards generic ratings (987 rejected)</span>
+                    <span className="text-[12px] text-[#737373] hidden sm:inline">• Discards generic ratings (987 rejected)</span>
                   </div>
                   {expandedSteps[2] ? <ChevronUp size={16} className="text-[#54B226]" /> : <ChevronDown size={16} className="text-[#54B226]" />}
                 </button>
@@ -772,7 +772,7 @@ export default function EngineDashboard() {
                   <div className="flex items-center gap-3">
                     <span className="w-6 h-6 rounded-full bg-[#54B226] text-white text-[12px] font-bold flex items-center justify-center shrink-0">3</span>
                     <strong className="text-[13.5px] text-[#1F1F1F]">Extracts structure</strong>
-                    <span className="text-[12px] text-[#737373] hidden sm:inline">— Classifies repeat behavior, barrier, segment, & confidence</span>
+                    <span className="text-[12px] text-[#737373] hidden sm:inline">• Classifies repeat behavior, barrier, segment, & confidence</span>
                   </div>
                   {expandedSteps[3] ? <ChevronUp size={16} className="text-[#54B226]" /> : <ChevronDown size={16} className="text-[#54B226]" />}
                 </button>
@@ -792,13 +792,13 @@ export default function EngineDashboard() {
                   <div className="flex items-center gap-3">
                     <span className="w-6 h-6 rounded-full bg-[#54B226] text-white text-[12px] font-bold flex items-center justify-center shrink-0">4</span>
                     <strong className="text-[13.5px] text-[#1F1F1F]">Identifies themes from signal convergence</strong>
-                    <span className="text-[12px] text-[#737373] hidden sm:inline">— Forms themes when signals converge</span>
+                    <span className="text-[12px] text-[#737373] hidden sm:inline">• Forms themes when signals converge</span>
                   </div>
                   {expandedSteps[4] ? <ChevronUp size={16} className="text-[#54B226]" /> : <ChevronDown size={16} className="text-[#54B226]" />}
                 </button>
                 {expandedSteps[4] && (
                   <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} className="mt-2.5 pt-2.5 border-t border-gray-100 text-[13px] text-[#5F6368]">
-                    A single tagged review is one data point. A theme forms when multiple independently-extracted signals converge on the same reason_type and category combination — e.g. 105 separate reviews, tagged individually with no knowledge of each other, all landing on 'trust' as the reason and 'electronics' or 'perishables' as the category. Themes with fewer than 10 supporting signals are labeled Medium or Low confidence.
+                    A single tagged review is one data point. A theme forms when multiple independently-extracted signals converge on the same reason_type and category combination - e.g. 105 separate reviews, tagged individually with no knowledge of each other, all landing on 'trust' as the reason and 'electronics' or 'perishables' as the category. Themes with fewer than 10 supporting signals are labeled Medium or Low confidence.
                   </motion.div>
                 )}
               </div>
@@ -812,7 +812,7 @@ export default function EngineDashboard() {
                   <div className="flex items-center gap-3">
                     <span className="w-6 h-6 rounded-full bg-[#54B226] text-white text-[12px] font-bold flex items-center justify-center shrink-0">5</span>
                     <strong className="text-[13.5px] text-[#1F1F1F]">Requires quote-grounding</strong>
-                    <span className="text-[12px] text-[#737373] hidden sm:inline">— Verifies exact verbatim quote matches</span>
+                    <span className="text-[12px] text-[#737373] hidden sm:inline">• Verifies exact verbatim quote matches</span>
                   </div>
                   {expandedSteps[5] ? <ChevronUp size={16} className="text-[#54B226]" /> : <ChevronDown size={16} className="text-[#54B226]" />}
                 </button>
@@ -832,7 +832,7 @@ export default function EngineDashboard() {
                   <div className="flex items-center gap-3">
                     <span className="w-6 h-6 rounded-full bg-[#54B226] text-white text-[12px] font-bold flex items-center justify-center shrink-0">6</span>
                     <strong className="text-[13.5px] text-[#1F1F1F]">Deduplicates feed</strong>
-                    <span className="text-[12px] text-[#737373] hidden sm:inline">— Flags viral copy-pastes (20% deduplicated)</span>
+                    <span className="text-[12px] text-[#737373] hidden sm:inline">• Flags viral copy-pastes (20% deduplicated)</span>
                   </div>
                   {expandedSteps[6] ? <ChevronUp size={16} className="text-[#54B226]" /> : <ChevronDown size={16} className="text-[#54B226]" />}
                 </button>
@@ -854,7 +854,7 @@ export default function EngineDashboard() {
               How individual signals become a theme
             </h3>
             <p className="text-[13px] text-[#1F1F1F] leading-relaxed font-medium">
-              A single tagged review is one data point. A theme forms when multiple independently-extracted signals converge on the same <code className="bg-[#F8F9FA] border border-gray-200 px-1 py-0.5 rounded text-[12px] font-mono text-[#1F1F1F]">reason_type</code> and category combination — e.g. 105 separate reviews, tagged individually with no knowledge of each other, all landing on 'trust' as the reason and 'electronics' or 'perishables' as the category. That convergence, not any single review, is what promotes a pattern to a named theme in Discovery Workspace. Themes with fewer than 10 supporting signals are labeled Medium or Low confidence rather than High, regardless of how compelling any individual quote sounds.
+              A single tagged review is one data point. A theme forms when multiple independently-extracted signals converge on the same <code className="bg-[#F8F9FA] border border-gray-200 px-1 py-0.5 rounded text-[12px] font-mono text-[#1F1F1F]">reason_type</code> and category combination - e.g. 105 separate reviews, tagged individually with no knowledge of each other, all landing on 'trust' as the reason and 'electronics' or 'perishables' as the category. That convergence, not any single review, is what promotes a pattern to a named theme in Discovery Workspace. Themes with fewer than 10 supporting signals are labeled Medium or Low confidence rather than High, regardless of how compelling any individual quote sounds.
             </p>
           </div>
 
@@ -864,7 +864,7 @@ export default function EngineDashboard() {
               Why this needed AI, not a person reading 1,176 reviews
             </h3>
             <p className="text-[13px] text-[#5F6368] leading-relaxed">
-              A person could read all 1,176 reviews. What they couldn't do reliably is apply the exact same extraction standard to review #4 and review #1,150 — attention degrades, categorization drifts, and two different afternoons produce two different judgment calls on the same review. This engine applies one fixed extraction standard to every review, and every output is traceable back to the sentence that produced it — which a manual read-through doesn't produce as a byproduct.
+              A person could read all 1,176 reviews. What they couldn't do reliably is apply the exact same extraction standard to review #4 and review #1,150 - attention degrades, categorization drifts, and two different afternoons produce two different judgment calls on the same review. This engine applies one fixed extraction standard to every review, and every output is traceable back to the sentence that produced it - which a manual read-through doesn't produce as a byproduct.
             </p>
           </div>
 
@@ -883,7 +883,7 @@ export default function EngineDashboard() {
                 >
                   <div className="flex items-center gap-2">
                     <strong className="text-[13.5px] text-[#1F1F1F]">1. Incorrect Segment Inference</strong>
-                    <span className="text-[12px] text-[#737373] hidden sm:inline">— Inferred from word choice, not transaction logs</span>
+                    <span className="text-[12px] text-[#737373] hidden sm:inline">• Inferred from word choice, not transaction logs</span>
                   </div>
                   {expandedFailures[1] ? <ChevronUp size={16} className="text-[#54B226]" /> : <ChevronDown size={16} className="text-[#54B226]" />}
                 </button>
@@ -904,7 +904,7 @@ export default function EngineDashboard() {
                 >
                   <div className="flex items-center gap-2">
                     <strong className="text-[13.5px] text-[#1F1F1F]">2. Trust vs. Convenience Misclassification</strong>
-                    <span className="text-[12px] text-[#737373] hidden sm:inline">— Delivery delay overlap with quality concerns</span>
+                    <span className="text-[12px] text-[#737373] hidden sm:inline">• Delivery delay overlap with quality concerns</span>
                   </div>
                   {expandedFailures[2] ? <ChevronUp size={16} className="text-[#54B226]" /> : <ChevronDown size={16} className="text-[#54B226]" />}
                 </button>
@@ -925,7 +925,7 @@ export default function EngineDashboard() {
                 >
                   <div className="flex items-center gap-2">
                     <strong className="text-[13.5px] text-[#1F1F1F]">3. Hallucinated Extraction</strong>
-                    <span className="text-[12px] text-[#737373] hidden sm:inline">— Inventing patterns or modifying source text</span>
+                    <span className="text-[12px] text-[#737373] hidden sm:inline">• Inventing patterns or modifying source text</span>
                   </div>
                   {expandedFailures[3] ? <ChevronUp size={16} className="text-[#54B226]" /> : <ChevronDown size={16} className="text-[#54B226]" />}
                 </button>
@@ -946,7 +946,7 @@ export default function EngineDashboard() {
                 >
                   <div className="flex items-center gap-2">
                     <strong className="text-[13.5px] text-[#1F1F1F]">4. Duplicate Complaints Inflating Patterns</strong>
-                    <span className="text-[12px] text-[#737373] hidden sm:inline">— Viral copy-pastes across threads</span>
+                    <span className="text-[12px] text-[#737373] hidden sm:inline">• Viral copy-pastes across threads</span>
                   </div>
                   {expandedFailures[4] ? <ChevronUp size={16} className="text-[#54B226]" /> : <ChevronDown size={16} className="text-[#54B226]" />}
                 </button>
@@ -967,7 +967,7 @@ export default function EngineDashboard() {
                 >
                   <div className="flex items-center gap-2">
                     <strong className="text-[13.5px] text-[#1F1F1F]">5. Sparse Source Bias</strong>
-                    <span className="text-[12px] text-[#737373] hidden sm:inline">— App Store represents 0.9% vs Google Play's 56.3%</span>
+                    <span className="text-[12px] text-[#737373] hidden sm:inline">• App Store represents 0.9% vs Google Play's 56.3%</span>
                   </div>
                   {expandedFailures[5] ? <ChevronUp size={16} className="text-[#54B226]" /> : <ChevronDown size={16} className="text-[#54B226]" />}
                 </button>
@@ -1003,13 +1003,18 @@ export default function EngineDashboard() {
             {/* Q1 */}
             <div id="q1" className="bg-white border-none shadow-[0_1px_3px_rgba(0,0,0,0.08),0_1px_2px_rgba(0,0,0,0.06)] border-l-4 border-l-[#1F1F1F] rounded-lg p-5 md:p-6 space-y-4 scroll-mt-20">
               {/* Card Header: Eyebrow + Confidence badge */}
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-gray-100 pb-2.5">
-                <span className="font-mono text-[10px] font-bold text-[#54B226] uppercase tracking-wider">
-                  WHY CUSTOMERS KEEP BUYING FROM THE SAME CATEGORIES
-                </span>
-                <span className="text-[11px] font-medium text-[#1F1F1F] bg-[#F8F9FA] px-2.5 py-1 rounded border border-gray-200 shrink-0">
-                  Confidence: High — based on 105 signals (largest pattern in dataset), consistent across 3 of 4 sources, 100% quote-grounded, low interpretive distance between evidence and finding.
-                </span>
+              <div className="space-y-1.5 border-b border-gray-100 pb-3 w-full">
+                <div className="flex flex-wrap items-center justify-between gap-2">
+                  <span className="font-mono text-[10px] font-bold text-[#54B226] uppercase tracking-wider">
+                    WHY CUSTOMERS KEEP BUYING FROM THE SAME CATEGORIES
+                  </span>
+                  <span className="text-[10.5px] font-bold text-[#1F1F1F] bg-[#FFF9E6] px-2.5 py-0.5 rounded border border-[#F8CB45] uppercase tracking-wider shrink-0">
+                    Confidence: High
+                  </span>
+                </div>
+                <p className="text-[11px] text-[#5F6368] leading-relaxed break-words max-w-full">
+                  Based on 105 signals (largest pattern in dataset), consistent across 3 of 4 sources, 100% quote-grounded, low interpretive distance between evidence and finding.
+                </p>
               </div>
 
               {/* Main Title Block + Stat Callout + Visual Bar */}
@@ -1067,7 +1072,7 @@ export default function EngineDashboard() {
                 </div>
               </div>
 
-              {/* EXPANDED CONTENT — STRUCTURED INSIGHT */}
+              {/* EXPANDED CONTENT : STRUCTURED INSIGHT */}
               {expandedQuestions[1] && (
                 <motion.div 
                   initial={{ opacity: 0, height: 0 }}
@@ -1094,7 +1099,7 @@ export default function EngineDashboard() {
                   <div>
                     <span className="text-[9.5px] font-bold text-[#54B226] uppercase tracking-wider block mb-1">Behavioral Mechanism</span>
                     <p className="text-[#5F6368]">
-                      Repeat purchasing in categories with no prior negative experience may function as a loss-avoidance strategy rather than a default behavior — customers may be actively choosing familiar categories because the downside of a bad outcome (wasted money, unusable product) outweighs the upside of trying something new, not because switching requires effort they're unwilling to spend.
+                      Repeat purchasing in categories with no prior negative experience may function as a loss-avoidance strategy rather than a default behavior - customers may be actively choosing familiar categories because the downside of a bad outcome (wasted money, unusable product) outweighs the upside of trying something new, not because switching requires effort they're unwilling to spend.
                     </p>
                   </div>
 
@@ -1134,13 +1139,18 @@ export default function EngineDashboard() {
             {/* Q2 */}
             <div id="q2" className="bg-white border-none shadow-[0_1px_3px_rgba(0,0,0,0.08),0_1px_2px_rgba(0,0,0,0.06)] border-l-4 border-l-red-600 rounded-lg p-5 md:p-6 space-y-4 scroll-mt-20">
               {/* Card Header: Eyebrow + Confidence badge */}
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-gray-100 pb-2.5">
-                <span className="font-mono text-[10px] font-bold text-[#54B226] uppercase tracking-wider">
-                  WHAT'S STOPPING CUSTOMERS FROM TRYING A NEW CATEGORY?
-                </span>
-                <span className="text-[11px] font-medium text-[#1F1F1F] bg-[#F8F9FA] px-2.5 py-1 rounded border border-gray-200 shrink-0">
-                  Confidence: High — based on 105 signals (55.6% of dataset), concrete failure modes named across Google Play, Reddit, and YouTube.
-                </span>
+              <div className="space-y-1.5 border-b border-gray-100 pb-3 w-full">
+                <div className="flex flex-wrap items-center justify-between gap-2">
+                  <span className="font-mono text-[10px] font-bold text-[#54B226] uppercase tracking-wider">
+                    WHAT'S STOPPING CUSTOMERS FROM TRYING A NEW CATEGORY?
+                  </span>
+                  <span className="text-[10.5px] font-bold text-[#1F1F1F] bg-[#FFF9E6] px-2.5 py-0.5 rounded border border-[#F8CB45] uppercase tracking-wider shrink-0">
+                    Confidence: High
+                  </span>
+                </div>
+                <p className="text-[11px] text-[#5F6368] leading-relaxed break-words max-w-full">
+                  Based on 105 signals (55.6% of dataset), concrete failure modes named across Google Play, Reddit, and YouTube.
+                </p>
               </div>
 
               {/* Main Title Block + Stat Callout + Visual Bar */}
@@ -1195,7 +1205,7 @@ export default function EngineDashboard() {
                 </div>
               </div>
 
-              {/* EXPANDED CONTENT — STRUCTURED INSIGHT */}
+              {/* EXPANDED CONTENT : STRUCTURED INSIGHT */}
               {expandedQuestions[2] && (
                 <motion.div 
                   initial={{ opacity: 0, height: 0 }}
@@ -1214,7 +1224,7 @@ export default function EngineDashboard() {
                   <div>
                     <span className="text-[9.5px] font-bold text-[#54B226] uppercase tracking-wider block mb-1">Observed Pattern</span>
                     <p className="text-[#1F1F1F] font-medium italic bg-white p-3 rounded border border-gray-100">
-                      "Trust-related language is concrete, not diffuse — customers name a specific failure mode rather than expressing general distrust of the platform."
+                      "Trust-related language is concrete, not diffuse - customers name a specific failure mode rather than expressing general distrust of the platform."
                     </p>
                   </div>
 
@@ -1222,7 +1232,7 @@ export default function EngineDashboard() {
                   <div>
                     <span className="text-[9.5px] font-bold text-[#54B226] uppercase tracking-wider block mb-1">Behavioral Mechanism</span>
                     <p className="text-[#5F6368]">
-                      A single negative experience in an unfamiliar category may generalize into a durable heuristic ("categories I haven't tried are risky") because the customer has no counter-evidence to update that belief — unlike trusted categories, where repeated successful transactions have built a track record.
+                      A single negative experience in an unfamiliar category may generalize into a durable heuristic ("categories I haven't tried are risky") because the customer has no counter-evidence to update that belief - unlike trusted categories, where repeated successful transactions have built a track record.
                     </p>
                   </div>
 
@@ -1230,7 +1240,7 @@ export default function EngineDashboard() {
                   <div>
                     <span className="text-[9.5px] font-bold text-[#54B226] uppercase tracking-wider block mb-1">Interpretation</span>
                     <p className="text-[#5F6368]">
-                      The evidence suggests category-level trust is not evenly distributed — it appears to be built (or broken) per category based on direct or adjacent experience, rather than existing as a single platform-wide trust score. This is an interpretation, not a confirmed mechanism, since the dataset cannot observe whether trust actually transfers between similar categories (e.g., does a bad experience in electronics affect willingness to try appliances?).
+                      The evidence suggests category-level trust is not evenly distributed - it appears to be built (or broken) per category based on direct or adjacent experience, rather than existing as a single platform-wide trust score. This is an interpretation, not a confirmed mechanism, since the dataset cannot observe whether trust actually transfers between similar categories (e.g., does a bad experience in electronics affect willingness to try appliances?).
                     </p>
                   </div>
 
@@ -1262,19 +1272,24 @@ export default function EngineDashboard() {
             {/* Q3 */}
             <div id="q3" className="bg-white border-none shadow-[0_1px_3px_rgba(0,0,0,0.08),0_1px_2px_rgba(0,0,0,0.06)] border-l-4 border-l-purple-600 rounded-lg p-5 md:p-6 space-y-4 scroll-mt-20">
               {/* Card Header: Eyebrow + Confidence badge */}
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-gray-100 pb-2.5">
-                <span className="font-mono text-[10px] font-bold text-[#54B226] uppercase tracking-wider">
-                  HOW DO CUSTOMERS FIND PRODUCTS TODAY?
-                </span>
-                <span className="text-[11px] font-medium text-[#1F1F1F] bg-[#F8F9FA] px-2.5 py-1 rounded border border-gray-200 shrink-0">
-                  Confidence: Medium — based on 9 signals (smallest pattern), single interpretation required to connect language to behavior, cross-source consistency not independently verified.
-                </span>
+              <div className="space-y-1.5 border-b border-gray-100 pb-3 w-full">
+                <div className="flex flex-wrap items-center justify-between gap-2">
+                  <span className="font-mono text-[10px] font-bold text-[#54B226] uppercase tracking-wider">
+                    HOW DO CUSTOMERS FIND PRODUCTS TODAY?
+                  </span>
+                  <span className="text-[10.5px] font-bold text-[#1F1F1F] bg-[#F8F9FA] px-2.5 py-0.5 rounded border border-gray-300 uppercase tracking-wider shrink-0">
+                    Confidence: Medium
+                  </span>
+                </div>
+                <p className="text-[11px] text-[#5F6368] leading-relaxed break-words max-w-full">
+                  Based on 9 signals (smallest pattern), single interpretation required to connect language to behavior, cross-source consistency not independently verified.
+                </p>
               </div>
 
               {/* Main Title Block + Stat Callout + Visual Bar */}
               <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <h3 className="font-display font-extrabold text-[22px] md:text-[25px] text-[#1F1F1F] leading-tight tracking-tight flex-1">
-                  "Discovery isn't failing on trust — it's failing on visibility."
+                  "Discovery isn't failing on trust: it's failing on visibility."
                 </h3>
                 <AnimatedStat 
                   value="4.8%" 
@@ -1323,7 +1338,7 @@ export default function EngineDashboard() {
                 </div>
               </div>
 
-              {/* EXPANDED CONTENT — STRUCTURED INSIGHT */}
+              {/* EXPANDED CONTENT : STRUCTURED INSIGHT */}
               {expandedQuestions[3] && (
                 <motion.div 
                   initial={{ opacity: 0, height: 0 }}
@@ -1334,7 +1349,7 @@ export default function EngineDashboard() {
                   <div>
                     <span className="text-[9.5px] font-bold text-[#54B226] uppercase tracking-wider block mb-1">Evidence</span>
                     <p className="text-[#5F6368] font-medium">
-                      9 of 189 signals (4.8%) — the smallest reason category — describe leaving for a competitor because a specific product wasn't visible or in stock, not because of distrust.
+                      9 of 189 signals (4.8%) - the smallest reason category - describe leaving for a competitor because a specific product wasn't visible or in stock, not because of distrust.
                     </p>
                   </div>
 
@@ -1350,7 +1365,7 @@ export default function EngineDashboard() {
                   <div>
                     <span className="text-[9.5px] font-bold text-[#54B226] uppercase tracking-wider block mb-1">Behavioral Mechanism</span>
                     <p className="text-[#5F6368]">
-                      A customer with a specific product in mind who cannot find it may not interpret this as "Blinkit doesn't have good discovery" — they may simply conclude the product isn't available and act on that belief immediately (switching apps) rather than exploring further within Blinkit.
+                      A customer with a specific product in mind who cannot find it may not interpret this as "Blinkit doesn't have good discovery" - they may simply conclude the product isn't available and act on that belief immediately (switching apps) rather than exploring further within Blinkit.
                     </p>
                   </div>
 
@@ -1358,7 +1373,7 @@ export default function EngineDashboard() {
                   <div>
                     <span className="text-[9.5px] font-bold text-[#54B226] uppercase tracking-wider block mb-1">Interpretation</span>
                     <p className="text-[#5F6368]">
-                      One possible explanation is that discovery friction in this dataset manifests as silent, immediate churn rather than visible complaint — which would mean this 4.8% likely understates the true scale of the problem, since most silent churn never becomes a written review.
+                      One possible explanation is that discovery friction in this dataset manifests as silent, immediate churn rather than visible complaint - which would mean this 4.8% likely understates the true scale of the problem, since most silent churn never becomes a written review.
                     </p>
                   </div>
 
@@ -1366,7 +1381,7 @@ export default function EngineDashboard() {
                   <div>
                     <span className="text-[9.5px] font-bold text-[#54B226] uppercase tracking-wider block mb-1">Business Meaning</span>
                     <p className="text-[#5F6368]">
-                      This raises the question of whether "improve discovery" should be reframed as "improve inventory visibility and search accuracy for niche/regional items" — a narrower, more testable prioritization than a general discovery overhaul.
+                      This raises the question of whether "improve discovery" should be reframed as "improve inventory visibility and search accuracy for niche/regional items" - a narrower, more testable prioritization than a general discovery overhaul.
                     </p>
                   </div>
 
@@ -1374,7 +1389,7 @@ export default function EngineDashboard() {
                   <div>
                     <span className="text-[9.5px] font-bold text-[#54B226] uppercase tracking-wider block mb-1">Remaining Uncertainty</span>
                     <p className="text-[#5F6368]">
-                      Review mining structurally cannot measure silent churn — customers who leave without complaining are invisible to this method entirely. This is a known blind spot, not a finding.
+                      Review mining structurally cannot measure silent churn - customers who leave without complaining are invisible to this method entirely. This is a known blind spot, not a finding.
                     </p>
                   </div>
 
@@ -1390,13 +1405,18 @@ export default function EngineDashboard() {
             {/* Q4 */}
             <div id="q4" className="bg-white border-none shadow-[0_1px_3px_rgba(0,0,0,0.08),0_1px_2px_rgba(0,0,0,0.06)] border-l-4 border-l-blue-600 rounded-lg p-5 md:p-6 space-y-4 scroll-mt-20">
               {/* Card Header: Eyebrow + Confidence badge */}
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-gray-100 pb-2.5">
-                <span className="font-mono text-[10px] font-bold text-[#54B226] uppercase tracking-wider">
-                  WHAT ROLE DOES HABIT ACTUALLY PLAY?
-                </span>
-                <span className="text-[11px] font-medium text-[#1F1F1F] bg-[#F8F9FA] px-2.5 py-1 rounded border border-gray-200 shrink-0">
-                  Confidence: High — based on 40 signals (21.2% price-shopping), consistent multi-app comparison phrasing.
-                </span>
+              <div className="space-y-1.5 border-b border-gray-100 pb-3 w-full">
+                <div className="flex flex-wrap items-center justify-between gap-2">
+                  <span className="font-mono text-[10px] font-bold text-[#54B226] uppercase tracking-wider">
+                    WHAT ROLE DOES HABIT ACTUALLY PLAY?
+                  </span>
+                  <span className="text-[10.5px] font-bold text-[#1F1F1F] bg-[#FFF9E6] px-2.5 py-0.5 rounded border border-[#F8CB45] uppercase tracking-wider shrink-0">
+                    Confidence: High
+                  </span>
+                </div>
+                <p className="text-[11px] text-[#5F6368] leading-relaxed break-words max-w-full">
+                  Based on 40 signals (21.2% price-shopping), consistent multi-app comparison phrasing.
+                </p>
               </div>
 
               {/* Main Title Block + Stat Callout + Visual Bar */}
@@ -1451,7 +1471,7 @@ export default function EngineDashboard() {
                 </div>
               </div>
 
-              {/* EXPANDED CONTENT — STRUCTURED INSIGHT */}
+              {/* EXPANDED CONTENT : STRUCTURED INSIGHT */}
               {expandedQuestions[4] && (
                 <motion.div 
                   initial={{ opacity: 0, height: 0 }}
@@ -1478,7 +1498,7 @@ export default function EngineDashboard() {
                   <div>
                     <span className="text-[9.5px] font-bold text-[#54B226] uppercase tracking-wider block mb-1">Behavioral Mechanism</span>
                     <p className="text-[#5F6368]">
-                      Frequent app-switching behavior suggests customers may hold weak platform loyalty and treat quick-commerce apps as substitutable — evaluating each purchase independently rather than defaulting to one app out of routine.
+                      Frequent app-switching behavior suggests customers may hold weak platform loyalty and treat quick-commerce apps as substitutable - evaluating each purchase independently rather than defaulting to one app out of routine.
                     </p>
                   </div>
 
@@ -1486,7 +1506,7 @@ export default function EngineDashboard() {
                   <div>
                     <span className="text-[9.5px] font-bold text-[#54B226] uppercase tracking-wider block mb-1">Interpretation</span>
                     <p className="text-[#5F6368]">
-                      The evidence suggests repeat engagement with Blinkit specifically is more transactional than habitual — customers appear to re-evaluate the decision each time rather than defaulting automatically. This is an inference from language patterns, not a measured behavioral fact.
+                      The evidence suggests repeat engagement with Blinkit specifically is more transactional than habitual - customers appear to re-evaluate the decision each time rather than defaulting automatically. This is an inference from language patterns, not a measured behavioral fact.
                     </p>
                   </div>
 
@@ -1494,7 +1514,7 @@ export default function EngineDashboard() {
                   <div>
                     <span className="text-[9.5px] font-bold text-[#54B226] uppercase tracking-wider block mb-1">Business Meaning</span>
                     <p className="text-[#5F6368]">
-                      This informs whether engagement investment should target loyalty/retention mechanics (assuming habitual behavior) or competitive positioning mechanics (assuming active, ongoing evaluation) — the evidence leans toward the latter being the more accurate model of current behavior.
+                      This informs whether engagement investment should target loyalty/retention mechanics (assuming habitual behavior) or competitive positioning mechanics (assuming active, ongoing evaluation) - the evidence leans toward the latter being the more accurate model of current behavior.
                     </p>
                   </div>
 
@@ -1518,13 +1538,18 @@ export default function EngineDashboard() {
             {/* Q5 */}
             <div id="q5" className="bg-white border-none shadow-[0_1px_3px_rgba(0,0,0,0.08),0_1px_2px_rgba(0,0,0,0.06)] border-l-4 border-l-amber-500 rounded-lg p-5 md:p-6 space-y-4 scroll-mt-20">
               {/* Card Header: Eyebrow + Confidence badge */}
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-gray-100 pb-2.5">
-                <span className="font-mono text-[10px] font-bold text-[#54B226] uppercase tracking-wider">
-                  WHAT INFORMATION DO CUSTOMERS NEED BEFORE TRYING A NEW CATEGORY?
-                </span>
-                <span className="text-[11px] font-medium text-[#1F1F1F] bg-[#F8F9FA] px-2.5 py-1 rounded border border-gray-200 shrink-0">
-                  Confidence: High — based on 86 signals (45.5% of dataset), customer-stated actionable fixes.
-                </span>
+              <div className="space-y-1.5 border-b border-gray-100 pb-3 w-full">
+                <div className="flex flex-wrap items-center justify-between gap-2">
+                  <span className="font-mono text-[10px] font-bold text-[#54B226] uppercase tracking-wider">
+                    WHAT INFORMATION DO CUSTOMERS NEED BEFORE TRYING A NEW CATEGORY?
+                  </span>
+                  <span className="text-[10.5px] font-bold text-[#1F1F1F] bg-[#FFF9E6] px-2.5 py-0.5 rounded border border-[#F8CB45] uppercase tracking-wider shrink-0">
+                    Confidence: High
+                  </span>
+                </div>
+                <p className="text-[11px] text-[#5F6368] leading-relaxed break-words max-w-full">
+                  Based on 86 signals (45.5% of dataset), customer-stated actionable fixes.
+                </p>
               </div>
 
               {/* Main Title Block + Stat Callout + Visual Bar */}
@@ -1579,7 +1604,7 @@ export default function EngineDashboard() {
                 </div>
               </div>
 
-              {/* EXPANDED CONTENT — STRUCTURED INSIGHT */}
+              {/* EXPANDED CONTENT : STRUCTURED INSIGHT */}
               {expandedQuestions[5] && (
                 <motion.div 
                   initial={{ opacity: 0, height: 0 }}
@@ -1590,7 +1615,7 @@ export default function EngineDashboard() {
                   <div>
                     <span className="text-[9.5px] font-bold text-[#54B226] uppercase tracking-wider block mb-1">Evidence</span>
                     <p className="text-[#5F6368] font-medium">
-                      86 of 189 signals (45.5%) — the largest single pattern in the dataset — state a specific, concrete requirement: visible authenticity checks, tamper-evident packaging, expiry visibility, working returns, accurate stock.
+                      86 of 189 signals (45.5%) - the largest single pattern in the dataset - state a specific, concrete requirement: visible authenticity checks, tamper-evident packaging, expiry visibility, working returns, accurate stock.
                     </p>
                   </div>
 
@@ -1606,7 +1631,7 @@ export default function EngineDashboard() {
                   <div>
                     <span className="text-[9.5px] font-bold text-[#54B226] uppercase tracking-wider block mb-1">Behavioral Mechanism</span>
                     <p className="text-[#5F6368]">
-                      Customers who articulate a specific fix (rather than a vague complaint) may represent a segment closer to conversion — the specificity itself may indicate the barrier is well-understood and addressable, rather than a deep, diffuse trust problem.
+                      Customers who articulate a specific fix (rather than a vague complaint) may represent a segment closer to conversion - the specificity itself may indicate the barrier is well-understood and addressable, rather than a deep, diffuse trust problem.
                     </p>
                   </div>
 
@@ -1614,7 +1639,7 @@ export default function EngineDashboard() {
                   <div>
                     <span className="text-[9.5px] font-bold text-[#54B226] uppercase tracking-wider block mb-1">Interpretation</span>
                     <p className="text-[#5F6368]">
-                      A plausible interpretation is that this 45.5% represents the most tractable segment of the trust problem — customers who can name their own solution are arguably easier to convert than customers expressing generalized distrust. This remains an interpretation; the dataset cannot confirm that meeting a stated requirement actually changes purchase behavior.
+                      A plausible interpretation is that this 45.5% represents the most tractable segment of the trust problem - customers who can name their own solution are arguably easier to convert than customers expressing generalized distrust. This remains an interpretation; the dataset cannot confirm that meeting a stated requirement actually changes purchase behavior.
                     </p>
                   </div>
 
@@ -1646,13 +1671,18 @@ export default function EngineDashboard() {
             {/* Q6 */}
             <div id="q6" className="bg-white border-none shadow-[0_1px_3px_rgba(0,0,0,0.08),0_1px_2px_rgba(0,0,0,0.06)] border-l-4 border-l-red-600 rounded-lg p-5 md:p-6 space-y-4 scroll-mt-20">
               {/* Card Header: Eyebrow + Confidence badge */}
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-gray-100 pb-2.5">
-                <span className="font-mono text-[10px] font-bold text-[#54B226] uppercase tracking-wider">
-                  WHAT FRUSTRATIONS EMERGE REPEATEDLY?
-                </span>
-                <span className="text-[11px] font-medium text-[#1F1F1F] bg-[#F8F9FA] px-2.5 py-1 rounded border border-gray-200 shrink-0">
-                  Confidence: High — based on 5 recurring platform operational failure types across all sources.
-                </span>
+              <div className="space-y-1.5 border-b border-gray-100 pb-3 w-full">
+                <div className="flex flex-wrap items-center justify-between gap-2">
+                  <span className="font-mono text-[10px] font-bold text-[#54B226] uppercase tracking-wider">
+                    WHAT FRUSTRATIONS EMERGE REPEATEDLY?
+                  </span>
+                  <span className="text-[10.5px] font-bold text-[#1F1F1F] bg-[#FFF9E6] px-2.5 py-0.5 rounded border border-[#F8CB45] uppercase tracking-wider shrink-0">
+                    Confidence: High
+                  </span>
+                </div>
+                <p className="text-[11px] text-[#5F6368] leading-relaxed break-words max-w-full">
+                  Based on 5 recurring platform operational failure types across all sources.
+                </p>
               </div>
 
               {/* Main Title Block + Stat Callout + Visual Bar */}
@@ -1707,7 +1737,7 @@ export default function EngineDashboard() {
                 </div>
               </div>
 
-              {/* EXPANDED CONTENT — STRUCTURED INSIGHT */}
+              {/* EXPANDED CONTENT : STRUCTURED INSIGHT */}
               {expandedQuestions[6] && (
                 <motion.div 
                   initial={{ opacity: 0, height: 0 }}
@@ -1734,7 +1764,7 @@ export default function EngineDashboard() {
                   <div>
                     <span className="text-[9.5px] font-bold text-[#54B226] uppercase tracking-wider block mb-1">Behavioral Mechanism</span>
                     <p className="text-[#5F6368]">
-                      Because these failures are operationally distinct but experientially similar (all represent "the platform didn't deliver what was promised"), customers may be forming a single unified trust judgment from multiple unrelated backend failures — meaning fixing one issue in isolation may not measurably shift trust if the others persist.
+                      Because these failures are operationally distinct but experientially similar (all represent "the platform didn't deliver what was promised"), customers may be forming a single unified trust judgment from multiple unrelated backend failures - meaning fixing one issue in isolation may not measurably shift trust if the others persist.
                     </p>
                   </div>
 
@@ -1742,7 +1772,7 @@ export default function EngineDashboard() {
                   <div>
                     <span className="text-[9.5px] font-bold text-[#54B226] uppercase tracking-wider block mb-1">Interpretation</span>
                     <p className="text-[#5F6368]">
-                      The evidence suggests customer trust may function as an aggregate signal across operational domains rather than being domain-specific — though this contradicts, or at least complicates, the category-specific trust interpretation from Q2, and that tension itself is worth noting rather than resolving prematurely.
+                      The evidence suggests customer trust may function as an aggregate signal across operational domains rather than being domain-specific - though this contradicts, or at least complicates, the category-specific trust interpretation from Q2, and that tension itself is worth noting rather than resolving prematurely.
                     </p>
                   </div>
 
@@ -1758,7 +1788,7 @@ export default function EngineDashboard() {
                   <div>
                     <span className="text-[9.5px] font-bold text-[#54B226] uppercase tracking-wider block mb-1">Remaining Uncertainty</span>
                     <p className="text-[#5F6368]">
-                      Whether fixing all five simultaneously produces a larger trust improvement than the sum of fixing each individually cannot be tested with review data — this requires a controlled before/after comparison.
+                      Whether fixing all five simultaneously produces a larger trust improvement than the sum of fixing each individually cannot be tested with review data - this requires a controlled before/after comparison.
                     </p>
                   </div>
 
@@ -1774,13 +1804,18 @@ export default function EngineDashboard() {
             {/* Q7 */}
             <div id="q7" className="bg-white border-none shadow-[0_1px_3px_rgba(0,0,0,0.08),0_1px_2px_rgba(0,0,0,0.06)] border-l-4 border-l-[#1F1F1F] rounded-lg p-5 md:p-6 space-y-4 scroll-mt-20">
               {/* Card Header: Eyebrow + Confidence badge */}
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-gray-100 pb-2.5">
-                <span className="font-mono text-[10px] font-bold text-[#54B226] uppercase tracking-wider">
-                  WHICH CUSTOMER SEGMENTS ARE MORE LIKELY TO EXPERIMENT?
-                </span>
-                <span className="text-[11px] font-medium text-[#1F1F1F] bg-[#F8F9FA] px-2.5 py-1 rounded border border-gray-200 shrink-0">
-                  Confidence: Medium — based on 19 signals (10.1%), language-inferred frequency cues.
-                </span>
+              <div className="space-y-1.5 border-b border-gray-100 pb-3 w-full">
+                <div className="flex flex-wrap items-center justify-between gap-2">
+                  <span className="font-mono text-[10px] font-bold text-[#54B226] uppercase tracking-wider">
+                    WHICH CUSTOMER SEGMENTS ARE MORE LIKELY TO EXPERIMENT?
+                  </span>
+                  <span className="text-[10.5px] font-bold text-[#1F1F1F] bg-[#F8F9FA] px-2.5 py-0.5 rounded border border-gray-300 uppercase tracking-wider shrink-0">
+                    Confidence: Medium
+                  </span>
+                </div>
+                <p className="text-[11px] text-[#5F6368] leading-relaxed break-words max-w-full">
+                  Based on 19 signals (10.1%), language-inferred frequency cues.
+                </p>
               </div>
 
               {/* Main Title Block + Stat Callout + Visual Bar */}
@@ -1844,7 +1879,7 @@ export default function EngineDashboard() {
                 </button>
               </div>
 
-              {/* EXPANDED CONTENT — STRUCTURED INSIGHT */}
+              {/* EXPANDED CONTENT : STRUCTURED INSIGHT */}
               {expandedQuestions[7] && (
                 <motion.div 
                   initial={{ opacity: 0, height: 0 }}
@@ -1879,7 +1914,7 @@ export default function EngineDashboard() {
                   <div>
                     <span className="text-[9.5px] font-bold text-[#54B226] uppercase tracking-wider block mb-1">Interpretation</span>
                     <p className="text-[#5F6368]">
-                      One possible explanation is that relationship tenure moderates how customers interpret a negative experience — but this segment label is entirely language-inferred, not verified against actual purchase history, and should be treated as a hypothesis about segment behavior, not a confirmed customer list.
+                      One possible explanation is that relationship tenure moderates how customers interpret a negative experience - but this segment label is entirely language-inferred, not verified against actual purchase history, and should be treated as a hypothesis about segment behavior, not a confirmed customer list.
                     </p>
                   </div>
 
@@ -1887,7 +1922,7 @@ export default function EngineDashboard() {
                   <div>
                     <span className="text-[9.5px] font-bold text-[#54B226] uppercase tracking-wider block mb-1">Business Meaning</span>
                     <p className="text-[#5F6368]">
-                      This informs a targeting decision: should early product validation prioritize language-inferred frequent users as the first test group, given their apparently narrower and more specific objections — while treating this as a testable assumption, not a settled fact?
+                      This informs a targeting decision: should early product validation prioritize language-inferred frequent users as the first test group, given their apparently narrower and more specific objections - while treating this as a testable assumption, not a settled fact?
                     </p>
                   </div>
 
@@ -1976,19 +2011,24 @@ export default function EngineDashboard() {
             {/* Q8 */}
             <div id="q8" className="bg-white border-none shadow-[0_1px_3px_rgba(0,0,0,0.08),0_1px_2px_rgba(0,0,0,0.06)] border-l-4 border-l-purple-600 rounded-lg p-5 md:p-6 space-y-4 scroll-mt-20">
               {/* Card Header: Eyebrow + Confidence badge */}
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-gray-100 pb-2.5">
-                <span className="font-mono text-[10px] font-bold text-[#54B226] uppercase tracking-wider">
-                  WHAT UNMET NEEDS EMERGE CONSISTENTLY?
-                </span>
-                <span className="text-[11px] font-medium text-[#1F1F1F] bg-[#F8F9FA] px-2.5 py-1 rounded border border-gray-200 shrink-0">
-                  Confidence: Medium — based on 5 recurring needs, including n=1 qualitative accessibility cue.
-                </span>
+              <div className="space-y-1.5 border-b border-gray-100 pb-3 w-full">
+                <div className="flex flex-wrap items-center justify-between gap-2">
+                  <span className="font-mono text-[10px] font-bold text-[#54B226] uppercase tracking-wider">
+                    WHAT UNMET NEEDS EMERGE CONSISTENTLY?
+                  </span>
+                  <span className="text-[10.5px] font-bold text-[#1F1F1F] bg-[#F8F9FA] px-2.5 py-0.5 rounded border border-gray-300 uppercase tracking-wider shrink-0">
+                    Confidence: Medium
+                  </span>
+                </div>
+                <p className="text-[11px] text-[#5F6368] leading-relaxed break-words max-w-full">
+                  Based on 5 recurring needs, including n=1 qualitative accessibility cue.
+                </p>
               </div>
 
               {/* Main Title Block + Stat Callout + Visual Bar */}
               <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <h3 className="font-display font-extrabold text-[22px] md:text-[25px] text-[#1F1F1F] leading-tight tracking-tight flex-1">
-                  "Customers didn't just complain — they specified the fix."
+                  "Customers didn't just complain, they specified the fix."
                 </h3>
                 <AnimatedStat 
                   value="5" 
@@ -2037,7 +2077,7 @@ export default function EngineDashboard() {
                 </div>
               </div>
 
-              {/* EXPANDED CONTENT — STRUCTURED INSIGHT */}
+              {/* EXPANDED CONTENT : STRUCTURED INSIGHT */}
               {expandedQuestions[8] && (
                 <motion.div 
                   initial={{ opacity: 0, height: 0 }}
@@ -2048,7 +2088,7 @@ export default function EngineDashboard() {
                   <div>
                     <span className="text-[9.5px] font-bold text-[#54B226] uppercase tracking-wider block mb-1">Evidence</span>
                     <p className="text-[#5F6368] font-medium">
-                      Five needs recur: authenticity proof, transparent pricing, working returns, accurate niche/regional stock information, and — from a single signal — a simpler interface for a non-technical user.
+                      Five needs recur: authenticity proof, transparent pricing, working returns, accurate niche/regional stock information, and - from a single signal - a simpler interface for a non-technical user.
                     </p>
                   </div>
 
@@ -2064,7 +2104,7 @@ export default function EngineDashboard() {
                   <div>
                     <span className="text-[9.5px] font-bold text-[#54B226] uppercase tracking-wider block mb-1">Behavioral Mechanism</span>
                     <p className="text-[#5F6368]">
-                      Low-frequency signals may still indicate a real need if the underlying population (e.g., elderly or non-technical users) is systematically underrepresented in review-writing — meaning n=1 here is not necessarily a weak signal, but potentially a rare glimpse into an otherwise invisible population.
+                      Low-frequency signals may still indicate a real need if the underlying population (e.g., elderly or non-technical users) is systematically underrepresented in review-writing - meaning n=1 here is not necessarily a weak signal, but potentially a rare glimpse into an otherwise invisible population.
                     </p>
                   </div>
 
@@ -2072,7 +2112,7 @@ export default function EngineDashboard() {
                   <div>
                     <span className="text-[9.5px] font-bold text-[#54B226] uppercase tracking-wider block mb-1">Interpretation</span>
                     <p className="text-[#5F6368]">
-                      A plausible interpretation is that this n=1 signal warrants direct investigation rather than dismissal, precisely because the review-mining method is structurally biased toward customers comfortable writing detailed English-language complaints — a population that likely excludes the accessibility-need segment being described.
+                      A plausible interpretation is that this n=1 signal warrants direct investigation rather than dismissal, precisely because the review-mining method is structurally biased toward customers comfortable writing detailed English-language complaints - a population that likely excludes the accessibility-need segment being described.
                     </p>
                   </div>
 
@@ -2192,7 +2232,7 @@ export default function EngineDashboard() {
               </div>
 
               <p className="text-[11.5px] text-[#737373] italic border-t border-gray-100 pt-3">
-                Caption: "This is an inferred causal chain connecting independently-measured findings — it is a hypothesis for qualitative validation, not a proven behavioral sequence."
+                Caption: "This is an inferred causal chain connecting independently-measured findings - it is a hypothesis for qualitative validation, not a proven behavioral sequence."
               </p>
             </div>
           </div>
@@ -2333,7 +2373,7 @@ export default function EngineDashboard() {
 
           {/* Master-Detail Evidence Inspector */}
           <div className="flex flex-col md:flex-row items-start gap-6">
-            {/* LEFT PANEL — compact evidence list */}
+            {/* LEFT PANEL: compact evidence list */}
             <div className="w-full md:w-[360px] shrink-0 bg-[#FFFFFF] border-none shadow-[0_1px_3px_rgba(0,0,0,0.08),0_1px_2px_rgba(0,0,0,0.06)] rounded-lg overflow-hidden flex flex-col h-[560px]">
               <div className="p-3 bg-[#F8F9FA] border-b border-gray-100 flex justify-between items-center text-[10px] font-mono font-bold text-[#54B226] uppercase tracking-wider">
                 <span>RECORDS ({filteredExplorerReviews.length})</span>
@@ -2382,7 +2422,7 @@ export default function EngineDashboard() {
               </div>
             </div>
 
-            {/* RIGHT PANEL — evidence inspection card */}
+            {/* RIGHT PANEL: evidence inspection card */}
             <div className="w-full flex-1 min-h-[560px]">
               {!selectedRecord ? (
                 <div className="bg-[#FFFFFF] border-none shadow-[0_1px_3px_rgba(0,0,0,0.08),0_1px_2px_rgba(0,0,0,0.06)] rounded-lg p-8 flex flex-col items-center justify-center text-center h-[560px]">

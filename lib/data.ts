@@ -137,17 +137,17 @@ export const sourceBreakdown = [
 export const growthQuestions = [
   {
     q: "Why do customers repeatedly purchase from the same categories?",
-    a: "Not habit-driven (only 3.7% of signal). Customers retreat to categories where they haven't been burned — repeat-buying is risk-avoidance, not routine.",
+    a: "Not habit-driven (only 3.7% of signal). Customers retreat to categories where they haven't been burned: repeat-buying is risk-avoidance, not routine.",
     confidence: "High" as const,
   },
   {
     q: "What prevents customers from exploring new categories?",
-    a: "Trust/quality risk (55.6%) — fake products, expired/damaged perishables, tampered electronics. Secondary: price uncertainty (21.2%), limited/unavailable SKUs (4.8%).",
+    a: "Trust/quality risk (55.6%): fake products, expired/damaged perishables, tampered electronics. Secondary: price uncertainty (21.2%), limited/unavailable SKUs (4.8%).",
     confidence: "High" as const,
   },
   {
     q: "How do customers discover products today?",
-    a: "Weakly — evidence of broken search, unawareness of existing features, and customers leaving for competitors over unavailable specific variants or niche stock.",
+    a: "Weakly: evidence of broken search, unawareness of existing features, and customers leaving for competitors over unavailable specific variants or niche stock.",
     confidence: "Medium" as const,
   },
   {
@@ -167,7 +167,7 @@ export const growthQuestions = [
   },
   {
     q: "Which customer segments are more likely to experiment?",
-    a: "heavy_user — loyal, high-frequency customers most likely to try new categories once trust is addressed.",
+    a: "heavy_user: loyal, high-frequency customers most likely to try new categories once trust is addressed.",
     confidence: "Medium" as const,
   },
   {
@@ -198,7 +198,7 @@ export const opportunities = [
     confidence: "High" as const,
     effort: "Low" as const,
     recommendation: "Lightweight 'first try in this category, free return if unsatisfied' prompt targeting the segment with highest readiness.",
-    kpiImpact: "Directly lifts % of MAU purchasing a new category — targets the segment closest to converting.",
+    kpiImpact: "Directly lifts % of MAU purchasing a new category: targets the segment closest to converting.",
   },
   {
     title: "Transparent Real-Time Pricing",
