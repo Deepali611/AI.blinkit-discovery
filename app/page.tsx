@@ -24,7 +24,9 @@ import {
   Lock,
   ChevronDown,
   ChevronUp,
-  Play
+  Play,
+  Upload,
+  FileText
 } from "lucide-react";
 
 // Repeating decorative palette for list dot bullets
@@ -336,6 +338,172 @@ export default function EngineDashboard() {
   const handleRunSample = () => {
     setReviewInput(SAMPLE_REVIEW);
     handleAnalyze(SAMPLE_REVIEW);
+  };
+
+  // CSV Batch Analyzer States
+  const [csvFile, setCsvFile] = useState<File | null>(null);
+  const [csvHeaders, setCsvHeaders] = useState<string[]>([]);
+  const [csvRawRows, setCsvRawRows] = useState<string[][]>([]);
+  const [selectedColumnIndex, setSelectedColumnIndex] = useState<number>(0);
+  const [csvCapNotice, setCsvCapNotice] = useState<string>("");
+  const [csvProcessing, setCsvProcessing] = useState(true);
+  const [csvCurrentIndex, setCsvCurrentIndex] = useState(3);
+  const [csvTotalCount, setCsvTotalCount] = useState(15);
+  const [csvResults, setCsvResults] = useState<
+    Array<{
+      id: number;
+      reviewText: string;
+      status: "pending" | "processing" | "success" | "error";
+      result?: any;
+      error?: string;
+    }>
+  >([]);
+  const [csvFilter, setCsvFilter] = useState<"all" | "signal_only">("all");
+
+  const parseCSVText = (text: string): { headers: string[]; rows: string[][] } => {
+    const lines = text.split(/\r?\n/).filter((line) => line.trim() !== "");
+    if (lines.length === 0) return { headers: [], rows: [] };
+
+    const parseLine = (line: string) => {
+      const result: string[] = [];
+      let start = 0;
+      let inQuotes = false;
+      for (let i = 0; i < line.length; i++) {
+        if (line[i] === '"') inQuotes = !inQuotes;
+        else if (line[i] === ',' && !inQuotes) {
+          let val = line.substring(start, i).trim();
+          if (val.startsWith('"') && val.endsWith('"')) val = val.slice(1, -1).replace(/""/g, '"');
+          result.push(val);
+          start = i + 1;
+        }
+      }
+      let val = line.substring(start).trim();
+      if (val.startsWith('"') && val.endsWith('"')) val = val.slice(1, -1).replace(/""/g, '"');
+      result.push(val);
+      return result;
+    };
+
+    const headers = parseLine(lines[0]);
+    const rows = lines.slice(1).map(parseLine).filter((r) => r.some((cell) => cell.trim() !== ""));
+    return { headers, rows };
+  };
+
+  const handleFileUpload = (file: File) => {
+    setCsvFile(file);
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const text = e.target?.result as string;
+      if (!text) return;
+      const { headers, rows } = parseCSVText(text);
+      setCsvHeaders(headers);
+      setCsvRawRows(rows);
+      setSelectedColumnIndex(0);
+
+      if (rows.length > 15) {
+        setCsvCapNotice(
+          "Showing results for the first 15 reviews. Full dataset processing is available via the documented pipeline in How the Engine Works."
+        );
+      } else {
+        setCsvCapNotice("");
+      }
+      setCsvResults([]);
+    };
+    reader.readAsText(file);
+  };
+
+  const SAMPLE_CSV_REVIEWS = [
+    "Ordered a fresh milk packet but it was bloated and expired tomorrow. Very poor quality control, going back to buying from Mother Dairy store.",
+    "Great app fast delivery super convenient service",
+    "Blinkit Handling charges keep increasing - how far can it go and can it ever be reversed?",
+    "Ordered ₹14,000 Camera on Blinkit. Received an Empty Box. Support Has Stepped Back.",
+    "swiggy instamart flipkart Amazon are such a mess and complicated to use. overloaded with information",
+    "Swiggy has a shopping list option but most of us don't know about it. Why don't they create awareness?",
+    "5 stars loving the speed!",
+    "Blinkit denied refund for missing item - sent legal notice.",
+    "Never buy electronic item from blinkit",
+    "Blinkit issue: Is displaying unavailable stock an unfair trade practice?",
+    "Good app fast delivery",
+    "Be careful buying ps5 from blinkit tampered controller",
+    "Another Blinkit scam caught, charging 2% more than MRP for Haldiram Sev",
+    "very good service recommended",
+    "BLINKIT ZEPTO IN BALASORE WHEN? Limited catalog in my area."
+  ];
+
+  const handleLoadSampleCSV = () => {
+    setCsvFile(null);
+    setCsvHeaders(["Review_Text"]);
+    setCsvRawRows(SAMPLE_CSV_REVIEWS.map((text) => [text]));
+    setSelectedColumnIndex(0);
+    setCsvCapNotice(
+      "Showing results for the first 15 reviews. Full dataset processing is available via the documented pipeline in How the Engine Works."
+    );
+    setCsvResults([]);
+  };
+
+  const handleRunBatchExtraction = async () => {
+    if (!csvRawRows.length) return;
+    setAnalyzerError("");
+
+    if (!hasServerKey && !apiKey.trim()) {
+      setAnalyzerError("Please input an API Key.");
+      return;
+    }
+
+    const reviewTexts = csvRawRows
+      .map((row) => (row[selectedColumnIndex] || "").trim())
+      .filter((text) => text.length > 0)
+      .slice(0, 15);
+
+    if (!reviewTexts.length) {
+      setAnalyzerError("No valid review text found in selected column.");
+      return;
+    }
+
+    setCsvProcessing(true);
+    setCsvTotalCount(reviewTexts.length);
+    setCsvCurrentIndex(0);
+
+    const initialResults = reviewTexts.map((text, idx) => ({
+      id: idx + 1,
+      reviewText: text,
+      status: "pending" as const
+    }));
+    setCsvResults(initialResults);
+
+    for (let i = 0; i < reviewTexts.length; i++) {
+      setCsvCurrentIndex(i);
+      setCsvResults((prev) =>
+        prev.map((r, idx) => (idx === i ? { ...r, status: "processing" } : r))
+      );
+
+      try {
+        const res = await fetch("/api/analyze", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ apiKey: apiKey.trim(), review: reviewTexts[i] })
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || "Extraction failed");
+
+        setCsvResults((prev) =>
+          prev.map((r, idx) =>
+            idx === i ? { ...r, status: "success", result: data } : r
+          )
+        );
+      } catch (e: any) {
+        setCsvResults((prev) =>
+          prev.map((r, idx) =>
+            idx === i ? { ...r, status: "error", error: e.message || "Row processing error" } : r
+          )
+        );
+      }
+
+      if (i < reviewTexts.length - 1) {
+        await new Promise((r) => setTimeout(r, 1200));
+      }
+    }
+
+    setCsvProcessing(false);
   };
 
   // Discovery Questions Data & Sourcing
@@ -2783,6 +2951,260 @@ export default function EngineDashboard() {
                     <span className="text-[9px] font-bold text-[#54B226] uppercase tracking-wider block">Verbatim Sentence Match</span>
                     <span className="font-semibold italic text-[#5F6368]">"{analyzerResult.quote || "none"}"</span>
                   </div>
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Card 3: Batch Process CSV Dataset */}
+          <div className="bg-[#FFFFFF] border-none shadow-[0_1px_3px_rgba(0,0,0,0.08),0_1px_2px_rgba(0,0,0,0.06)] rounded-lg p-6 md:p-7 space-y-5">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-gray-100 pb-4">
+              <div>
+                <span className="text-[10px] font-bold text-[#54B226] uppercase tracking-wider block mb-1">
+                  Batch Dataset Extraction
+                </span>
+                <h2 className="font-display font-bold text-[18px] text-[#1F1F1F]">
+                  Batch Process CSV Dataset
+                </h2>
+                <p className="text-[13px] text-[#5F6368] mt-1">
+                  Upload a custom CSV file to run batch signal extractions across multiple reviews using the live pipeline.
+                </p>
+              </div>
+              <span className="bg-[#E6F4EA] text-[#54B226] text-[11px] font-bold px-3 py-1 rounded shrink-0 uppercase tracking-wider border border-[#54B226]/30 self-start sm:self-center">
+                Batch Analyzer
+              </span>
+            </div>
+
+            <p className="text-[11.5px] text-[#737373] italic bg-[#F8F9FA] p-3 rounded border border-gray-200">
+              This demonstrates the same extraction pipeline used to build the full 189-signal dataset - capped here to a small batch to keep results fast and within API rate limits.
+            </p>
+
+            {/* File Upload Box & Sample Action */}
+            <div className="space-y-4">
+              <div className="flex flex-col sm:flex-row items-center gap-3">
+                <label className="flex-1 w-full flex items-center justify-center gap-2 bg-[#F8F9FA] hover:bg-[#F3F1EA] border border-dashed border-gray-300 rounded-lg p-4 cursor-pointer transition-colors text-[12.5px] font-semibold text-[#1F1F1F]">
+                  <Upload size={16} className="text-[#54B226]" />
+                  <span>{csvFile ? csvFile.name : "Upload .csv file (Max 15 rows processed)"}</span>
+                  <input
+                    type="file"
+                    accept=".csv"
+                    className="hidden"
+                    onChange={(e) => {
+                      if (e.target.files?.[0]) handleFileUpload(e.target.files[0]);
+                    }}
+                  />
+                </label>
+                <button
+                  type="button"
+                  onClick={handleLoadSampleCSV}
+                  disabled={csvProcessing}
+                  className="w-full sm:w-auto bg-[#F8F9FA] hover:bg-[#EFEFEF] text-[#1F1F1F] font-bold text-[12px] px-4 py-3 rounded-lg border border-gray-300 transition-colors shrink-0 flex items-center justify-center gap-1.5 disabled:opacity-60"
+                >
+                  <FileText size={14} className="text-[#54B226]" />
+                  Load Sample CSV (15 rows)
+                </button>
+              </div>
+
+              {/* Column selection if multiple columns */}
+              {csvHeaders.length > 1 && (
+                <div className="bg-[#F8F9FA] p-3 rounded border border-gray-200 space-y-1.5">
+                  <label className="text-[10px] font-bold text-[#54B226] uppercase tracking-wider block">
+                    Select Review Text Column:
+                  </label>
+                  <select
+                    value={selectedColumnIndex}
+                    onChange={(e) => setSelectedColumnIndex(Number(e.target.value))}
+                    className="w-full bg-white border border-gray-200 rounded px-3 py-1.5 text-[12px] font-medium focus:outline-none"
+                  >
+                    {csvHeaders.map((header, idx) => (
+                      <option key={idx} value={idx}>
+                        Column {idx + 1}: {header || `Header ${idx + 1}`}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              )}
+
+              {/* Capping notice */}
+              {csvCapNotice && (
+                <p className="text-[11.5px] text-amber-700 bg-amber-50 p-2.5 rounded border border-amber-200 leading-normal">
+                  {csvCapNotice}
+                </p>
+              )}
+
+              {/* Start Batch Button */}
+              {csvRawRows.length > 0 && (
+                <div className="pt-2">
+                  <button
+                    onClick={handleRunBatchExtraction}
+                    disabled={csvProcessing}
+                    className="bg-[#54B226] hover:bg-[#479B1F] text-white font-bold text-[12.5px] px-5 py-2.5 rounded-lg border-none transition-colors disabled:opacity-60 shadow-sm flex items-center gap-2"
+                  >
+                    <Play size={14} />
+                    {csvProcessing
+                      ? `Processing row ${csvCurrentIndex + 1} of ${csvTotalCount}...`
+                      : `Run Batch Extraction (${Math.min(csvRawRows.length, 15)} rows)`}
+                  </button>
+                </div>
+              )}
+            </div>
+
+            {/* Live Progress Bar */}
+            {csvProcessing && (
+              <div className="space-y-2 pt-2 border-t border-gray-100">
+                <div className="flex justify-between text-[11px] font-bold text-[#1F1F1F] uppercase tracking-wider animate-pulse">
+                  <span>Processing row {csvCurrentIndex + 1} of {csvTotalCount}...</span>
+                  <span>{Math.round(((csvCurrentIndex + 1) / csvTotalCount) * 100)}%</span>
+                </div>
+                <div className="w-full h-2 bg-[#F8F9FA] rounded-full overflow-hidden">
+                  <div
+                    className="h-full bg-[#54B226] transition-all duration-300 ease-out"
+                    style={{ width: `${((csvCurrentIndex + 1) / csvTotalCount) * 100}%` }}
+                  />
+                </div>
+              </div>
+            )}
+
+            {/* Results Section */}
+            {csvResults.length > 0 && (
+              <div className="pt-5 border-t border-gray-100 space-y-4">
+                {/* Summary Line */}
+                {(() => {
+                  const completed = csvResults.filter((r) => r.status === "success");
+                  const withSignal = completed.filter((r) => r.result?.has_signal === true);
+                  const totalProcessed = completed.length;
+                  const rate = totalProcessed > 0 ? ((withSignal.length / totalProcessed) * 100).toFixed(1) : "0";
+
+                  return (
+                    <div className="bg-[#F8F9FA] border border-gray-200 p-4 rounded-lg flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                      <div>
+                        <span className="text-[10px] font-bold text-[#54B226] uppercase tracking-wider block">
+                          Batch Processing Summary
+                        </span>
+                        <h3 className="font-display font-extrabold text-[16px] text-[#1F1F1F]">
+                          {withSignal.length} of {totalProcessed || csvTotalCount} reviews contained extractable signal
+                        </h3>
+                        <p className="text-[11.5px] text-[#5F6368]">
+                          {rate}% signal yield rate - mirroring the 16.1% signal-rate framing across the collected feedback set.
+                        </p>
+                      </div>
+
+                      {/* Filter Tabs */}
+                      <div className="flex items-center gap-1.5 shrink-0">
+                        <button
+                          type="button"
+                          onClick={() => setCsvFilter("all")}
+                          className={`px-3 py-1 rounded text-[11px] font-bold border ${
+                            csvFilter === "all" ? "bg-[#1F1F1F] text-white border-[#1F1F1F]" : "bg-white text-[#1F1F1F] border-gray-200"
+                          }`}
+                        >
+                          All Rows ({csvResults.length})
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setCsvFilter("signal_only")}
+                          className={`px-3 py-1 rounded text-[11px] font-bold border ${
+                            csvFilter === "signal_only" ? "bg-[#1F1F1F] text-white border-[#1F1F1F]" : "bg-white text-[#1F1F1F] border-gray-200"
+                          }`}
+                        >
+                          Signal Extracted ({withSignal.length})
+                        </button>
+                      </div>
+                    </div>
+                  );
+                })()}
+
+                {/* Grid of Results */}
+                <div className="space-y-3">
+                  {csvResults
+                    .filter((r) => (csvFilter === "signal_only" ? r.result?.has_signal === true : true))
+                    .map((item) => (
+                      <div
+                        key={item.id}
+                        className={`p-3.5 rounded-lg border leading-relaxed text-[12px] space-y-2 transition-all ${
+                          item.status === "processing"
+                            ? "bg-[#FFF9E6] border-[#F8CB45]"
+                            : item.status === "error"
+                            ? "bg-[#FFF5F5] border-red-200"
+                            : item.result?.has_signal
+                            ? "bg-[#FFFFFF] border-gray-200 shadow-2xs"
+                            : "bg-[#F8F9FA]/80 border-gray-200 opacity-80"
+                        }`}
+                      >
+                        {/* Row Header */}
+                        <div className="flex items-center justify-between gap-2 border-b border-gray-100 pb-2">
+                          <span className="font-mono text-[10px] font-bold text-[#54B226]">
+                            Row #{item.id}
+                          </span>
+                          <div className="flex items-center gap-2">
+                            {item.status === "processing" && (
+                              <span className="text-[10px] font-bold text-amber-700 bg-amber-100 px-2 py-0.5 rounded animate-pulse">
+                                Processing...
+                              </span>
+                            )}
+                            {item.status === "pending" && (
+                              <span className="text-[10px] font-medium text-gray-500 bg-gray-100 px-2 py-0.5 rounded">
+                                Queued
+                              </span>
+                            )}
+                            {item.status === "error" && (
+                              <span className="text-[10px] font-bold text-red-600 bg-red-100 px-2 py-0.5 rounded">
+                                Failed
+                              </span>
+                            )}
+                            {item.status === "success" && (
+                              <span
+                                className={`text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider ${
+                                  item.result.has_signal ? "bg-[#E6F4EA] text-[#54B226]" : "bg-gray-100 text-gray-600"
+                                }`}
+                              >
+                                {item.result.has_signal ? "Signal Extracted" : "No Signal"}
+                              </span>
+                            )}
+                          </div>
+                        </div>
+
+                        {/* Review Text */}
+                        <p className="text-[#1F1F1F] font-medium italic">
+                          "{item.reviewText}"
+                        </p>
+
+                        {/* Error Message */}
+                        {item.status === "error" && (
+                          <p className="text-[11px] text-red-600 font-semibold">
+                            Row Error: {item.error}
+                          </p>
+                        )}
+
+                        {/* Extracted Parameters */}
+                        {item.status === "success" && item.result.has_signal && (
+                          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-2 border-t border-gray-100 text-[11px]">
+                            <div>
+                              <span className="text-[9px] font-bold text-[#54B226] uppercase block">Reason</span>
+                              <span className="font-semibold capitalize">{item.result.reason_type}</span>
+                            </div>
+                            <div>
+                              <span className="text-[9px] font-bold text-[#54B226] uppercase block">Segment</span>
+                              <span className="font-semibold capitalize">{(item.result.user_segment_signal || "unclear").replace(/_/g, " ")}</span>
+                            </div>
+                            <div>
+                              <span className="text-[9px] font-bold text-[#54B226] uppercase block">Category</span>
+                              <span className="font-semibold capitalize">{item.result.category_mentioned || "none"}</span>
+                            </div>
+                            <div>
+                              <span className="text-[9px] font-bold text-[#54B226] uppercase block">Confidence</span>
+                              <span className="font-semibold capitalize">{item.result.confidence}</span>
+                            </div>
+                            {item.result.quote && (
+                              <div className="col-span-2 sm:col-span-4 pt-1 border-t border-gray-100">
+                                <span className="text-[9px] font-bold text-[#54B226] uppercase block">Verbatim Quote</span>
+                                <span className="italic text-[#5F6368]">"{item.result.quote}"</span>
+                              </div>
+                            )}
+                          </div>
+                        )}
+                      </div>
+                    ))}
                 </div>
               </div>
             )}
